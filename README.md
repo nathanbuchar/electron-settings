@@ -6,7 +6,7 @@ User settings manager for Electron, adapted from [Atom/config](https://github.co
 
 ## Options
 
-|key|type|description|default|
+|Key|Type|Description|Default|
 |--:|:--:|:----------|:-----:|
 |`shouldSave`|`boolean`|Whether we should save changes to disk.|`true`|
 
@@ -24,7 +24,7 @@ User settings manager for Electron, adapted from [Atom/config](https://github.co
 Sets the value of a configuration setting at the given key-path.
 
 #### Parameters
-|parameter|type|description|required|default|
+|Parameter|Type|Description|Required|Default|
 |--------:|:--:|:----------|:------:|:-----:|
 |`keyPath`|`string`|The key-path.|✓|
 |`value`|`*`|The value to set the given key-path.|✓|
@@ -87,9 +87,9 @@ Sets the value of a configuration setting at the given key-path.
 Gets the value of a configuration setting at the given key-path. Returns an `Object`.
 
 #### Parameters
-|parameter|type|description|required|default|
+|Parameter|Type|Description|Required|Default|
 |--------:|:--:|:----------|:------:|:-----:|
-|`keyPath`|`string`|The key-path.||`''`|
+|`keyPath`|`string`|The key-path.|
 
 #### Examples
 
@@ -131,7 +131,7 @@ Gets the value of a configuration setting at the given key-path. Returns an `Obj
 Unsets a configuration setting at the given key-path.
 
 #### Parameters
-|parameter|type|description|required|default|
+|Parameter|Type|Description|Required|Default|
 |--------:|:--:|:----------|:------:|:-----:|
 |`keyPath`|`string`|The key-path.|✓|
 |`options`|`Object`|ElectronSettings options.||See [options][options]|
