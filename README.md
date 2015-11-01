@@ -52,7 +52,21 @@ Sets the value of a configuration setting at the given key-path.
   console.log(settings.get());
   // => { foo: { bar: { baz: 'qux' } } }
   ```
-3. Overwrite settings without defining a key-path.
+3. Advanced example with basic key-path and complex value.
+  ```js
+  let ElectronSettings = require('electron-settings');
+  let settings = new ElectronSettings();
+
+  settings.set('foo', {
+    snap: {
+      crackle: 'pop'
+    }
+  });
+
+  console.log(settings.get());
+  // => { foo: { snap: { crackle: 'pop' } } }
+  ```
+4. Overwrite settings without defining a key-path.
   ```js
   let ElectronSettings = require('electron-settings');
   let settings = new ElectronSettings();
