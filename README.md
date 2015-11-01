@@ -12,10 +12,10 @@ User settings manager for Electron, adapted from [Atom/config](https://github.co
 
 ## Methods
 
-* [`set`](#set)
-* [`get`](#get)
-* [`unset`](#unset)
-* [`getUserConfigPath`](#getUserConfigPath)
+* [`set`](#setkeypath-value-options)
+* [`get`](#getkeypathobject)
+* [`unset`](#unsetkeypath-options)
+* [`getUserConfigPath`](#getuserconfigpathstring)
 
 ***
 
