@@ -1,36 +1,63 @@
-# Electron-Settings
+Electron-Settings
+=================
 
-User settings manager for Electron, adapted from [Atom/config](https://github.com/atom/atom/blob/master/src/config.coffee).
+Save settings to a disk and load them in when your app starts. A user settings manager for Electron, adapted from [Atom/config](https://github.com/atom/atom/blob/master/src/config.coffee).
 
-***
+**Requires Electron 0.35.0 or above.**
 
-## Options
 
-|Key|Type|Description|Default|
-|--:|:--:|:----------|:-----:|
-|`shouldSave`|`boolean`|Whether we should save changes to disk.|`true`|
-
-## Methods
-
-* [`set`](#setkeypath-value-options)
-* [`get`](#getkeypathobject)
-* [`unset`](#unsetkeypath-options)
-* [`getUserConfigPath`](#getuserconfigpathstring)
 
 ***
 
-### `set(keyPath, value[, options])`
+
+
+Usage
+-----
+
+To use `electron-settings`, first import the class, then create a new `electron-settings` instance:
+
+```js
+let ElectronSettings = require('electron-settings');
+let settings = new ElectronSettings();
+```
+
+`electron-settings` will automatically 
+
+
+
+***
+
+
+
+Methods
+-------
+
+* [`set`](#set)
+* [`get`](#get)
+* [`unset`](#unset)
+* [`getUserConfigPath`](#getuserconfigpath)
+
+
+***
+
+
+### set()
+
+**`set(keyPath, value[, options])`**
 
 Sets the value of a configuration setting at the given key-path.
 
-#### Parameters
-|Parameter|Type|Description|Required|Default|
-|--------:|:--:|:----------|:------:|:-----:|
-|`keyPath`|`string`|The key-path.|✓|
-|`value`|`*`|The value to set the given key-path.|✓|
-|`options`|`Object`|ElectronSettings options.||See [options][options]|
 
-#### Examples
+**Parameters**
+
+|      Name |   Type   | Description                          | Required |    Default    |
+| --------: | :------: | :----------------------------------- | :------: | :-----------: |
+| `keyPath` | `string` | The key-path for this setting.       |    ✓     |               |
+|   `value` |   `*`    | The value to set the given key-path. |    ✓     |               |
+| `options` | `Object` | `electron-settings` options object.  |          | See [options] |
+
+
+**Examples**
 
 1. Simple example with basic key-path.
   ```js
@@ -80,18 +107,26 @@ Sets the value of a configuration setting at the given key-path.
   // => { foo: 'bar' }
   ```
 
+
 ***
 
-### `get(keyPath):Object`
+
+get()
+-----
+
+**`get(keyPath):Object`**
 
 Gets the value of a configuration setting at the given key-path. Returns an `Object`.
 
-#### Parameters
-|Parameter|Type|Description|Required|Default|
-|--------:|:--:|:----------|:------:|:-----:|
-|`keyPath`|`string`|The key-path.|
 
-#### Examples
+**Parameters**
+
+|      Name |   Type   | Description                   | Required |
+| --------: | :------: | :---------------------------- | :------: |
+| `keyPath` | `string` | The key-path for the setting. |    ✓     |
+
+
+**Examples**
 
 1. Simple example with basic key-path.
   ```js
@@ -124,19 +159,27 @@ Gets the value of a configuration setting at the given key-path. Returns an `Obj
   // => { foo: { bar: { baz: 'qux' } } }
   ```
 
+
 ***
 
-### `unset(keyPath[, options])`
+
+unset()
+-------
+
+**`unset(keyPath[, options])`**
 
 Unsets a configuration setting at the given key-path.
 
-#### Parameters
-|Parameter|Type|Description|Required|Default|
-|--------:|:--:|:----------|:------:|:-----:|
-|`keyPath`|`string`|The key-path.|✓|
-|`options`|`Object`|ElectronSettings options.||See [options][options]|
 
-#### Examples
+**Parameters**
+
+|      Name |   Type   | Description                         | Required |    Default    |
+| --------: | :------: | :---------------------------------- | :------: | :-----------: |
+| `keyPath` | `string` | The key-path for this setting.      |    ✓     |               |
+| `options` | `Object` | `electron-settings` options object. |          | See [options] |
+
+
+**Examples**
 
 1. Simple example with basic key-path.
   ```js
@@ -169,9 +212,14 @@ Unsets a configuration setting at the given key-path.
   // => { foo: null }
   ```
 
+
 ***
 
-### `getUserConfigPath():string`
+
+getUserConfigPath()
+-------------------
+
+**`getUserConfigPath():string`**
 
 Gets the string path to the config file being used. Returns a `string`.
 
@@ -185,17 +233,43 @@ console.log(settings.getUserConfigPath());
 // => /Users/Nathan/Library/Application Support/Electron/config/settings.json
 ```
 
+
+
 ***
 
-## Todo
+
+
+Options
+-------
+
+|          Key |    Type   | Description                             | Default |
+| -----------: | :-------: | :-------------------------------------- | :-----: |
+| `shouldSave` | `boolean` | Whether we should save changes to disk. | `true`  |
+
+
+
+
+***
+
+
+
+Todo
+----
 * `observe` method to watch when a particular key-path has changed.
 * Allow default setting handling and merging with pre-existing settings.
 * Write tests.
 
-## Authors
+
+Authors
+-------
 * [Nathan Buchar](mailto:hello@nathanbuchar.com)
 
-## License
-ISC
+
+License
+-------
+MIT
+
+
+
 
 [options]: #options
