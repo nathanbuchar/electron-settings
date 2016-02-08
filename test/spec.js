@@ -21,7 +21,7 @@ let ElectronSettings = require('../');
 /**
  * Import key path helpers.
  */
-let keyPathHelpers = require('../lib/key-path-helpers');
+let keyPathHelpers = require('../lib/helpers');
 
 /**
  * Chai assertion shorthands.
@@ -82,15 +82,6 @@ beforeEach('create ElectronSettings instance', function () {
   settings = new ElectronSettings({
     configDirPath: PATH_TO_TMP,
     configFileName: tmpFileName
-  });
-});
-
-/**
- * Wait for the ElectronSettings instance to become ready.
- */
-beforeEach('wait for ready', function (done) {
-  settings.on('ready', () => {
-    done();
   });
 });
 
@@ -186,14 +177,14 @@ describe('unset()', function () {
   });
 });
 
-describe('empty()', function () {
+describe('clear()', function () {
 
   beforeEach(function () {
     settings.set('foo.bar', 'baz');
   });
 
-  it('should empty the settings cache', function () {
-    settings.empty();
+  it('should clear the settings cache', function () {
+    settings.clear();
 
     expect(settings.get()).to.be.an('object');
     should.not.exist(settings.get('foo.bar'));
