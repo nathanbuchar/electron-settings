@@ -1,10 +1,10 @@
 {
   "name": "electron-settings",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "User settings manager for Electron",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
   "keywords": [
     "electron",
@@ -17,12 +17,19 @@
   "license": "ISC",
   "dependencies": {
     "debug": "^2.2.0",
+    "deep-diff": "^0.3.3",
+    "ensure-array": "0.0.5",
     "fs-extra": "^0.26.0",
     "key-mirror": "^1.0.1",
     "lodash": "^3.10.1",
-    "util": "^0.10.3"
+    "minimatch": "^3.0.0"
   },
   "peerDependencies": {
     "electron-prebuilt": "^0.36.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "tmp": "0.0.28"
   }
 }

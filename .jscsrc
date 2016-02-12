@@ -83,5 +83,5 @@
   "disallowMultipleSpaces": true,
   "requirePaddingNewLinesAfterUseStrict": true,
   "requireSpaceBeforeObjectValues": true,
-  "disallowShorthandArrowFunctions": true
+  "disallowShorthandArrowFunctions": false
 }
