@@ -5,9 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
-1.0.0 - Feb. 07, 2016
+1.0.0 - Feb. 12, 2016
 ---------------------
-* Added support for legacy Electron versions (0.34 and lower).
 * Rewritten and more robust API.
 * Changed all read and writes to asynchronous code.
 * Introduced the "ElectronSettings.ready" event.

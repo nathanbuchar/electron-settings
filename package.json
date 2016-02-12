@@ -18,6 +18,7 @@
   "dependencies": {
     "debug": "^2.2.0",
     "deep-diff": "^0.3.3",
+    "ensure-array": "0.0.5",
     "fs-extra": "^0.26.0",
     "key-mirror": "^1.0.1",
     "lodash": "^3.10.1",
