@@ -381,7 +381,7 @@ settings.off('change', handleChange);
 getConfigFilePath()
 -------------------
 
-**`settings.getconfigfilepath():string`**
+**`settings.getConfigFilePath():string`**
 
 Gets the absolute path to the config file.
 
@@ -389,7 +389,7 @@ Gets the absolute path to the config file.
 **Example**
 
 ```js
-console.log(settings.getconfigfilepath());
+console.log(settings.getConfigFilePath());
 // => /Users/Nathan/Library/Application Support/Electron/electron-settings/settings.json
 ```
 
