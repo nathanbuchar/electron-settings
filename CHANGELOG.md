@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+1.0.3 - Apr. 05, 2016
+---------------------
+* Fix config path within renderer process 
+
 1.0.0 - Feb. 12, 2016
 ---------------------
 * Rewritten and more robust API.

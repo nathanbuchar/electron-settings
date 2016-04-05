@@ -36,7 +36,7 @@ const ElectronSettings = require('electron-settings');
 
 let settings = new ElectronSettings();
 
-console.log(settings.getconfigfilepath());
+console.log(settings.getConfigFilePath());
 // => /Users/Nathan/Library/Application Support/Electron/electron-settings/settings.json
 ```
 
