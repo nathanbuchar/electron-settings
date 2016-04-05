@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "User settings manager for Electron",
   "main": "index.js",
   "scripts": {
