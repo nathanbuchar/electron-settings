@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "User settings manager for Electron",
   "main": "index.js",
   "scripts": {
@@ -23,9 +23,6 @@
     "key-mirror": "^1.0.1",
     "lodash": "^3.10.1",
     "minimatch": "^3.0.0"
-  },
-  "peerDependencies": {
-    "electron-prebuilt": "^0.36.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

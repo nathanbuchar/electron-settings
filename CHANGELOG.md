@@ -5,9 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+1.0.4 - Apr. 14, 2016
+---------------------
+* Remove electron-prebuilt peer dependency. Fixes #11
+
 1.0.3 - Apr. 05, 2016
 ---------------------
-* Fix config path within renderer process 
+* Fix config path within renderer process. Fixes #9
 
 1.0.0 - Feb. 12, 2016
 ---------------------
