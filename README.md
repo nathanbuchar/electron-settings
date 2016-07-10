@@ -54,7 +54,7 @@ Documentation
 * *More coming soon*
 
 
-Authors
+Contributors
 -------
 * [Nathan Buchar](mailto:hello@nathanbuchar.com)
 

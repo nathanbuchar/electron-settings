@@ -17,6 +17,13 @@
     "url": "https://github.com/nathanbuchar/electron-settings"
   },
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
+  "contributors": [
+    {
+      "name": "Nathan Buchar",
+      "email": "hello@nathanbuchar.com",
+      "web": "http://nathanbuchar,com/"
+    }
+  ],
   "license": "ISC",
   "dependencies": {
     "debug": "^2.2.0",
