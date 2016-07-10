@@ -4,6 +4,7 @@ Events
 * [`change`][event_change]
 * [`error`][event_error]
 * [`save`][event_save]
+* [`create`][event_create]
 
 
 
@@ -82,6 +83,28 @@ settings.on('save', handleSave);
 ```
 
 
+***
+
+
+create
+-----
+
+**`settings.on('create', handler)`**
+
+Called when the settings file has been create on disk, e.g. on first run.
+
+
+**Example**
+
+```js
+function handleCreate() {
+  console.log('Settings file created');
+}
+
+settings.on('create', handleCreate);
+```
+
+
 
 
 
@@ -91,3 +114,4 @@ settings.on('save', handleSave);
 [event_change]: #change
 [event_error]: #error
 [event_save]: #save
+[event_create]: #create
