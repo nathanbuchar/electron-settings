@@ -1,16 +1,28 @@
 {
   "name": "electron-settings",
-  "version": "1.1.0",
-  "description": "User settings manager for Electron",
+  "version": "2.0.0",
+  "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "electron-mocha test && electron-mocha --renderer test"
   },
   "keywords": [
     "electron",
+    "app",
+    "user",
+    "data",
     "settings",
     "manager",
-    "user"
+    "config",
+    "json",
+    "storage",
+    "promise",
+    "has",
+    "get",
+    "set",
+    "delete",
+    "reset",
+    "clear"
   ],
   "repository": {
     "type": "git",
@@ -22,21 +34,24 @@
       "name": "Nathan Buchar",
       "email": "hello@nathanbuchar.com",
       "web": "http://nathanbuchar,com/"
+    },
+    {
+      "name": "Kai Eichinger",
+      "email": "kai.eichinger@outlook.com"
     }
   ],
   "license": "ISC",
   "dependencies": {
+    "clone": "^1.0.2",
     "debug": "^2.2.0",
-    "deep-diff": "^0.3.3",
-    "ensure-array": "0.0.5",
+    "deep-equal": "^1.0.1",
     "fs-extra": "^0.26.0",
-    "key-mirror": "^1.0.1",
-    "lodash": "^3.10.1",
-    "minimatch": "^3.0.0"
+    "key-path-helpers": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^2.4.5",
-    "tmp": "0.0.28"
+    "electron-mocha": "^2.3.0",
+    "electron-prebuilt": "^1.2.6",
+    "mocha": "^2.5.3"
   }
 }
