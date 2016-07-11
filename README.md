@@ -57,6 +57,7 @@ Documentation
 Contributors
 -------
 * [Nathan Buchar](mailto:hello@nathanbuchar.com)
+* [Kai Eichinger](mailto:kai.eichinger@outlook.com)
 
 
 License
