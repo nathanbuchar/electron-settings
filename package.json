@@ -30,14 +30,10 @@
   ],
   "license": "ISC",
   "dependencies": {
+    "debounce": "^1.0.0",
     "debug": "^2.2.0",
-    "deep-diff": "^0.3.3",
-    "ensure-array": "0.0.5",
     "fs-extra": "^0.26.0",
-    "key-mirror": "^1.0.1",
-    "key-path-helpers": "^0.4.0",
-    "lodash": "^3.10.1",
-    "minimatch": "^3.0.0"
+    "key-path-helpers": "^0.4.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",

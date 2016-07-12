@@ -5,6 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+2.0.0 - UNRELEASED
+------------------
+* Replaces local key path helpers library Atom's official key-path-helpers package.
+* Remove support for key path watching. It was just too heavy and seemed like too much functionality for a package that should be inherently simple.
+* Updates JSCS file.
+* Remove Lodash dependency.
+* Adds option to create a key if it does not exist when attempting to "get".
+* Adds "has" method to check if a key exists.
+* Adds "defaults" method to apply defaults to settings.
+* Updated and cleaner codebase.
+
 1.1.0 - Jul. 11, 2016
 ---------------------
 * Adds support for "change" event.

@@ -1,7 +1,8 @@
 {
   "preset": "airbnb",
   "disallowDanglingUnderscores": false,
+  "disallowEmptyBlocks": false,
   "disallowTrailingComma": true,
   "requireTrailingComma": false,
-  "requireShorthandArrowFunctions": false
+  "requireShorthandArrowFunctions": false,
 }
