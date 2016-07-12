@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+1.1.0 - Jul. 11, 2016
+---------------------
+* Adds support for "change" event.
+* Adds Kai Eichinger as a contributor.
+
 1.0.4 - Apr. 14, 2016
 ---------------------
 * Remove electron-prebuilt peer dependency. Fixes #11
