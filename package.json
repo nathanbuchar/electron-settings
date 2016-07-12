@@ -4,7 +4,7 @@
   "description": "User settings manager for Electron",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test"
+    "test": "electron-mocha --recursive test"
   },
   "keywords": [
     "electron",
@@ -39,6 +39,7 @@
     "chai": "^3.5.0",
     "electron-mocha": "^2.3.0",
     "electron-prebuilt": "^1.2.6",
+    "mocha": "^2.5.3",
     "tmp": "0.0.28"
   }
 }
