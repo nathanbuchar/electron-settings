@@ -1,6 +1,8 @@
 ElectronSettings
 ================
 
+[![Join the chat at https://gitter.im/nathanbuchar/electron-settings](https://badges.gitter.im/nathanbuchar/electron-settings.svg)](https://gitter.im/nathanbuchar/electron-settings?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Save settings to a disk and load them in when your app starts. A user settings manager for Electron, adapted from [Atom/config](https://github.com/atom/atom/blob/master/src/config.coffee).
 
 **Requires Electron 0.35.0 or above.**
