@@ -430,8 +430,8 @@ settings = null;
 [method_getConfigFilePath]: #getconfigfilepath
 [method_destroy]: #destroy
 
-[docs_key-paths]: ./docs/api/key-paths.md
-[docs_events]: ./docs/api/events.md
-[docs_watchers]: ./docs/api/watchers.md
+[docs_key-paths]: ./key-paths.md
+[docs_events]: ./events.md
+[docs_watchers]: ./watchers.md
 
 [external_package_minimatch]: https://npmjs.org/package/minimatch
