@@ -212,7 +212,7 @@ describe('getConfigFilePath()', function () {
 
 describe('watch', function () {
 
-  it('should handle NEW values', function (done) {
+  it('should handle NEW STRING values', function (done) {
     let keyPath = 'foo';
     let value = 'bar';
 
@@ -227,7 +227,7 @@ describe('watch', function () {
     settings.set(keyPath, value);
   });
 
-  it('should handle EDITED values', function (done) {
+  it('should handle EDITED STRING values', function (done) {
     let keyPath = 'foo';
     let values = {
       before: 'bar',
@@ -248,9 +248,62 @@ describe('watch', function () {
     settings.set(keyPath, values.after);
   });
 
-  it('should handle DELETED values', function (done) {
+  it('should handle DELETED STRING values', function (done) {
     let keyPath = 'foo';
     let value = 'bar';
+
+    settings.set(keyPath, value);
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.DELETED);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.was).to.equal(value);
+      done();
+    });
+
+    settings.unset(keyPath);
+  });
+
+  it('should handle NEW BOOL values', function (done) {
+    let keyPath = 'foo';
+    let value = false;
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.NEW);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.now).to.equal(value);
+      done();
+    });
+
+    settings.set(keyPath, value);
+  });
+
+  it('should handle EDITED BOOL values', function (done) {
+    let keyPath = 'foo';
+    let values = {
+      before: false,
+      after: true
+    };
+
+    settings.set(keyPath, values.before);
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.EDITED);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.was).to.equal(values.before);
+      expect(data.now).to.equal(values.after);
+      done();
+    });
+
+    settings.set(keyPath, values.after);
+  });
+
+  it('should handle DELETED BOOL values', function (done) {
+    let keyPath = 'foo';
+    let value = false;
 
     settings.set(keyPath, value);
 
