@@ -318,6 +318,59 @@ describe('watch', function () {
     settings.unset(keyPath);
   });
 
+  it('should handle NEW NULL values', function (done) {
+    let keyPath = 'foo';
+    let value = null;
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.NEW);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.now).to.equal(value);
+      done();
+    });
+
+    settings.set(keyPath, value);
+  });
+
+  it('should handle EDITED NULL values', function (done) {
+    let keyPath = 'foo';
+    let values = {
+      before: false,
+      after: null
+    };
+
+    settings.set(keyPath, values.before);
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.EDITED);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.was).to.equal(values.before);
+      expect(data.now).to.equal(values.after);
+      done();
+    });
+
+    settings.set(keyPath, values.after);
+  });
+
+  it('should handle DELETED NULL values', function (done) {
+    let keyPath = 'foo';
+    let value = null;
+
+    settings.set(keyPath, value);
+
+    settings.watch(keyPath, data => {
+      should.exist(data);
+      expect(data.action).to.equal(ElectronSettings.ChangeActions.DELETED);
+      expect(data.keyPath).to.equal(keyPath);
+      expect(data.was).to.equal(value);
+      done();
+    });
+
+    settings.unset(keyPath);
+  });
+
   it('should handle NEW ARRAY values', function (done) {
     let keyPath = 'foo';
     let values = {
