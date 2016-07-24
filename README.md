@@ -26,6 +26,10 @@ Usage
 
   * `options.debouncedSaveTime` *(number)* - The maximum amount of time in milliseconds that must elapse before saving to disk. Default `100`
 
+  * `options.defaultsConfigPath` *(string)* - Absolute path to default settings, which will be used when a given user attribute is undefined.
+
+  * `options.atomicSaving` *(boolean)* - Recommended, however false by default. Performs saves atomically to ensure data-write consistency. When enabled, saves are performed synchronously rather than asynchronously, so may have adverse performance effect if your settings data file is large.
+
 
 **Example**
 
