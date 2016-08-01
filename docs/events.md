@@ -54,7 +54,7 @@ settings.on('write', () => {
 
 
 
-[Electron Settings]: ../../
+[Electron Settings]: ../../../
 
 [Nathan Buchar]: (mailto:hello@nathanbuchar.com)
 
