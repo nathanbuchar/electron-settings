@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+2.0.2 - Jul. 31, 2016
+---------------------
+* Fixes documentation links.
+* Fixes Changelog.
+
 2.0.1 - Jul. 21, 2016
 ---------------------
 * Fixes documentation links.
