@@ -631,7 +631,7 @@ settings.getSettingsFilePath();
 
 
 
-[Electron Settings]: /
+[Electron Settings]: ../../
 
 [Nathan Buchar]: (mailto:hello@nathanbuchar.com)
 

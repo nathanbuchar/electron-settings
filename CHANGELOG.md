@@ -5,8 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
-2.0.0 - UNRELEASED
-------------------
+2.0.1 - Jul. 21, 2016
+---------------------
+* Fixes documentation links.
+* Updates Changelog.
+* Updates .npmignore.
+* Removes .github folder.
+
+2.0.0 - Jul. 21, 2016
+---------------------
 * Adds `has()` method.
 * Adds `configure()` method.
 * Adds `reset()` method.
