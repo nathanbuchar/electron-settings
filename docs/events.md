@@ -11,8 +11,8 @@ Events
 * [`write`][event_write]
 
 
-create
-------
+Settings#create
+---------------
 
 Emitted when the settings file has been created.
 
@@ -30,8 +30,8 @@ settings.on('create', pathToSettings => {
 ```
 
 
-write
------
+Settings#write
+--------------
 
 Emitted when the settings have been written to disk.
 
