@@ -3,7 +3,7 @@ electron-settings
 
 A simple persistent user settings manager for [Electron][external_electron]. Originally adapted from [Atom's own configuration manager][external_atom-config], electron-settings allows you to save user settings to the disk so that they can be loaded in the next time your app starts.
 
-Also, you can [observe key paths][method_observe] and get notified if they change. So that's pretty neat.
+Also, you can [observe key paths][method_observe] and get notified if their values change. So that's pretty neat.
 
 **Note:** v2 is not compatible with earlier versions of electron-settings.
 
