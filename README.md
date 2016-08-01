@@ -62,39 +62,41 @@ settings.setSync('foo.bar', 'qux');
 FAQ
 ---
 
-**What is a "key path"?**
+* **What is a "key path"?**
 
-With electron-settings, you are not just setting keys like you would with local storage. Instead, you are working with a JSON object, and a key path is a string that points to a specific key within that object—essentially object dot notation in string form. For example, in the JSON object below the value at the key path `"foo.bar"` is `"baz"`.
+  With electron-settings, you are not just setting keys like you would with local storage. Instead, you are working with a JSON object, and a key path is a string that points to a specific key within that object—essentially object dot notation in string form.
 
-```json
-{
-  "foo": {
-    "bar": "baz"
+  For example, in the JSON object below the value at the key path `"foo.bar"` is `"baz"`.
+
+  ```json
+  {
+    "foo": {
+      "bar": "baz"
+    }
   }
-}
-```
+  ```
 
-**Can I use electron-settings in both the main and renderer processes?**
+* **Can I use electron-settings in both the main and renderer processes?**
 
-Yes! Just be aware that if the window closes during an async operation, data may be lost.
+  Yes! Just be aware that if the window closes during an async operation, data may be lost.
 
-**What data types may be stored?**
+* **What data types may be stored?**
 
-You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`.
+  You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`.
 
-**Why do I have to use promises?**
+* **Why do I have to use promises?**
 
-electron-settings reads and writes to the file system asynchronously. In order to ensure data integrity, you should use promises. Alternatively, all methods have a synchronous counterpart that you may use instead.
+  electron-settings reads and writes to the file system asynchronously. In order to ensure data integrity, you should use promises. Alternatively, all methods have a synchronous counterpart that you may use instead.
 
-**Where is the settings file saved?**
+* **Where is the settings file saved?**
 
-The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
+  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
 
-  * `~/Library/Application Support/YourApp` on MacOS.
-  * `%APPDATA%/YourApp` on Windows.
-  * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
+    * `~/Library/Application Support/YourApp` on MacOS.
+    * `%APPDATA%/YourApp` on Windows.
+    * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
 
-You can use [`getSettingsFilePath()`][method_getSettingsFilePath] to get the full path to the settings file.
+  You can use [`getSettingsFilePath()`][method_getSettingsFilePath] to get the full path to the settings file.
 
 
 Documentation
@@ -105,8 +107,8 @@ Documentation
 
 Contributors
 -------
-* [Nathan Buchar] (Owner)
-* [Kai Eichinger]
+* [Nathan Buchar](mailto:hello@nathanbuchar.com) (Owner)
+* [Kai Eichinger](mailto:kai.eichinger@outlook.com)
 * *You?*
 
 
@@ -128,8 +130,6 @@ License
 [license]: ./LICENSE.md
 
 [Nathan Buchar]: mailto:hello@nathanbuchar.com
-[Kai Eichinger]: mailto:kai.eichinger@outlook.com
-[Your Name]: mailto:you@email.com
 
 [section_install]: #install
 [section_quick-start]: #quick-start
