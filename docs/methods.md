@@ -196,7 +196,7 @@ Sets the value of the key at the chosen key path. If no key path is provided, th
 **Arguments**
 
   * **`keyPath`** *String* (optional) - The path to the key whose value we wish to set. This key need not already exist.
-  * **`value`** *Any* - The value to set the key at the chosen key path to.
+  * **`value`** *Any* - The value to set the key at the chosen key path to. This must be a data type supported by JSON: object, array, string, number, boolean, or `null`.
   * **`options`** *Object* (optional)
     * `atomicSaving` *Boolean* (optional) - Whether electron-settings should create a tmp file during save to ensure data-write consistency. Defaults to `true`.
     * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
