@@ -12,23 +12,29 @@ const should = chai.should();
 
 describe('electron-settings', () => {
 
-  afterEach('clear the settings', () => {
-    settings.clearSync();
+  beforeEach('configure electron-settings', () => {
+    settings.defaults({
+      foo: 'bar'
+    });
+  });
+
+  beforeEach('reset to defaults', done => {
+    settings.resetToDefaults().then(() => {
+      done();
+    });
   });
 
   describe('has()', () => {
 
     it('should return true if the key path exists', done => {
-      settings.set('foo', 'bar').then(() => {
-        settings.has('foo').then(exists => {
-          expect(exists).to.be.true;
-          done();
-        });
+      settings.has('foo').then(exists => {
+        expect(exists).to.be.true;
+        done();
       });
     });
 
     it('should return false if the key path does not exist', done => {
-      settings.has('foo').then(exists => {
+      settings.has('snap').then(exists => {
         expect(exists).to.be.false;
         done();
       });
@@ -37,28 +43,26 @@ describe('electron-settings', () => {
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.has();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
     it('should throw if key path is given but is not a string', () => {
       expect(() => {
         settings.has(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
   });
 
   describe('hasSync()', () => {
 
     it('should return true if the key path exists', () => {
-      settings.setSync('foo', 'bar');
-
       const exists = settings.hasSync('foo');
 
       expect(exists).to.be.true;
     });
 
     it('should return false if the key path does not exist', () => {
-      const exists = settings.hasSync('foo');
+      const exists = settings.hasSync('snap');
 
       expect(exists).to.be.false;
     });
@@ -66,96 +70,76 @@ describe('electron-settings', () => {
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.hasSync();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is given but is not a string', () => {
+    it('should throw if key path is not a string', () => {
       expect(() => {
         settings.hasSync(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
   });
 
   describe('get()', () => {
 
     it('should return the value at the chosen key path', done => {
-      settings.set('foo', 'bar').then(() => {
-        settings.get('foo').then(value => {
-          expect(value).to.deep.equal('bar');
-          done();
-        });
+      settings.get('foo').then(value => {
+        expect(value).to.deep.equal('bar');
+        done();
       });
     });
 
     it('should return undefined if the key path does not exist', done => {
-      settings.get('foo').then(value => {
+      settings.get('snap').then(value => {
         expect(value).to.be.undefined;
         done();
       });
     });
 
     it('should return the entire settings object if no key path is given', done => {
-      settings.set({ foo: 'bar' }).then(() => {
-        settings.get().then(value => {
-          expect(value).to.deep.equal({ foo: 'bar' });
-          done();
-        });
+      settings.get().then(value => {
+        expect(value).to.deep.equal({ foo: 'bar' });
+        done();
       });
-    });
-
-    it('should throw if key path is given but is not a string', () => {
-      expect(() => {
-        settings.get(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
     });
   });
 
   describe('getSync()', () => {
 
     it('should return the value at the chosen key path', () => {
-      settings.setSync('foo', 'bar');
-
       const value = settings.getSync('foo');
 
       expect(value).to.deep.equal('bar');
     });
 
     it('should return undefined if the key path does not exist', () => {
-      const value = settings.getSync('foo');
+      const value = settings.getSync('snap');
 
       expect(value).to.be.undefined;
     });
 
     it('should return the entire settings object if no key path is given', () => {
-      settings.setSync({ foo: 'bar' });
-
       const value = settings.getSync();
 
       expect(value).to.deep.equal({ foo: 'bar' });
-    });
-
-    it('should throw if key path is given but is not a string', () => {
-      expect(() => {
-        settings.getSync(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
     });
   });
 
   describe('set()', () => {
 
     it('should set the value at the chosen key path', done => {
-      settings.set('foo', 'bar').then(() => {
-        settings.get('foo').then(value => {
-          expect(value).to.deep.equal('bar');
+      settings.set('snap', 'crackle').then(() => {
+        settings.get('snap').then(value => {
+          expect(value).to.deep.equal('crackle');
           done();
         });
       });
     });
 
-    it('should set the entire settings object if not key path is given', done => {
-      settings.set({ foo: 'bar' }).then(() => {
-        settings.get().then(value => {
-          expect(value).to.deep.equal({ foo: 'bar' });
+    it('should overwrite a pre-existing value', done => {
+      settings.set('foo', 'qux').then(() => {
+        settings.get('foo').then(value => {
+          expect(value).to.deep.equal('qux');
           done();
         });
       });
@@ -164,68 +148,66 @@ describe('electron-settings', () => {
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.set();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is given but is not a string or object', () => {
+    it('should throw if key path is not a string', () => {
       expect(() => {
         settings.set(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is a string but no value is given', () => {
+    it('should throw if options is not an object', () => {
       expect(() => {
-        settings.set('foo');
-      }).to.throw(TypeError, /Expected value to exist/);
+        settings.set('foo', 'bar', false);
+      }).to.throw(/Options must be an object/);
     });
   });
 
   describe('setSync()', () => {
 
     it('should set the value at the chosen key path', () => {
-      settings.setSync('foo', 'bar');
+      settings.setSync('snap', 'crackle');
+
+      const value = settings.getSync('snap');
+
+      expect(value).to.deep.equal('crackle');
+    });
+
+    it('should overwrite a pre-existing value', () => {
+      settings.setSync('foo', 'qux');
 
       const value = settings.getSync('foo');
 
-      expect(value).to.deep.equal('bar');
-    });
-
-    it('should set the entire settings object if not key path is given', () => {
-      settings.setSync({ foo: 'bar' });
-
-      const value = settings.getSync();
-
-      expect(value).to.deep.equal({ foo: 'bar' });
+      expect(value).to.deep.equal('qux');
     });
 
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.setSync();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is given but is not a string or object', () => {
+    it('should throw if key path is not a string', () => {
       expect(() => {
         settings.setSync(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is a string but no value is given', () => {
+    it('should throw if options is not an object', () => {
       expect(() => {
-        settings.setSync('foo');
-      }).to.throw(TypeError, /Expected value to exist/);
+        settings.setSync('foo', 'bar', false);
+      }).to.throw(/Options must be an object/);
     });
   });
 
   describe('delete()', () => {
 
     it('should delete the value at the chosen key path', done => {
-      settings.set('foo', 'bar').then(() => {
-        settings.delete('foo').then(value => {
-          settings.get('foo').then(value => {
-            expect(value).to.be.undefined;
-            done();
-          });
+      settings.delete('foo').then(() => {
+        settings.get('foo').then(value => {
+          expect(value).to.be.undefined;
+          done();
         });
       });
     });
@@ -233,20 +215,25 @@ describe('electron-settings', () => {
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.delete();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is given but is not a string', () => {
+    it('should throw if key path is not a string', () => {
       expect(() => {
         settings.delete(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.delete('foo', false);
+      }).to.throw(/Options must be an object/);
     });
   });
 
   describe('deleteSync()', () => {
 
     it('should delete the value at the chosen key path', () => {
-      settings.setSync('foo', 'bar');
       settings.deleteSync('foo');
 
       const value = settings.getSync('foo');
@@ -257,162 +244,235 @@ describe('electron-settings', () => {
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.deleteSync();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should throw if key path is given but is not a string', () => {
+    it('should throw if key path not a string', () => {
       expect(() => {
         settings.deleteSync(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
-    });
-  });
-
-  describe('reset()', () => {
-
-    it('should reset the value at the given key path to its default value', done => {
-      settings.set('foo', 'baz').then(() => {
-        settings.reset('foo', { defaults: { foo: 'bar', snap: 'crackle' } }).then(() => {
-          settings.get('foo').then(value => {
-            expect(value).to.deep.equal('bar');
-            done();
-          });
-        });
-      });
+      }).to.throw(/Key path must be a string/);
     });
 
-    it('should reset the entire settings object to defaults', done => {
-      settings.set('foo', 'baz').then(() => {
-        settings.reset({ defaults: { foo: 'bar', snap: 'crackle' } }).then(() => {
-          settings.get().then(value => {
-            expect(value).to.deep.equal({ foo: 'bar', snap: 'crackle' });
-            done();
-          });
-        });
-      });
-    });
-
-    it('should throw if no key path is given', () => {
+    it('should throw if options is not an object', () => {
       expect(() => {
-        settings.reset();
-      }).to.throw(TypeError, /Expected key path to be a string/);
-    });
-
-    it('should throw if options.defaults is not an object', () => {
-      expect(() => {
-        settings.reset('foo', { defaults: false });
-      }).to.throw(TypeError, /Expected options\.defaults to be an object/);
-    });
-  });
-
-  describe('resetSync()', () => {
-
-    it('should reset the value at the given key path to its default value', () => {
-      settings.setSync('foo', 'baz');
-      settings.resetSync('foo', { defaults: { foo: 'bar', snap: 'crackle' } });
-
-      const value = settings.getSync('foo');
-
-      expect(value).to.deep.equal('bar');
-    });
-
-    it('should reset the entire settings object to defaults', () => {
-      settings.setSync('foo', 'baz');
-      settings.resetSync({ defaults: { foo: 'bar', snap: 'crackle' } });
-
-      const value = settings.getSync();
-
-      expect(value).to.deep.equal({ foo: 'bar', snap: 'crackle' });
-    });
-
-    it('should throw if no key path is given', () => {
-      expect(() => {
-        settings.resetSync();
-      }).to.throw(TypeError, /Expected key path to be a string/);
-    });
-
-    it('should throw if options.defaults is not an object', () => {
-      expect(() => {
-        settings.resetSync('foo', { defaults: false });
-      }).to.throw(TypeError, /Expected options\.defaults to be an object/);
+        settings.deleteSync('foo', false);
+      }).to.throw(/Options must be an object/);
     });
   });
 
   describe('clear()', () => {
 
     it('should clear the entire settings object', done => {
-      settings.set('foo', 'bar').then(() => {
-        settings.clear().then(() => {
-          settings.get().then(value => {
-            expect(value).to.be.empty;
-            done();
-          });
+      settings.clear().then(() => {
+        settings.get().then(value => {
+          expect(value).to.be.empty;
+          done();
         });
       });
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.clear(false);
+      }).to.throw(/Options must be an object/);
     });
   });
 
   describe('clearSync()', () => {
 
     it('should clear the entire settings object', () => {
-      settings.setSync('foo', 'bar');
       settings.clearSync();
 
       const value = settings.getSync();
 
       expect(value).to.be.empty;
     });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.clearSync(false);
+      }).to.throw(/Options must be an object/);
+    });
   });
 
-  describe('observer()', () => {
+  describe('defaults()', () => {
 
-    it('should observe the given key path', done => {
-      settings.set('foo', 'bar').then(() => {
-        const observer = settings.observe('foo', evt => {
-          expect(evt.oldValue).to.deep.equal('bar');
-          expect(evt.newValue).to.deep.equal('baz');
-          observer.dispose();
+    it('should set global defaults', done => {
+      settings.defaults({
+        snap: 'crackle'
+      });
+
+      settings.resetToDefaults().then(() => {
+        settings.get().then(obj => {
+          expect(obj).to.deep.equal({ snap: 'crackle' });
           done();
         });
-
-        settings.setSync('foo', 'baz');
       });
     });
 
-    it('should dispose the key path observer', done => {
-      settings.set('foo', 'bar').then(() => {
-        const observer = settings.observe('foo', evt => {
-          expect(evt).to.not.exist;
+    it('should throw if defaults is not an object', () => {
+      expect(() => {
+        settings.defaults(false);
+      }).to.throw(/Defaults must be an object/);
+    });
+  });
+
+  describe('applyDefaults()', () => {
+
+    it('should apply defaults', done => {
+      settings.defaults({
+        foo: 'qux',
+        snap: 'crackle'
+      });
+
+      settings.applyDefaults().then(() => {
+        settings.get().then(obj => {
+          expect(obj).to.deep.equal({ foo: 'bar', snap: 'crackle' });
+          done();
         });
+      });
+    });
 
+    it('should apply defaults and overwrite pre-existing values', done => {
+      settings.defaults({
+        foo: 'qux',
+        snap: 'crackle'
+      });
+
+      settings.applyDefaults({ overwrite: true }).then(() => {
+        settings.get().then(obj => {
+          expect(obj).to.deep.equal({ foo: 'qux', snap: 'crackle' });
+          done();
+        });
+      });
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.applyDefaults(false);
+      }).to.throw(/Options must be an object/);
+    });
+  });
+
+  describe('applyDefaultsSync()', () => {
+
+    it('should apply defaults', () => {
+      settings.defaults({
+        foo: 'qux',
+        snap: 'crackle'
+      });
+
+      settings.applyDefaultsSync();
+
+      const val = settings.getSync();
+
+      expect(val).to.deep.equal({ foo: 'bar', snap: 'crackle' });
+    });
+
+    it('should apply defaults and overwrite pre-existing values', () => {
+      settings.defaults({
+        foo: 'qux',
+        snap: 'crackle'
+      });
+
+      settings.applyDefaultsSync({ overwrite: true });
+
+      const val = settings.getSync();
+
+      expect(val).to.deep.equal({ foo: 'qux', snap: 'crackle' });
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.applyDefaults(false);
+      }).to.throw(/Options must be an object/);
+    });
+  });
+
+  describe('resetToDefaults()', () => {
+
+    it('should reset to defaults', done => {
+      settings.set('foo', 'qux').then(() => {
+        settings.resetToDefaults().then(() => {
+          settings.get().then(obj => {
+            expect(obj).to.deep.equal({ foo: 'bar' });
+            done();
+          });
+        });
+      });
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.resetToDefaults(false);
+      }).to.throw(/Options must be an object/);
+    });
+  });
+
+  describe('resetToDefaultsSync()', () => {
+
+    it('should reset to defaults', () => {
+      settings.setSync('foo', 'qux');
+      settings.resetToDefaultsSync();
+
+      const val = settings.getSync();
+
+      expect(val).to.deep.equal({ foo: 'bar' });
+    });
+
+    it('should throw if options is not an object', () => {
+      expect(() => {
+        settings.resetToDefaultsSync(false);
+      }).to.throw(/Options must be an object/);
+    });
+  });
+
+  describe('observe()', () => {
+
+    it('should observe the given key path', done => {
+      const observer = settings.observe('foo', evt => {
+        expect(evt.oldValue).to.deep.equal('bar');
+        expect(evt.newValue).to.deep.equal('qux');
         observer.dispose();
-        settings.setSync('foo', 'baz');
-
         done();
       });
+
+      settings.setSync('foo', 'qux');
+    });
+
+    it('should dispose the key path observer', done => {
+      const observer = settings.observe('foo', evt => {
+        expect(evt).to.not.exist;
+      });
+
+      observer.dispose();
+      settings.setSync('foo', 'baz');
+
+      done();
     });
 
     it('should throw if no key path is given', () => {
       expect(() => {
         settings.observe();
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
     it('should throw if key path is given but is not a string', () => {
       expect(() => {
         settings.observe(false);
-      }).to.throw(TypeError, /Expected key path to be a string/);
+      }).to.throw(/Key path must be a string/);
     });
 
     it('should throw if no handler is given', () => {
       expect(() => {
         settings.observe('foo');
-      }).to.throw(TypeError, /Expected handler to be an function/);
+      }).to.throw(/Handler must be a function/);
     });
 
     it('should throw if handler is given but is not a function', () => {
       expect(() => {
         settings.observe('foo', false);
-      }).to.throw(TypeError, /Expected handler to be an function/);
+      }).to.throw(/Handler must be a function/);
     });
   });
 
@@ -431,4 +491,5 @@ describe('electron-settings', () => {
       expect(settings.getSettingsFilePath()).to.be.a.string;
     });
   });
+
 });

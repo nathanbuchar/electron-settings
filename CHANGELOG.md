@@ -5,19 +5,33 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+2.1.0 - Aug. 2, 2016
+--------------------
+* Adds `defaults()`.
+* Adds `applyDefaults()` and `applyDefaultsSync()`.
+* Adds `resetToDefaults()` and `resetToDefaultsSync()`.
+* Adds `util.assert` for parameter checks.
+* Adds support for resetting the settings file if malformed JSON data is encountered.
+* Removes `reset()` and `resetSync()` (breaking).
+* Removes the option to omit the key path in `set()` and `setSync()`. A key path is now required (breaking).
+* Removes the option to specify default settings via `configure()`.
+* Fixes initial settings creation. Before it wouldn't apply default settings.
+* Fixes Changelog.
+* Updates Readme.
+
 2.0.2 - Jul. 31, 2016
 ---------------------
 * Fixes documentation links.
 * Fixes Changelog.
 
-2.0.1 - Jul. 21, 2016
+2.0.1 - Jul. 31, 2016
 ---------------------
 * Fixes documentation links.
 * Updates Changelog.
 * Updates .npmignore.
 * Removes .github folder.
 
-2.0.0 - Jul. 21, 2016
+2.0.0 - Jul. 31, 2016
 ---------------------
 * Adds `has()` method.
 * Adds `configure()` method.
