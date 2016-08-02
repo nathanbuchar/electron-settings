@@ -10,9 +10,6 @@ Methods
 * [`configure()`][method_configure]
 * [`defaults()`][method_defaults]
 * [`observe()`][method_observe]
-* [`getSettingsFilePath()`][method_get-settings-file-path]
-
-
 * [`has()`][method_has] [*sync*][method_has-sync]
 * [`get()`][method_get] [*sync*][method_get-sync]
 * [`set()`][method_set] [*sync*][method_set-sync]
@@ -20,6 +17,7 @@ Methods
 * [`clear()`][method_clear] [*sync*][method_clear-sync]
 * [`applyDefaults()`][method_apply-defaults] [*sync*][method_apply-defaults-sync]
 * [`resetToDefaults()`][method_reset-to-defaults] [*sync*][method_reset-to-defaults-sync]
+* [`getSettingsFilePath()`][method_get-settings-file-path]
 
 
 
@@ -139,28 +137,6 @@ const observer = settings.observe('foo' evt => {
 settings.set('foo', 'qux').then(() => {
   observer.dispose();
 });
-```
-
-
-***
-
-
-getSettingsFilePath()
-------------------------
-
-**`settings.getSettingsFilePath():string`**
-
-Returns the path to the config file. Typically found in your application's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
-
-  * `~/Library/Application Support/YourApp` on MacOS.
-  * `%APPDATA%/YourApp` on Windows.
-  * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
-
-**Examples**
-
-```js
-settings.getSettingsFilePath();
-// => /Users/You/Library/Application Support/YourApp/Settings
 ```
 
 
@@ -640,6 +616,28 @@ resetToDefaultsSync()
 **`settings.resetToDefaultsSync([options])`**
 
 The synchronous version of [`resetToDefaults()`][method_reset-to-defaults].
+
+
+***
+
+
+getSettingsFilePath()
+------------------------
+
+**`settings.getSettingsFilePath():string`**
+
+Returns the path to the config file. Typically found in your application's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
+
+  * `~/Library/Application Support/YourApp` on MacOS.
+  * `%APPDATA%/YourApp` on Windows.
+  * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
+
+**Examples**
+
+```js
+settings.getSettingsFilePath();
+// => /Users/You/Library/Application Support/YourApp/Settings
+```
 
 
 ***
