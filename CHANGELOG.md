@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Adds `applyDefaults()` and `applyDefaultsSync()`.
 * Adds `resetToDefaults()` and `resetToDefaultsSync()`.
 * Adds `util.assert` for parameter checks.
+* Adds support for resetting the settings file if malformed JSON data is encountered.
 * Removes `reset()` and `resetSync()` (breaking).
 * Removes the option to omit the key path in `set()` and `setSync()`. A key path is now required (breaking).
 * Removes the option to specify default settings via `configure()`.
