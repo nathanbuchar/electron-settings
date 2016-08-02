@@ -3,7 +3,7 @@ electron-settings
 
 A simple persistent user settings manager for [Electron][external_electron]. Originally adapted from [Atom's own configuration manager][external_atom-config], electron-settings allows you to save user settings to the disk so that they can be loaded in the next time your app starts.
 
-Also, you can [observe key paths][method_observe] and get notified if their values change. So that's pretty neat.
+Also, you can [observe key paths][method_observe] and get notified if their value changes. So that's pretty neat.
 
 **Note:** v2 is not compatible with earlier versions of electron-settings.
 
@@ -36,28 +36,34 @@ settings.set('name', {
   first: 'Cosmo',
   last: 'Kramer'
 }).then(() => {
-  settings.getSync('name.first');
-  // => "Cosmo"
+  settings.get('name.first').then(val => {
+    // => "Cosmo"
+  });
 });
 
 settings.getSettingsFilePath();
 // => /Users/You/Library/Application Support/YourApp/Settings
 ```
 
-Key Path Observers
-------------------
-electron-settings allows you to subscribe to key paths and get notified if their value changes. For more information and examples, take a look at [the docs][method_observe].
+
+Default Settings
+----------------
+
+You can configure default settings by using [`settings.defaults()`][method_defaults]. This will set the defaults object globally. If this is the first time the settings file is being accessed, the defaults will be applied automatically.
 
 ```js
-settings.setSync('foo.bar', 'baz');
-
-settings.observe('foo.bar', evt => {
-  console.log(evt.oldValue); // => 'baz'
-  console.log(evt.newValue); // => 'qux'
+settings.defaults({
+  foo: 'bar'
 });
 
-settings.setSync('foo.bar', 'qux');
+settings.get('foo').then(val => {
+  // => 'bar'
+});
 ```
+
+Additionally, you can use [`applyDefaults()`][method_apply-defaults] or [`resetToDefaults()`][method_reset-to-defaults] to fit your needs.
+
+
 
 FAQ
 ---
@@ -76,6 +82,16 @@ FAQ
   }
   ```
 
+* **Where is the settings file saved?**
+
+  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
+
+    * `~/Library/Application Support/YourApp` on MacOS.
+    * `%APPDATA%/YourApp` on Windows.
+    * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
+
+  You can use [`getSettingsFilePath()`][method_get-settings-file-path] to get the full path to the settings file.
+
 * **Can I use electron-settings in both the main and renderer processes?**
 
   Yes! Just be aware that if the window closes during an async operation, data may be lost.
@@ -88,15 +104,10 @@ FAQ
 
   electron-settings reads and writes to the file system asynchronously. In order to ensure data integrity, you should use promises. Alternatively, all methods have a synchronous counterpart that you may use instead.
 
-* **Where is the settings file saved?**
 
-  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
 
-    * `~/Library/Application Support/YourApp` on MacOS.
-    * `%APPDATA%/YourApp` on Windows.
-    * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
+***
 
-  You can use [`getSettingsFilePath()`][method_getSettingsFilePath] to get the full path to the settings file.
 
 
 Documentation
@@ -118,7 +129,7 @@ License
 
 
 ***
-<small>Last updated **Jul. 31st, 2016** by [Nathan Buchar].</small>
+<small>Last updated **Aug. 2nd, 2016** by [Nathan Buchar].</small>
 
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
@@ -133,6 +144,7 @@ License
 
 [section_install]: #install
 [section_quick-start]: #quick-start
+[section_default-settings]: #default-settings
 [section_faq]: #faq
 [section_documentation]: #documentation
 [section_contributors]: #contributors
@@ -141,8 +153,10 @@ License
 [docs_events]: ./docs/events.md
 [docs_methods]: ./docs/methods.md
 
-[method_observe]: ./docs/methods.md#observe
-[method_getSettingsFilePath]: ./docs/methods.md#getsettingsfilepath
+[method_get-settings-file-path]: ./docs/methods.md#getsettingsfilepath
+[method_defaults]: ./docs/methods.md#defaults
+[method_apply-defaults]: ./docs/methods.md#applydefaults
+[method_reset-to-defaults]: ./docs/methods.md#resettodefaults
 
 [external_electron]: https://electron.atom.com
 [external_atom-config]: https://github.com/atom/atom/blob/master/src/config.coffee
