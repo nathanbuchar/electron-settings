@@ -8,7 +8,7 @@ Also, you can [observe key paths][method_observe] and get notified if their valu
 **Note:** v2 is not compatible with earlier versions of electron-settings.
 
 [![npm version](https://badge.fury.io/js/electron-settings.svg)](http://badge.fury.io/js/electron-settings)
-[![dependencies](https://david-dm.org/nathanbuchar/electron-settings.svg)](https://david-dm.org/nathanbuchar/electron-settings.svg)
+[![dependencies](https://david-dm.org/nathanbuchar/electron-settings.svg)](https://david-dm.org/nathanbuchar/electron-settings)
 [![Build Status](https://travis-ci.org/nathanbuchar/electron-settings.svg?branch=master)](https://travis-ci.org/nathanbuchar/electron-settings)
 [![Join the chat at https://gitter.im/nathanbuchar/electron-settings](https://badges.gitter.im/nathanbuchar/electron-settings.svg)](https://gitter.im/nathanbuchar/electron-settings?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
@@ -82,16 +82,6 @@ FAQ
   }
   ```
 
-* **Where is the settings file saved?**
-
-  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
-
-    * `~/Library/Application Support/YourApp` on MacOS.
-    * `%APPDATA%/YourApp` on Windows.
-    * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
-
-  You can use [`getSettingsFilePath()`][method_get-settings-file-path] to get the full path to the settings file.
-
 * **Can I use electron-settings in both the main and renderer processes?**
 
   Yes! Just be aware that if the window closes during an async operation, data may be lost.
@@ -103,6 +93,16 @@ FAQ
 * **Why do I have to use promises?**
 
   electron-settings reads and writes to the file system asynchronously. In order to ensure data integrity, you should use promises. Alternatively, all methods have a synchronous counterpart that you may use instead.
+
+* **Where is the settings file saved?**
+
+  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
+
+    * `~/Library/Application Support/YourApp` on MacOS.
+    * `%APPDATA%/YourApp` on Windows.
+    * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
+
+  You can use [`getSettingsFilePath()`][method_get-settings-file-path] to get the full path to the settings file.
 
 
 

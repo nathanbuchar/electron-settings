@@ -115,7 +115,7 @@ Given:
 
 Observe `"foo"`.
 ```js
-settings.observe('foo' evt => {
+settings.observe('foo', evt => {
   // => {
   //   oldValue: 'bar',
   //   newValue: 'qux'
@@ -127,7 +127,7 @@ settings.set('foo', 'qux');
 
 Dispose the key path observer.
 ```js
-const observer = settings.observe('foo' evt => {
+const observer = settings.observe('foo', evt => {
   // => {
   //   oldValue: 'bar',
   //   newValue: 'qux'
@@ -514,7 +514,7 @@ settings.getSync('user.age');
 // => undefined
 
 settings.applyDefaults().then(() => {
-  settings.getSync().then(obj => {
+  settings.get().then(obj => {
     // => {
     //   user: {
     //     age: 'unknown',
@@ -535,7 +535,7 @@ settings.getSync('user.age');
 // => undefined
 
 settings.applyDefaults({ overwrite: true }).then(() => {
-  settings.getSync().then(obj => {
+  settings.get().then(obj => {
     // => {
     //   user: {
     //     age: 'unknown',

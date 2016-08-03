@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+2.1.1 - Aug. 3, 2016
+--------------------
+* Fixes syntax errors in README docs.
+* Updates outdated dependencies.
+
 2.1.0 - Aug. 2, 2016
 --------------------
 * Adds `defaults()`.
