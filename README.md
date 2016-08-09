@@ -154,6 +154,7 @@ License
 [docs_methods]: ./docs/methods.md
 
 [method_get-settings-file-path]: ./docs/methods.md#getsettingsfilepath
+[method_observe]: ./docs/methods.md#observe
 [method_defaults]: ./docs/methods.md#defaults
 [method_apply-defaults]: ./docs/methods.md#applydefaults
 [method_reset-to-defaults]: ./docs/methods.md#resettodefaults
