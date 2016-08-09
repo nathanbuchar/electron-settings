@@ -127,10 +127,48 @@ describe('electron-settings', () => {
 
   describe('set()', () => {
 
-    it('should set the value at the chosen key path', done => {
+    it('should set the value at the chosen key path to a string', done => {
       settings.set('snap', 'crackle').then(() => {
         settings.get('snap').then(value => {
           expect(value).to.deep.equal('crackle');
+          done();
+        });
+      });
+    });
+
+    it('should set the value at the chosen key path to a number', done => {
+      settings.set('snap', 10).then(() => {
+        settings.get('snap').then(value => {
+          expect(value).to.deep.equal(10);
+          done();
+        });
+      });
+    });
+
+    it('should set the value at the chosen key path to a boolean', done => {
+      settings.set('snap', false).then(() => {
+        settings.get('snap').then(value => {
+          expect(value).to.deep.equal(false);
+          done();
+        });
+      });
+    });
+
+    it('should set the value at the chosen key path to an object', done => {
+      settings.set('snap', {
+        foo: 'bar'
+      }).then(() => {
+        settings.get('snap').then(value => {
+          expect(value).to.deep.equal({ foo: 'bar' });
+          done();
+        });
+      });
+    });
+
+    it('should set the value at the chosen key path to null', done => {
+      settings.set('snap', null).then(() => {
+        settings.get('snap').then(value => {
+          expect(value).to.deep.equal(null);
           done();
         });
       });
@@ -166,12 +204,44 @@ describe('electron-settings', () => {
 
   describe('setSync()', () => {
 
-    it('should set the value at the chosen key path', () => {
+    it('should set the value at the chosen key path to a string', () => {
       settings.setSync('snap', 'crackle');
 
       const value = settings.getSync('snap');
 
       expect(value).to.deep.equal('crackle');
+    });
+
+    it('should set the value at the chosen key path to a number', () => {
+      settings.setSync('snap', 10);
+
+      const value = settings.getSync('snap');
+
+      expect(value).to.deep.equal(10);
+    });
+
+    it('should set the value at the chosen key path to a boolean', () => {
+      settings.setSync('snap', false);
+
+      const value = settings.getSync('snap');
+
+      expect(value).to.deep.equal(false);
+    });
+
+    it('should set the value at the chosen key path to an object', () => {
+      settings.setSync('snap', { foo: 'bar' });
+
+      const value = settings.getSync('snap');
+
+      expect(value).to.deep.equal({ foo: 'bar' });
+    });
+
+    it('should set the value at the chosen key path to null', () => {
+      settings.setSync('snap', null);
+
+      const value = settings.getSync('snap');
+
+      expect(value).to.deep.equal(null);
     });
 
     it('should overwrite a pre-existing value', () => {
