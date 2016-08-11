@@ -3,7 +3,6 @@
 .build
 .cache
 .env
-.gitconfig
 .jsdoc
 .sass-cache
 .tmp
