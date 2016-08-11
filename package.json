@@ -52,8 +52,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "electron-mocha": "^2.3.0",
+    "electron-mocha": "^3.0.0",
     "electron-prebuilt": "^1.2.6",
-    "mocha": "^2.5.3"
+    "mocha": "^3.0.2"
   }
 }
