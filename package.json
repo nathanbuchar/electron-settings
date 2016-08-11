@@ -4,7 +4,9 @@
   "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
-    "test": "electron-mocha test && electron-mocha --renderer test"
+    "test": "npm run test:main && npm run test:renderer",
+    "test:main": "electron-mocha test",
+    "test:renderer": "electron-mocha --renderer test"
   },
   "keywords": [
     "electron",
