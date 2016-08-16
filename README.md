@@ -37,6 +37,7 @@ settings.set('name', {
   last: 'Kramer'
 }).then(() => {
   settings.get('name.first').then(val => {
+    console.log(val);
     // => "Cosmo"
   });
 });
@@ -57,6 +58,7 @@ settings.defaults({
 });
 
 settings.get('foo').then(val => {
+  console.log(val);
   // => 'bar'
 });
 ```
@@ -129,7 +131,7 @@ License
 
 
 ***
-<small>Last updated **Aug. 2nd, 2016** by [Nathan Buchar].</small>
+<small>Last updated **Aug. 16th, 2016** by [Nathan Buchar].</small>
 
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
