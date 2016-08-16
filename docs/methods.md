@@ -9,7 +9,6 @@ Methods
 
 * [`configure()`][method_configure]
 * [`defaults()`][method_defaults]
-* [`observe()`][method_observe]
 * [`has()`][method_has] [*sync*][method_has-sync]
 * [`get()`][method_get] [*sync*][method_get-sync]
 * [`set()`][method_set] [*sync*][method_set-sync]
@@ -17,6 +16,7 @@ Methods
 * [`clear()`][method_clear] [*sync*][method_clear-sync]
 * [`applyDefaults()`][method_apply-defaults] [*sync*][method_apply-defaults-sync]
 * [`resetToDefaults()`][method_reset-to-defaults] [*sync*][method_reset-to-defaults-sync]
+* [`observe()`][method_observe]
 * [`getSettingsFilePath()`][method_get-settings-file-path]
 
 
@@ -81,61 +81,8 @@ settings.defaults({
 });
 
 settings.get('name.first').then(val => {
+  console.log(val);
   // => Joe
-});
-```
-
-
-***
-
-
-observe()
----------
-
-**`settings.observe(keyPath, handler):Function`**
-
-Observes the chosen key path for changes and calls the handler if the value changes. Returns an Observer instance which has a `dispose` method. To unsubscribe, simply call `dispose()` on the returned key path observer.
-
-**Arguments**
-
-  * **`keyPath`** *String* - The path to the key that we wish to observe.
-  * **`handler`** *Function* - The callback that will be invoked if the value at the chosen key path changes. Returns:
-    * `evt` *Object*
-      * `oldValue` *Any*
-      * `newValue` *Any*
-
-**Examples**
-
-Given:
-```json
-{
-  "foo": "bar"
-}
-```
-
-Observe `"foo"`.
-```js
-settings.observe('foo', evt => {
-  // => {
-  //   oldValue: 'bar',
-  //   newValue: 'qux'
-  // }
-});
-
-settings.set('foo', 'qux');
-```
-
-Dispose the key path observer.
-```js
-const observer = settings.observe('foo', evt => {
-  // => {
-  //   oldValue: 'bar',
-  //   newValue: 'qux'
-  // }
-});
-
-settings.set('foo', 'qux').then(() => {
-  observer.dispose();
 });
 ```
 
@@ -168,6 +115,7 @@ Given:
 Check if `"foo.bar"` exists.
 ```js
 settings.has('foo.bar').then(exists => {
+  console.log(exists);
   // => true
 });
 ```
@@ -175,6 +123,7 @@ settings.has('foo.bar').then(exists => {
 Check if `"grizzknuckle"` exists.
 ```js
 settings.has('grizzknuckle').then(exists => {
+  console.log(exists);
   // => false
 });
 ```
@@ -241,21 +190,24 @@ Given:
 
 Get all settings.
 ```js
-settings.get().then(value => {
+settings.get().then(val => {
+  console.log(val);
   // => { foo: { bar: 'baz' } }
 });
 ```
 
 Get the value at `"foo.bar"`.
 ```js
-settings.get('foo.bar').then(value => {
+settings.get('foo.bar').then(val => {
+  console.log(val);
   // => 'baz'
 });
 ```
 
 Get the value at `"snap"`.
 ```js
-settings.get('snap').then(value => {
+settings.get('snap').then(val => {
+  console.log(val);
   // => undefined
 });
 ```
@@ -330,7 +282,8 @@ settings.set('user.name', {
   first: 'Cosmo',
   last: 'Kramer'
 }).then(() => {
-  settings.get('user.name.first').then(value => {
+  settings.get('user.name.first').then(val => {
+    console.log(val);
     // => 'Cosmo'
   });
 });
@@ -397,7 +350,8 @@ Given:
 Delete `"foo.bar"`.
 ```js
 settings.delete('foo.bar').then(() => {
-  settings.get('foo').then(value => {
+  settings.get('foo').then(val => {
+    console.log(val);
     // => { foo: {} }
   });
 });
@@ -445,7 +399,8 @@ Given:
 Clear all settings.
 ```js
 settings.clear(() => {
-  settings.get(value => {
+  settings.get(val => {
+    console.log(val);
     // => {}
   });
 });
@@ -515,6 +470,7 @@ settings.getSync('user.age');
 
 settings.applyDefaults().then(() => {
   settings.get().then(obj => {
+    console.log(obj);
     // => {
     //   user: {
     //     age: 'unknown',
@@ -536,6 +492,7 @@ settings.getSync('user.age');
 
 settings.applyDefaults({ overwrite: true }).then(() => {
   settings.get().then(obj => {
+    console.log(obj);
     // => {
     //   user: {
     //     age: 'unknown',
@@ -599,6 +556,7 @@ Reset to defaults.
 ```js
 settings.resetToDefaults().then(() => {
   settings.get().then(obj => {
+    console.log(obj);
     // => {
     //  foo: 'bar'
     // }
@@ -616,6 +574,62 @@ resetToDefaultsSync()
 **`settings.resetToDefaultsSync([options])`**
 
 The synchronous version of [`resetToDefaults()`][method_reset-to-defaults].
+
+
+***
+
+
+observe()
+---------
+
+**`settings.observe(keyPath, handler):Function`**
+
+Observes the chosen key path for changes and calls the handler if the value changes. Returns an Observer instance which has a `dispose` method. To unsubscribe, simply call `dispose()` on the returned key path observer.
+
+**Arguments**
+
+  * **`keyPath`** *String* - The path to the key that we wish to observe.
+  * **`handler`** *Function* - The callback that will be invoked if the value at the chosen key path changes. Returns:
+    * `evt` *Object*
+      * `oldValue` *Any*
+      * `newValue` *Any*
+
+**Examples**
+
+Given:
+```json
+{
+  "foo": "bar"
+}
+```
+
+Observe `"foo"`.
+```js
+settings.observe('foo', evt => {
+  console.log(evt);
+  // => {
+  //   oldValue: 'bar',
+  //   newValue: 'qux'
+  // }
+});
+
+settings.set('foo', 'qux');
+```
+
+Dispose the key path observer.
+```js
+const observer = settings.observe('foo', evt => {
+  console.log(evt);
+  // => {
+  //   oldValue: 'bar',
+  //   newValue: 'qux'
+  // }
+});
+
+settings.set('foo', 'qux').then(() => {
+  observer.dispose();
+});
+```
 
 
 ***
@@ -641,7 +655,7 @@ settings.getSettingsFilePath();
 
 
 ***
-<small>Last updated **Aug. 2nd, 2016** by [Nathan Buchar].</small>
+<small>Last updated **Aug. 16th, 2016** by [Nathan Buchar].</small>
 
 <small>**Having trouble?** [Get help on Gitter](https://gitter.im/nathanbuchar/electron-settings).</small>
 
