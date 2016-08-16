@@ -13,6 +13,14 @@ const should = chai.should();
 describe('electron-settings', () => {
 
   beforeEach('configure electron-settings', () => {
+    settings.configure({
+      atomicSaving: false,
+      prettify: false,
+      overwrite: false
+    });
+  });
+
+  beforeEach('set electron-settings defaults', () => {
     settings.defaults({
       foo: 'bar'
     });
@@ -104,6 +112,17 @@ describe('electron-settings', () => {
           done();
         });
       });
+
+      it('should reset the settings file if the data is malformed', done => {
+        const pathToSettings = settings.getSettingsFilePath();
+
+        fs.outputFileSync(pathToSettings, 'not valid json');
+
+        settings.get().then(value => {
+          expect(value).to.deep.equal({ foo: 'bar' });
+          done();
+        });
+      });
     });
 
     describe('getSync()', () => {
@@ -129,8 +148,17 @@ describe('electron-settings', () => {
 
     describe('set()', () => {
 
-      it('should set the value at the chosen key path to a string', done => {
+      it('should set the value at the chosen key path to a string (atomic)', done => {
         settings.set('snap', 'crackle').then(() => {
+          settings.get('snap').then(value => {
+            expect(value).to.deep.equal('crackle');
+            done();
+          });
+        });
+      });
+
+      it('should set the value at the chosen key path to a string (non-atomic)', done => {
+        settings.set('snap', 'crackle', { atomicSaving: false }).then(() => {
           settings.get('snap').then(value => {
             expect(value).to.deep.equal('crackle');
             done();
@@ -206,8 +234,16 @@ describe('electron-settings', () => {
 
     describe('setSync()', () => {
 
-      it('should set the value at the chosen key path to a string', () => {
+      it('should set the value at the chosen key path to a string (atomic)', () => {
         settings.setSync('snap', 'crackle');
+
+        const value = settings.getSync('snap');
+
+        expect(value).to.deep.equal('crackle');
+      });
+
+      it('should set the value at the chosen key path to a string (non-atomic)', () => {
+        settings.setSync('snap', 'crackle', { atomicSaving: false });
 
         const value = settings.getSync('snap');
 
@@ -594,7 +630,7 @@ describe('electron-settings', () => {
         };
 
         settings.on('write', handler);
-        settings.setSync('foo', 'bar');
+        settings.set('foo', 'bar');
       });
 
       it('should emit when the settings file is written to from an external source', done => {
@@ -606,7 +642,7 @@ describe('electron-settings', () => {
 
         settings.on('write', handler);
 
-        fs.outputJsonSync(pathToSettings, { foo: 'bar '});
+        fs.outputJsonSync(pathToSettings, { foo: 'bar' });
       });
     });
   });

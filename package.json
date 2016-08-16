@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run test:main && npm run test:renderer",
     "test:main": "electron-mocha test",
-    "test:renderer": "electron-mocha --renderer test"
+    "test:renderer": "electron-mocha test --renderer"
   },
   "keywords": [
     "electron",
