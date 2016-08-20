@@ -516,7 +516,7 @@ applyDefaultsSync()
 
 **`settings.applyDefaultsSync([options])`**
 
-The synchronous version of [`applyDefaults()`][method_apply-defaults]
+The synchronous version of [`applyDefaults()`][method_apply-defaults].
 
 
 ***
