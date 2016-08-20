@@ -1,17 +1,7 @@
 .DS_Store
 .atomignore
-.build
-.cache
 .env
-.jsdoc
-.sass-cache
-.tmp
 
 *~
-*.bak
-*.log
-*.orig
-*.sketch
-*.zip
 
 node_modules

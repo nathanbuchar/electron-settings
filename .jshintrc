@@ -1,8 +1,9 @@
 {
-  "esnext": true,
+  "esversion": 6,
   "node": true,
   "expr": true,
   "curly": true,
   "strict": true,
-  "browserify": true
+  "browser": false,
+  "eqeqeq": true
 }
