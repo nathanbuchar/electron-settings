@@ -5,6 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+2.2.0 - Aug. 31, 2016
+---------------------
+* Improved internal debugger.
+* Adds tests to test non-atomic saving.
+* Adds tests for the `create` and `write` events.
+* Add FSWatcher to trigger write events if the settings file is changed externally.
+* Adds `options.settingsDir` and `options.settingsFileName` (needs tests).
+* Updates dev dependencies.
+
 2.1.1 - Aug. 3, 2016
 --------------------
 * Fixes syntax errors in README docs.

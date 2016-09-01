@@ -1,10 +1,12 @@
 {
   "name": "electron-settings",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
-    "test": "electron-mocha test && electron-mocha --renderer test"
+    "test": "npm run test:main && npm run test:renderer",
+    "test:main": "electron-mocha test",
+    "test:renderer": "electron-mocha test --renderer"
   },
   "keywords": [
     "electron",
@@ -52,8 +54,8 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "electron-mocha": "^2.3.0",
+    "electron-mocha": "^3.0.0",
     "electron-prebuilt": "^1.2.6",
-    "mocha": "^2.5.3"
+    "mocha": "^3.0.2"
   }
 }

@@ -37,6 +37,7 @@ settings.set('name', {
   last: 'Kramer'
 }).then(() => {
   settings.get('name.first').then(val => {
+    console.log(val);
     // => "Cosmo"
   });
 });
@@ -57,6 +58,7 @@ settings.defaults({
 });
 
 settings.get('foo').then(val => {
+  console.log(val);
   // => 'bar'
 });
 ```
@@ -129,7 +131,7 @@ License
 
 
 ***
-<small>Last updated **Aug. 2nd, 2016** by [Nathan Buchar].</small>
+<small>Last updated **Aug. 16th, 2016** by [Nathan Buchar].</small>
 
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
@@ -154,6 +156,7 @@ License
 [docs_methods]: ./docs/methods.md
 
 [method_get-settings-file-path]: ./docs/methods.md#getsettingsfilepath
+[method_observe]: ./docs/methods.md#observe
 [method_defaults]: ./docs/methods.md#defaults
 [method_apply-defaults]: ./docs/methods.md#applydefaults
 [method_reset-to-defaults]: ./docs/methods.md#resettodefaults
