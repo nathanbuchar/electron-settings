@@ -415,7 +415,7 @@ clearSync()
 
 **`settings.clearSync([options])`**
 
-The asynchronous verison of [`clear()`][method_clear].
+The synchronous verison of [`clear()`][method_clear].
 
 
 ***
