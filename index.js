@@ -8,7 +8,7 @@
  *
  * NOTE: v2 is not compatible with earlier versions of electron-settings.
  *
- * @version 2.0.0
+ * @version 2.2.1
  * @author Nathan Buchar
  * @copyright 2016 Nathan Buchar <hello@nathanbuchar.com>
  * @license ISC
