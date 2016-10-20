@@ -4,5 +4,6 @@
   "disallowEmptyBlocks": false,
   "disallowTrailingComma": true,
   "requireTrailingComma": false,
-  "requireShorthandArrowFunctions": false
+  "requireShorthandArrowFunctions": false,
+  "requirePaddingNewLinesAfterBlocks": false
 }
