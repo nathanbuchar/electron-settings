@@ -5,8 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
-2.2.0 - UNRELEASED
-------------------
+2.2.0 - Aug. 31, 2016
+---------------------
 * Improved internal debugger.
 * Adds tests to test non-atomic saving.
 * Adds tests for the `create` and `write` events.
