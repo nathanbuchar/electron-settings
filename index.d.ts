@@ -1,4 +1,4 @@
-import EventEmitter from 'events'
+import {EventEmitter} from 'events'
 
 declare module 'electron-settings' {
   interface ElectronSettingsOptions {
