@@ -582,6 +582,20 @@ describe('electron-settings', () => {
           settings.observe('foo', false);
         }).to.throw(/Handler must be a function/);
       });
+
+      it('should observe changes if updated on another (atomic) thread', done => {
+        const pathToSettings = settings.getSettingsFilePath();
+        const tmpFilePath = `${pathToSettings}-tmp`;
+
+        const observer = settings.observe('foo', ({newValue, oldValue}) => {
+          expect(newValue).to.deep.equal('barUpdated');
+          observer.dispose();
+          done();
+        });
+
+        fs.outputFileSync(tmpFilePath, '{ "foo": "barUpdated" }');
+        fs.renameSync(tmpFilePath, pathToSettings);
+      });
     });
 
     describe('configure()', () => {
