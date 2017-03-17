@@ -1,7 +1,7 @@
 electron-settings
 =================
 
-**:warning: Sorry, project no longer in active development. Try [electron-json-storage](https://www.npmjs.com/package/electron-json-storage) :warning:**
+**:warning: Sorry, project not currently in active development. Try [electron-json-storage](https://www.npmjs.com/package/electron-json-storage) :warning:**
 
 ***
 
