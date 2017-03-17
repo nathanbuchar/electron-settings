@@ -1,6 +1,10 @@
 electron-settings
 =================
 
+**:warning: Sorry, project no longer in active development. Try [electron-json-storage](https://www.npmjs.com/package/electron-json-storage) :warning:**
+
+***
+
 A simple persistent user settings manager for [Electron][external_electron]. Originally adapted from [Atom's own configuration manager][external_atom-config], electron-settings allows you to save user settings to the disk so that they can be loaded in the next time your app starts.
 
 Also, you can [observe key paths][method_observe] and get notified if their value changes. So that's pretty neat.
