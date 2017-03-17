@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
