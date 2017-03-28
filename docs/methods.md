@@ -36,6 +36,8 @@ Globally configures default options.
 * **`options`** *Object*
   * `atomicSaving` *Boolean* (optional) - Whether electron-settings should create a tmp file during save to ensure data-write consistency. Defaults to `true`.
   * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
+  * `settingsDir` *String* (optional) - Directory to store settings file in. Defaults to `electron.app.getPath('userData')` (read at import-time)
+  * `settingsFileName` *String* (optional) - Name of the settings file. Defaults to `Settings`
 
 
 **Examples**
