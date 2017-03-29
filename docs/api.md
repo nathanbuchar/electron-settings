@@ -63,7 +63,7 @@ Methods
 
     **`settings.get(keyPath[, defaultValue]):any`**
 
-    Returns the value at the given key path, or sets the value at that key path to the default value, if provided, if the key does not exist. See also: [`getAll()`][api_method_get-all].
+    Returns the value at the given key path, or sets the value at that key path to the default value, if provided, if the key does not exist. See also: [`getAll()`][method_get-all].
 
     ***
 
@@ -114,7 +114,7 @@ Methods
 
     **`settings.getAll():Object`**
 
-    Returns all settings. See also: [`get()`][api_method_get].
+    Returns all settings. See also: [`get()`][method_get].
 
     ***
 
@@ -140,7 +140,7 @@ Methods
 
     **`settings.set(keyPath, value[, options])`**
 
-    Sets the value at the given key path. See also: [`setAll()`][api_method_set-all].
+    Sets the value at the given key path. See also: [`setAll()`][method_set-all].
 
     ***
 
@@ -185,7 +185,7 @@ Methods
 
     **`settings.setAll(obj[, options])`**
 
-    Sets all settings. See also: [`set()`][api_method_set].
+    Sets all settings. See also: [`set()`][method_set].
 
     ***
 
@@ -221,7 +221,7 @@ Methods
 
     **`settings.delete(keyPath[, options])`**
 
-    Deletes the key and value at the given key path. See also: [`deleteAll()`][api_method_delete-all].
+    Deletes the key and value at the given key path. See also: [`deleteAll()`][method_delete-all].
 
     ***
 
@@ -257,7 +257,7 @@ Methods
 
     **`settings.deleteAll([options])`**
 
-    Deletes all settings. See also: [`delete()`][api_method_delete].
+    Deletes all settings. See also: [`delete()`][method_delete].
 
     ***
 
