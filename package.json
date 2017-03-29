@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
@@ -35,12 +35,15 @@
   "dependencies": {
     "clone": "^2.1.1",
     "deep-equal": "^1.0.1",
+    "electron": "^1.0.0",
     "fs-extra": "^2.1.2"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
     "electron-mocha": "^3.4.0",
     "electron-prebuilt": "^1.4.13",
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb-base": "^11.1.2",
+    "eslint-plugin-import": "^2.2.0",
     "mocha": "^3.2.0"
   }
 }

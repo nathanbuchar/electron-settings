@@ -45,9 +45,6 @@ settings.has('name.middle');
 ```
 
 
-***
-
-
 FAQs
 ----
 A list of frequently asked questions can be found [here][docs_faq].
@@ -56,21 +53,7 @@ A list of frequently asked questions can be found [here][docs_faq].
 API
 ---
 
-The API docs can be found [here][docs_api]. Or, if you're know what you're looking for…
-
-* [`has()`][api_method_has]
-* [`get()`][api_method_get]
-* [`getAll()`][api_method_get-all]
-* [`set()`][api_method_set]
-* [`setAll()`][api_method_set-all]
-* [`delete()`][api_method_delete]
-* [`deleteAll()`][api_method_delete-all]
-* [`watch()`][api_method_watch]
-
-
-Authors
--------
-* [Nathan Buchar] (Owner)
+The API docs can be found [here][docs_api].
 
 
 License

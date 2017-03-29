@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+v3.0.3 - Mar. 29, 2017
+----------------------
+* Update source code and tests to be compliant with all ESlint rules. ([`9cee966`](https://github.com/nathanbuchar/electron-settings/commit/9cee9667cce71a914d8d0b3e52227fc1c27cb4af), [`75aad3d`](https://github.com/nathanbuchar/electron-settings/commit/75aad3d9c61c15db9088542d8a20251d6e2f4e6b))
+* Remove Chai in lieu of Node's native `assert` module ([`75aad3d`](https://github.com/nathanbuchar/electron-settings/commit/75aad3d9c61c15db9088542d8a20251d6e2f4e6b))
+
 v3.0.2 - Mar. 28, 2017
 ----------------------
 * Updated README and extracted API docs and FAQs into their own files. This is to encourage users on npm to visit GitHub as well as simplify the README as a whole. ([`7df95ee`](https://github.com/nathanbuchar/electron-settings/commit/7df95ee830ae932cadf72878e7d701e2ceab13ff))
