@@ -7,28 +7,148 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const settings = require('../');
+const helpers = require('../lib/settings-helpers');
 const expect = chai.expect;
 const should = chai.should();
 
-describe('electron-settings', () => {
+describe('settings-helpers', () => {
 
-  beforeEach('configure electron-settings', () => {
-    settings.configure({
-      atomicSaving: false,
-      prettify: false,
-      overwrite: false
+  describe('hasKeyPath()', () => {
+
+    it('should return true if the simple key path exists', () => {
+      const obj = { foo: 'bar' };
+      const keyPathExists = helpers.hasKeyPath(obj, 'foo');
+
+      expect(keyPathExists).to.be.true;
+    });
+
+    it('should return false if the simple key path does not exist', () => {
+      const obj = { foo: 'bar' };
+      const keyPathExists = helpers.hasKeyPath(obj, 'qux');
+
+      expect(keyPathExists).to.be.false;
+    });
+
+    it('should return true if the complex key path exists', () => {
+      const obj = { foo: { bar: 'baz' } };
+      const keyPathExists = helpers.hasKeyPath(obj, 'foo.bar');
+
+      expect(keyPathExists).to.be.true;
+    });
+
+    it('should return false if the complex key path does not exist', () => {
+      const obj = { foo: { bar: 'baz' } };
+      const keyPathExists = helpers.hasKeyPath(obj, 'foo.bar.qux');
+
+      expect(keyPathExists).to.be.false;
     });
   });
 
-  beforeEach('set electron-settings defaults', () => {
-    settings.defaults({
-      foo: 'bar'
+  describe('getValueAtKeyPath()', () => {
+
+    it('should return the value at the given simple key path', () => {
+      const obj = { foo: 'bar' };
+      const value = helpers.getValueAtKeyPath(obj, 'foo');
+
+      expect(value).to.deep.equal(obj.foo);
+    });
+
+    it('should return undefined if the value at the given simple key path does not exist', () => {
+      const obj = { foo: 'bar' };
+      const value = helpers.getValueAtKeyPath(obj, 'qux');
+
+      expect(value).to.be.undefined;
+    });
+
+    it('should return the value at the given complex key path', () => {
+      const obj = { foo: { bar: 'baz' } };
+      const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
+
+      expect(value).to.deep.equal(obj.foo.bar);
+    });
+
+    it('should return undefined if the value at the given complex key path does not exist', () => {
+      const obj = { foo: { bar: 'baz' } };
+      const value = helpers.getValueAtKeyPath(obj, 'foo.bar.qux');
+
+      expect(value).to.be.undefined;
     });
   });
 
-  beforeEach('reset to defaults', done => {
-    settings.resetToDefaults().then(() => {
-      done();
+  describe('setValueAtKeyPath()', () => {
+
+    it('should set the value at the given simple key path', () => {
+      const obj = {};
+
+      helpers.setValueAtKeyPath(obj, 'foo', 'bar');
+
+      const value = helpers.getValueAtKeyPath(obj, 'foo');
+
+      expect(value).to.deep.equal('bar');
+    });
+
+    it('should overwrite the value at the given simple key path', () => {
+      const obj = { foo: 'bar' };
+
+      helpers.setValueAtKeyPath(obj, 'foo', 'baz');
+
+      const value = helpers.getValueAtKeyPath(obj, 'foo');
+
+      expect(value).to.deep.equal('baz');
+    });
+
+    it('should set the value at the given complex key path', () => {
+      const obj = {};
+
+      helpers.setValueAtKeyPath(obj, 'foo.bar', 'baz');
+
+      const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
+
+      expect(value).to.deep.equal('baz');
+    });
+
+    it('should overwrite the value at the given complex key path', () => {
+      const obj = { foo: { bar: 'baz' } };
+
+      helpers.setValueAtKeyPath(obj, 'foo.bar', 'qux');
+
+      const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
+
+      expect(value).to.deep.equal('qux');
+    });
+  });
+
+  describe('deleteValueAtKeyPath()', () => {
+
+    it('should delete the value at the given simple key path', () => {
+      const obj = { foo: 'bar' };
+
+      helpers.deleteValueAtKeyPath(obj, 'foo');
+
+      const hasKeyPath = helpers.hasKeyPath(obj, 'foo');
+
+      expect(hasKeyPath).to.be.false;
+    });
+
+    it('should delete the value at the given complex key path', () => {
+      const obj = { foo: { bar: 'baz' } };
+
+      helpers.deleteValueAtKeyPath(obj, 'foo.bar');
+
+      const hasKeyPath = helpers.hasKeyPath(obj, 'foo.bar');
+
+      expect(hasKeyPath).to.be.false;
+    });
+  });
+});
+
+describe('settings', () => {
+
+  beforeEach('reset settings', () => {
+    settings.setAll({
+      foo: {
+        bar: 'baz'
+      }
     });
   });
 
@@ -36,613 +156,178 @@ describe('electron-settings', () => {
 
     describe('has()', () => {
 
-      it('should return true if the key path exists', done => {
-        settings.has('foo').then(exists => {
-          expect(exists).to.be.true;
-          done();
-        });
-      });
-
-      it('should return false if the key path does not exist', done => {
-        settings.has('snap').then(exists => {
-          expect(exists).to.be.false;
-          done();
-        });
-      });
-
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.has();
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if key path is given but is not a string', () => {
-        expect(() => {
-          settings.has(false);
-        }).to.throw(/Key path must be a string/);
-      });
-    });
-
-    describe('hasSync()', () => {
-
       it('should return true if the key path exists', () => {
-        const exists = settings.hasSync('foo');
+        const keyExists = settings.has('foo');
 
-        expect(exists).to.be.true;
+        expect(keyExists).to.be.true;
       });
 
       it('should return false if the key path does not exist', () => {
-        const exists = settings.hasSync('snap');
+        const keyExists = settings.has('qux');
 
-        expect(exists).to.be.false;
-      });
-
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.hasSync();
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if key path is not a string', () => {
-        expect(() => {
-          settings.hasSync(false);
-        }).to.throw(/Key path must be a string/);
+        expect(keyExists).to.be.false;
       });
     });
 
     describe('get()', () => {
 
-      it('should return the value at the chosen key path', done => {
-        settings.get('foo').then(value => {
-          expect(value).to.deep.equal('bar');
-          done();
-        });
+      it('should return the value at the given simple key path', () => {
+        const value = settings.get('foo');
+
+        expect(value).to.deep.equal({ bar: 'baz' });
       });
 
-      it('should return undefined if the key path does not exist', done => {
-        settings.get('snap').then(value => {
-          expect(value).to.be.undefined;
-          done();
-        });
+      it('should return the value at the given complex key path', () => {
+        const value = settings.get('foo.bar');
+
+        expect(value).to.deep.equal('baz');
       });
 
-      it('should return the entire settings object if no key path is given', done => {
-        settings.get().then(value => {
-          expect(value).to.deep.equal({ foo: 'bar' });
-          done();
-        });
-      });
-
-      it('should reset the settings file if the data is malformed', done => {
-        const pathToSettings = settings.getSettingsFilePath();
-
-        fs.outputFileSync(pathToSettings, 'not valid json');
-
-        settings.get().then(value => {
-          expect(value).to.deep.equal({ foo: 'bar' });
-          done();
-        });
-      });
-    });
-
-    describe('getSync()', () => {
-
-      it('should return the value at the chosen key path', () => {
-        const value = settings.getSync('foo');
-
-        expect(value).to.deep.equal('bar');
-      });
-
-      it('should return undefined if the key path does not exist', () => {
-        const value = settings.getSync('snap');
+      it('should return undefined if the given key path does not exist', () => {
+        const value = settings.get('snap');
 
         expect(value).to.be.undefined;
       });
+    });
 
-      it('should return the entire settings object if no key path is given', () => {
-        const value = settings.getSync();
+    describe('getAll()', () => {
 
-        expect(value).to.deep.equal({ foo: 'bar' });
+      it('should return the entire settings object', () => {
+        const value = settings.getAll();
+
+        expect(value).to.deep.equal({ foo: { bar: 'baz' }});
       });
     });
 
     describe('set()', () => {
 
-      it('should set the value at the chosen key path to a string (atomic)', done => {
-        settings.set('snap', 'crackle').then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal('crackle');
-            done();
-          });
-        });
+      it('should set the value at the given simple key path', () => {
+        settings.set('foo', { bar: 'qux' });
+
+        const value = settings.get('foo');
+
+        expect(value).to.deep.equal({ bar: 'qux' });
       });
 
-      it('should set the value at the chosen key path to a string (non-atomic)', done => {
-        settings.set('snap', 'crackle', { atomicSaving: false }).then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal('crackle');
-            done();
-          });
-        });
-      });
+      it('should set the value at the given complex key path', () => {
+        settings.set('foo.bar', 'qux');
 
-      it('should set the value at the chosen key path to a number', done => {
-        settings.set('snap', 10).then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal(10);
-            done();
-          });
-        });
-      });
-
-      it('should set the value at the chosen key path to a boolean', done => {
-        settings.set('snap', false).then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal(false);
-            done();
-          });
-        });
-      });
-
-      it('should set the value at the chosen key path to an object', done => {
-        settings.set('snap', {
-          foo: 'bar'
-        }).then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal({ foo: 'bar' });
-            done();
-          });
-        });
-      });
-
-      it('should set the value at the chosen key path to null', done => {
-        settings.set('snap', null).then(() => {
-          settings.get('snap').then(value => {
-            expect(value).to.deep.equal(null);
-            done();
-          });
-        });
-      });
-
-      it('should overwrite a pre-existing value', done => {
-        settings.set('foo', 'qux').then(() => {
-          settings.get('foo').then(value => {
-            expect(value).to.deep.equal('qux');
-            done();
-          });
-        });
-      });
-
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.set();
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if key path is not a string', () => {
-        expect(() => {
-          settings.set(false);
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.set('foo', 'bar', false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('setSync()', () => {
-
-      it('should set the value at the chosen key path to a string (atomic)', () => {
-        settings.setSync('snap', 'crackle');
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal('crackle');
-      });
-
-      it('should set the value at the chosen key path to a string (non-atomic)', () => {
-        settings.setSync('snap', 'crackle', { atomicSaving: false });
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal('crackle');
-      });
-
-      it('should set the value at the chosen key path to a number', () => {
-        settings.setSync('snap', 10);
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal(10);
-      });
-
-      it('should set the value at the chosen key path to a boolean', () => {
-        settings.setSync('snap', false);
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal(false);
-      });
-
-      it('should set the value at the chosen key path to an object', () => {
-        settings.setSync('snap', { foo: 'bar' });
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal({ foo: 'bar' });
-      });
-
-      it('should set the value at the chosen key path to null', () => {
-        settings.setSync('snap', null);
-
-        const value = settings.getSync('snap');
-
-        expect(value).to.deep.equal(null);
-      });
-
-      it('should overwrite a pre-existing value', () => {
-        settings.setSync('foo', 'qux');
-
-        const value = settings.getSync('foo');
+        const value = settings.get('foo.bar');
 
         expect(value).to.deep.equal('qux');
       });
 
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.setSync();
-        }).to.throw(/Key path must be a string/);
+      it('should accept options', () => {
+        settings.set('foo.bar', 'qux');
+
+        const value = settings.get('foo.bar', { prettify: true });
+
+        expect(value).to.deep.equal('qux');
+      });
+    });
+
+    describe('setAll()', () => {
+
+      it('should set the entire settings object', () => {
+        settings.setAll({ foo: { qux:'bar' } });
+
+        const obj = settings.getAll();
+
+        expect(obj).to.deep.equal({ foo: { qux:'bar' } });
       });
 
-      it('should throw if key path is not a string', () => {
-        expect(() => {
-          settings.setSync(false);
-        }).to.throw(/Key path must be a string/);
-      });
+      it('should accept options', () => {
+        settings.setAll({ foo: { qux:'bar' } }, { prettify: true });
 
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.setSync('foo', 'bar', false);
-        }).to.throw(/Options must be an object/);
+        const obj = settings.getAll();
+
+        expect(obj).to.deep.equal({ foo: { qux:'bar' } });
       });
     });
 
     describe('delete()', () => {
 
-      it('should delete the value at the chosen key path', done => {
-        settings.delete('foo').then(() => {
-          settings.get('foo').then(value => {
-            expect(value).to.be.undefined;
-            done();
-          });
-        });
+      it('should delete the value at the given simple key path', () => {
+        settings.delete('foo');
+
+        const keyExists = settings.has('foo');
+
+        expect(keyExists).to.be.false;
       });
 
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.delete();
-        }).to.throw(/Key path must be a string/);
+      it('should delete the value at the given complex key path', () => {
+        settings.delete('foo.bar');
+
+        const keyExists = settings.has('foo.bar');
+
+        expect(keyExists).to.be.false;
       });
 
-      it('should throw if key path is not a string', () => {
-        expect(() => {
-          settings.delete(false);
-        }).to.throw(/Key path must be a string/);
-      });
+      it('should accept options', () => {
+        settings.delete('foo.bar', { prettify: true });
 
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.delete('foo', false);
-        }).to.throw(/Options must be an object/);
+        const keyExists = settings.has('foo.bar');
+
+        expect(keyExists).to.be.false;
       });
     });
 
-    describe('deleteSync()', () => {
+    describe('deleteAll()', () => {
 
-      it('should delete the value at the chosen key path', () => {
-        settings.deleteSync('foo');
+      it('should delete the entire settings object', () => {
+        settings.deleteAll();
 
-        const value = settings.getSync('foo');
+        const obj = settings.getAll();
 
-        expect(value).to.be.undefined;
+        expect(obj).to.deep.equal({});
       });
 
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.deleteSync();
-        }).to.throw(/Key path must be a string/);
-      });
+      it('should accept options', () => {
+        settings.deleteAll({ prettify: true });
 
-      it('should throw if key path not a string', () => {
-        expect(() => {
-          settings.deleteSync(false);
-        }).to.throw(/Key path must be a string/);
-      });
+        const obj = settings.getAll();
 
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.deleteSync('foo', false);
-        }).to.throw(/Options must be an object/);
+        expect(obj).to.deep.equal({});
       });
     });
 
-    describe('clear()', () => {
+    describe('watch()', () => {
 
-      it('should clear the entire settings object', done => {
-        settings.clear().then(() => {
-          settings.get().then(value => {
-            expect(value).to.be.empty;
-            done();
-          });
-        });
-      });
+      it('should watch the given simple key path', done => {
+        const observer = settings.watch('foo', (newValue, oldValue) => {
+          expect(oldValue).to.deep.equal({ bar: 'baz' });
+          expect(newValue).to.deep.equal({ bar: 'qux' });
 
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.clear(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('clearSync()', () => {
-
-      it('should clear the entire settings object', () => {
-        settings.clearSync();
-
-        const value = settings.getSync();
-
-        expect(value).to.be.empty;
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.clearSync(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('defaults()', () => {
-
-      it('should set global defaults', done => {
-        settings.defaults({
-          snap: 'crackle'
-        });
-
-        settings.resetToDefaults().then(() => {
-          settings.get().then(obj => {
-            expect(obj).to.deep.equal({ snap: 'crackle' });
-            done();
-          });
-        });
-      });
-
-      it('should throw if defaults is not an object', () => {
-        expect(() => {
-          settings.defaults(false);
-        }).to.throw(/Defaults must be an object/);
-      });
-    });
-
-    describe('applyDefaults()', () => {
-
-      it('should apply defaults', done => {
-        settings.defaults({
-          foo: 'qux',
-          snap: 'crackle'
-        });
-
-        settings.applyDefaults().then(() => {
-          settings.get().then(obj => {
-            expect(obj).to.deep.equal({ foo: 'bar', snap: 'crackle' });
-            done();
-          });
-        });
-      });
-
-      it('should apply defaults and overwrite pre-existing values', done => {
-        settings.defaults({
-          foo: 'qux',
-          snap: 'crackle'
-        });
-
-        settings.applyDefaults({ overwrite: true }).then(() => {
-          settings.get().then(obj => {
-            expect(obj).to.deep.equal({ foo: 'qux', snap: 'crackle' });
-            done();
-          });
-        });
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.applyDefaults(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('applyDefaultsSync()', () => {
-
-      it('should apply defaults', () => {
-        settings.defaults({
-          foo: 'qux',
-          snap: 'crackle'
-        });
-
-        settings.applyDefaultsSync();
-
-        const val = settings.getSync();
-
-        expect(val).to.deep.equal({ foo: 'bar', snap: 'crackle' });
-      });
-
-      it('should apply defaults and overwrite pre-existing values', () => {
-        settings.defaults({
-          foo: 'qux',
-          snap: 'crackle'
-        });
-
-        settings.applyDefaultsSync({ overwrite: true });
-
-        const val = settings.getSync();
-
-        expect(val).to.deep.equal({ foo: 'qux', snap: 'crackle' });
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.applyDefaults(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('resetToDefaults()', () => {
-
-      it('should reset to defaults', done => {
-        settings.set('foo', 'qux').then(() => {
-          settings.resetToDefaults().then(() => {
-            settings.get().then(obj => {
-              expect(obj).to.deep.equal({ foo: 'bar' });
-              done();
-            });
-          });
-        });
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.resetToDefaults(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('resetToDefaultsSync()', () => {
-
-      it('should reset to defaults', () => {
-        settings.setSync('foo', 'qux');
-        settings.resetToDefaultsSync();
-
-        const val = settings.getSync();
-
-        expect(val).to.deep.equal({ foo: 'bar' });
-      });
-
-      it('should throw if options is not an object', () => {
-        expect(() => {
-          settings.resetToDefaultsSync(false);
-        }).to.throw(/Options must be an object/);
-      });
-    });
-
-    describe('observe()', () => {
-
-      it('should observe the given key path', done => {
-        const observer = settings.observe('foo', evt => {
-          expect(evt.oldValue).to.deep.equal('bar');
-          expect(evt.newValue).to.deep.equal('qux');
           observer.dispose();
+
           done();
         });
 
-        settings.setSync('foo', 'qux');
+        settings.set('foo', { bar: 'qux' });
       });
 
-      it('should dispose the key path observer', done => {
-        const observer = settings.observe('foo', evt => {
-          expect(evt).to.not.exist;
+      it('should watch the given complex key path', done => {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
+          expect(oldValue).to.deep.equal('baz');
+          expect(newValue).to.deep.equal('qux');
+
+          observer.dispose();
+
+          done();
+        });
+
+        settings.set('foo.bar', 'qux');
+      });
+
+      it('should dispose the key path watcher', done => {
+        const observer = settings.watch('foo', newValue => {
+          expect(newValue).to.not.exist;
         });
 
         observer.dispose();
-        settings.setSync('foo', 'baz');
+        settings.set('foo', 'baz');
 
         done();
-      });
-
-      it('should throw if no key path is given', () => {
-        expect(() => {
-          settings.observe();
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if key path is given but is not a string', () => {
-        expect(() => {
-          settings.observe(false);
-        }).to.throw(/Key path must be a string/);
-      });
-
-      it('should throw if no handler is given', () => {
-        expect(() => {
-          settings.observe('foo');
-        }).to.throw(/Handler must be a function/);
-      });
-
-      it('should throw if handler is given but is not a function', () => {
-        expect(() => {
-          settings.observe('foo', false);
-        }).to.throw(/Handler must be a function/);
-      });
-    });
-
-    describe('configure()', () => {
-
-      it('should globally configure electron-settings options', () => {
-        settings.configure({
-          prettify: true
-        });
-      });
-    });
-
-    describe('getSettingsFilePath()', () => {
-
-      it('should return the path to the settings file', () => {
-        expect(settings.getSettingsFilePath()).to.be.a.string;
-      });
-    });
-  });
-
-  describe('events', () => {
-
-    describe('create', () => {
-
-      it('should emit when the settings file is created', done => {
-        const pathToSettings = settings.getSettingsFilePath();
-        const handler = settingsFilePath => {
-          expect(settingsFilePath).to.equal(pathToSettings);
-          settings.removeListener('create', handler);
-          done();
-        };
-
-        // Delete the settings file.
-        fs.unlinkSync(pathToSettings);
-
-        settings.on('create', handler);
-        settings.getSync('foo');
-      });
-    });
-
-    describe('write', () => {
-
-      it('should emit when the settings file is written to', done => {
-        const handler = () => {
-          settings.removeListener('write', handler);
-          done();
-        };
-
-        settings.on('write', handler);
-        settings.set('foo', 'bar');
-      });
-
-      it('should emit when the settings file is written to from an external source', done => {
-        const pathToSettings = settings.getSettingsFilePath();
-        const handler = () => {
-          settings.removeListener('write', handler);
-          done();
-        };
-
-        settings.on('write', handler);
-
-        fs.outputJsonSync(pathToSettings, { foo: 'bar' });
       });
     });
   });
