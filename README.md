@@ -48,7 +48,7 @@ settings.has('name.middle');
 
     With electron-settings, you are not just setting keys like you would with local storage. Instead, you are working with a JSON object, and a key path is a string that points to a specific key within that object—essentially using object dot notation in string form.
 
-    For example, in the JSON object below the value at the key path `"foo.bar"` is `"baz"`.
+    For example, in the JSON object below the value at the key path `"foo"` is the object `{ bar: 'baz' }`, and the value at the key path `"foo.bar"` is the string `"baz"`.
 
     ```json
     {
@@ -60,11 +60,13 @@ settings.has('name.middle');
 
 * **What data types may be stored?**
 
-    You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`. Unfortunately, dates and other special object types will be type converted and lost, because JSON does not support anything other than the aforementioned data types.
+    You may set a key path to any value supported by JSON: an **object**, **array**, **string**, **number**, **boolean**, or **`null`**.
+
+    Unfortunately, dates and other special object types will be type converted and lost, because JSON does not support anything other than the aforementioned data types.
 
 * **Where is the settings file saved?**
 
-    The file name for the settings is `settings` and it is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname) in a folder named `Config`.
+    Settings are saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname) in a file called `Settings`.
 
     * `~/Library/Application Support/YourApp` on MacOS.
     * `%APPDATA%/YourApp` on Windows.
