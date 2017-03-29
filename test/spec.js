@@ -220,7 +220,7 @@ describe('settings', () => {
       it('should accept options', () => {
         settings.set('foo.bar', 'qux');
 
-        const value = settings.get('foo.bar', { spaces: 2 });
+        const value = settings.get('foo.bar', { prettify: true });
 
         expect(value).to.deep.equal('qux');
       });
@@ -237,7 +237,7 @@ describe('settings', () => {
       });
 
       it('should accept options', () => {
-        settings.setAll({ foo: { qux:'bar' } }, { spaces: 2 });
+        settings.setAll({ foo: { qux:'bar' } }, { prettify: true });
 
         const obj = settings.getAll();
 
@@ -264,7 +264,7 @@ describe('settings', () => {
       });
 
       it('should accept options', () => {
-        settings.delete('foo.bar', { spaces: 2 });
+        settings.delete('foo.bar', { prettify: true });
 
         const keyExists = settings.has('foo.bar');
 
@@ -283,7 +283,7 @@ describe('settings', () => {
       });
 
       it('should accept options', () => {
-        settings.deleteAll({ spaces: 2 });
+        settings.deleteAll({ prettify: true });
 
         const obj = settings.getAll();
 
