@@ -3,7 +3,11 @@ Changelog
 All notable changes to this project will be documented in this file.		
 This project adheres to [Semantic Versioning](http://semver.org/).		
 
-***		
+***
+
+v3.0.2 - Mar. 28, 2017
+----------------------
+* Updated README and extracted API docs and FAQs into their own files. This is to encourage users on npm to visit GitHub as well as simplify the README as a whole. ([`7df95ee`](https://github.com/nathanbuchar/electron-settings/commit/7df95ee830ae932cadf72878e7d701e2ceab13ff))
 
 v3.0.1 - Mar. 28, 2017
 ----------------------		
