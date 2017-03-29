@@ -40,7 +40,6 @@
   },
   "devDependencies": {
     "electron-mocha": "^3.4.0",
-    "electron-prebuilt": "^1.4.13",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.2",
     "eslint-plugin-import": "^2.2.0",
