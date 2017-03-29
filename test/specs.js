@@ -313,6 +313,30 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
+      it('should return undefined if the watched key path is deleted', done => {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
+          assert.equal(oldValue, 'baz');
+          assert.equal(newValue, undefined);
+
+          observer.dispose();
+
+          done();
+        });
+
+        settings.delete('foo.bar');
+      });
+
+      it('should invoke the watch handler with the proper context', done => {
+        settings.watch('foo.bar', function handler() {
+          assert.doesNotThrow(() => {
+            this.dispose();
+            done();
+          });
+        });
+
+        settings.set('foo.bar', 'qux');
+      });
+
       it('should dispose the key path watcher', done => {
         const observer = settings.watch('foo', () => {
           throw Error('Observer was not disposed.');
