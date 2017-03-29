@@ -132,8 +132,6 @@ settings.has('name.middle');
     // => false
     ```
 
-    [Back to top]
-
 
 * ### get()
 
@@ -185,8 +183,6 @@ settings.has('name.middle');
     // => "aqpw"
     ```
 
-    [Back to top]
-
 
 * ### getAll()
 
@@ -212,8 +208,6 @@ settings.has('name.middle');
     settings.getAll();
     // => { "foo": { "bar": "baz" } }
     ```
-
-    [Back to top]
 
 
 * ### set()
@@ -260,8 +254,6 @@ settings.has('name.middle');
     // => "hotness"
     ```
 
-    [Back to top]
-
 
 * ### setAll()
 
@@ -298,14 +290,12 @@ settings.has('name.middle');
     // => { "new": "hotness" }
     ```
 
-    [Back to top]
-
 
 * ### delete()
 
     **`settings.delete(keyPath[, options])`**
 
-    Deletes the key and value at the given key path. See also: [`delete()`][section_methods_delete-all].
+    Deletes the key and value at the given key path. See also: [`deleteAll()`][section_methods_delete-all].
 
     ***
 
@@ -336,8 +326,6 @@ settings.has('name.middle');
     // => {}
     ```
 
-    [Back to top]
-
 
 * ### deleteAll()
 
@@ -365,8 +353,6 @@ settings.has('name.middle');
     settings.getAll();
     // => {}
     ```
-
-    [Back to top]
 
 
 * ### watch()
@@ -417,8 +403,6 @@ settings.has('name.middle');
     });
     ```
 
-    [Back to top]
-
 
 
 ## Authors
@@ -440,7 +424,6 @@ settings.has('name.middle');
 [license]: ./LICENSE.md
 
 [Nathan Buchar]: mailto:hello@nathanbuchar.com
-[Back to Top]: #methods
 
 [section_install]: #install
 [section_demo]: #demo

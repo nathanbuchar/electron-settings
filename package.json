@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "3.0.0",
+  "version": "2.2.4",
   "description": "A simple persistent user settings manager for Electron.",
   "main": "index.js",
   "scripts": {
@@ -8,6 +8,12 @@
     "test:main": "electron-mocha test",
     "test:renderer": "electron-mocha test --renderer"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathanbuchar/electron-settings"
+  },
+  "author": "Nathan Buchar <hello@nathanbuchar.com>",
+  "license": "ISC",
   "keywords": [
     "electron",
     "app",
@@ -26,12 +32,6 @@
     "deleteAll",
     "watch"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/nathanbuchar/electron-settings"
-  },
-  "author": "Nathan Buchar <hello@nathanbuchar.com>",
-  "license": "ISC",
   "dependencies": {
     "clone": "^2.1.1",
     "deep-equal": "^1.0.1",

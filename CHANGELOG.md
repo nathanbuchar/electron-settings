@@ -17,10 +17,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Updates, consolidates, and simplifies README.
 * Removes `clear()` method.
 * Removes `configure()` method.
-* Removes all configuration options from methods in an effort to simplify.
-  * Removes atomic saving.
-  * Removes option to prettify output.
-  * Removes option to specify a settings directory and file name.
+* Removes atomic saving support. No longer needed as this is no longer asynchronous.
+* Removes all options from methods except `prettify` in an effort to simplify.
+* Removes global configuration option to specify the setting's directory and file name.
 * Removes `"write"` and `"create"` event broadcasting.
 * Removes the `defaults()`, `applyDefaults()`, and `resetToDefaults()` methods and all other references to handling default settings in an effort to simplify.
 * Removes `getSettingsFilePath()` method.
