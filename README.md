@@ -84,13 +84,13 @@ License
 [docs_faq]: ./docs/faq.md
 
 [api_method_has]: ./docs/api.md#has
-[api_method_get]: ./docs/api.md##get
-[api_method_get-all]: ./docs/api.md##getall
-[api_method_set]: ./docs/api.md##set
-[api_method_set-all]: ./docs/api.md##setall
-[api_method_delete]: ./docs/api.md##delete
-[api_method_delete-all]: ./docs/api.md##deleteall
-[api_method_watch]: ./docs/api.md##watch
+[api_method_get]: ./docs/api.md#get
+[api_method_get-all]: ./docs/api.md#getall
+[api_method_set]: ./docs/api.md#set
+[api_method_set-all]: ./docs/api.md#setall
+[api_method_delete]: ./docs/api.md#delete
+[api_method_delete-all]: ./docs/api.md#deleteall
+[api_method_watch]: ./docs/api.md#watch
 
 [external_electron]: https://electron.atom.io
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings

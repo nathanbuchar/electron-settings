@@ -283,7 +283,7 @@ Methods
 
 * ## watch()
 
-    **`settings.watch(keyPath, handler):Function`**
+    **`settings.watch(keyPath, handler):Observer`**
 
     Watches the given key path for changes and calls the given handler if the value changes. To unsubscribe from changes, call `dispose()` on the Observer instance that is returned.
 
