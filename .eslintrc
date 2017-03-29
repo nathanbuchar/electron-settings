@@ -1,11 +1,13 @@
 {
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module"
-  },
+  "extends": "airbnb-base",
   "rules": {
-    "semi": ["error", "always"],
-    "no-extra-semi": "error",
-    "quotes": ["error", "single"],
+    "class-methods-use-this": "off",
+    "comma-dangle": ["error", "never"],
+    "default-case": "off",
+    "no-param-reassign": "off",
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-underscore-dangle": "off",
+    "padded-blocks": "off",
+    "prefer-template": "off"
   }
 }
