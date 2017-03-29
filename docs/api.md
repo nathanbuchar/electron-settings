@@ -21,6 +21,7 @@ Methods
 ***
 
 
+
 * ## has()
 
     **`settings.has(keyPath):boolean`**
@@ -57,6 +58,8 @@ Methods
     settings.has('qux');
     // => false
     ```
+
+    [Back to Top]
 
 
 * ## get()
@@ -109,6 +112,8 @@ Methods
     // => "aqpw"
     ```
 
+    [Back to Top]
+
 
 * ## getAll()
 
@@ -134,6 +139,8 @@ Methods
     settings.getAll();
     // => { "foo": { "bar": "baz" } }
     ```
+
+    [Back to Top]
 
 
 * ## set()
@@ -180,6 +187,8 @@ Methods
     // => "hotness"
     ```
 
+    [Back to Top]
+
 
 * ## setAll()
 
@@ -215,6 +224,8 @@ Methods
     settings.getAll();
     // => { "new": "hotness" }
     ```
+
+    [Back to Top]
 
 
 * ## delete()
@@ -252,12 +263,21 @@ Methods
     // => {}
     ```
 
+    [Back to Top]
+
 
 * ## deleteAll()
 
     **`settings.deleteAll([options])`**
 
     Deletes all settings. See also: [`delete()`][method_delete].
+
+    ***
+
+    **Parameters**
+
+    * **`options`** *Object* (optional)
+      * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
 
     ***
 
@@ -279,6 +299,8 @@ Methods
     settings.getAll();
     // => {}
     ```
+
+    [Back to Top]
 
 
 * ## watch()
@@ -319,18 +341,20 @@ Methods
     settings.set('foo.bar', 'qux');
     ```
 
-    Dispose the key path watcher after the value has changed once.
+    Dispose the key path watcher if the key is deleted.
     ```js
     const observer = settings.watch('foo', newValue => {
-      observer.dispose();
+      if (newValue === undefined) {
+        observer.dispose();
+      }
     });
 
-    settings.set('foo', 'qux');
+    settings.delete('foo');
     });
     ```
 
 ***
-<small>Last updated **Mar. 28th, 2017** by [Nathan Buchar].</small>
+<small>Last updated **Mar. 29th, 2017** by [Nathan Buchar].</small>
 
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
@@ -340,6 +364,7 @@ Methods
 
 
 [Electron Settings]: ../../../
+[Back to Top]: #methods
 [Nathan Buchar]: mailto:hello@nathanbuchar.com
 
 [method_has]: #has
