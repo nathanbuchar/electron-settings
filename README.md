@@ -1,15 +1,10 @@
-electron-settings
-=================
+# electron-settings
 
-**:warning: Sorry, project not currently in active development. Try [electron-json-storage](https://www.npmjs.com/package/electron-json-storage) :warning:**
+A simple persistent user settings manager for [Electron][external_electron].
 
-***
+Originally adapted from Atom's own configuration manager, electron-settings allows you to save your users' settings to the disk so that they can be loaded in the next time your app starts without skipping a beat.
 
-A simple persistent user settings manager for [Electron][external_electron]. Originally adapted from [Atom's own configuration manager][external_atom-config], electron-settings allows you to save user settings to the disk so that they can be loaded in the next time your app starts.
-
-Also, you can [observe key paths][method_observe] and get notified if their value changes. So that's pretty neat.
-
-**Note:** v2 is not compatible with earlier versions of electron-settings.
+Also, you can [subscribe to settings and get notified when their value changes][section_methods_watch]. So that's pretty neat.
 
 [![npm version](https://badge.fury.io/js/electron-settings.svg)](http://badge.fury.io/js/electron-settings)
 [![dependencies](https://david-dm.org/nathanbuchar/electron-settings.svg)](https://david-dm.org/nathanbuchar/electron-settings)
@@ -22,16 +17,14 @@ Also, you can [observe key paths][method_observe] and get notified if their valu
 
 
 
-Install
----------
+## Install
 
 ```
-$ npm install electron-settings
+$ npm install --save electron-settings
 ```
 
 
-Quick Start
------------
+## Demo
 
 ```js
 const settings = require('electron-settings');
@@ -39,76 +32,47 @@ const settings = require('electron-settings');
 settings.set('name', {
   first: 'Cosmo',
   last: 'Kramer'
-}).then(() => {
-  settings.get('name.first').then(val => {
-    console.log(val);
-    // => "Cosmo"
-  });
 });
 
-settings.getSettingsFilePath();
-// => /Users/You/Library/Application Support/YourApp/Settings
+settings.get('name.first');
+// => "Cosmo"
+
+settings.has('name.middle');
+// => false
 ```
 
 
-Default Settings
-----------------
-
-You can configure default settings by using [`settings.defaults()`][method_defaults]. This will set the defaults object globally. If this is the first time the settings file is being accessed, the defaults will be applied automatically.
-
-```js
-settings.defaults({
-  foo: 'bar'
-});
-
-settings.get('foo').then(val => {
-  console.log(val);
-  // => 'bar'
-});
-```
-
-Additionally, you can use [`applyDefaults()`][method_apply-defaults] or [`resetToDefaults()`][method_reset-to-defaults] to fit your needs.
-
-
-
-FAQ
----
+## FAQ
 
 * **What is a "key path"?**
 
-  With electron-settings, you are not just setting keys like you would with local storage. Instead, you are working with a JSON object, and a key path is a string that points to a specific key within that object—essentially object dot notation in string form.
+    With electron-settings, you are not just setting keys like you would with local storage. Instead, you are working with a JSON object, and a key path is a string that points to a specific key within that object—essentially using object dot notation in string form.
 
-  For example, in the JSON object below the value at the key path `"foo.bar"` is `"baz"`.
+    For example, in the JSON object below the value at the key path `"foo.bar"` is `"baz"`.
 
-  ```json
-  {
-    "foo": {
-      "bar": "baz"
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
     }
-  }
-  ```
-
-* **Can I use electron-settings in both the main and renderer processes?**
-
-  Yes! Just be aware that if the window closes during an async operation, data may be lost.
+    ```
 
 * **What data types may be stored?**
 
-  You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`.
-
-* **Why do I have to use promises?**
-
-  electron-settings reads and writes to the file system asynchronously. In order to ensure data integrity, you should use promises. Alternatively, all methods have a synchronous counterpart that you may use instead.
+    You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`. Unfortunately, dates and other special object types will be type converted and lost, because JSON does not support anything other than the aforementioned data types.
 
 * **Where is the settings file saved?**
 
-  The settings file is named `Settings` and is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname):
+    The file name for the settings is `settings` and it is saved in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname) in a folder named `Config`.
 
     * `~/Library/Application Support/YourApp` on MacOS.
     * `%APPDATA%/YourApp` on Windows.
     * `$XDG_CONFIG_HOME/YourApp` or `~/.config/YourApp` on Linux.
 
-  You can use [`getSettingsFilePath()`][method_get-settings-file-path] to get the full path to the settings file.
+* **Can I use electron-settings in both the main and renderer processes?**
+
+    You bet!
 
 
 
@@ -116,28 +80,357 @@ FAQ
 
 
 
-Documentation
--------------
-* [Events][docs_events]
-* [Methods][docs_methods]
+## Methods
+
+* [`has()`][section_methods_has]
+* [`get()`][section_methods_get]
+* [`getAll()`][section_methods_get-all]
+* [`set()`][section_methods_set]
+* [`setAll()`][section_methods_set-all]
+* [`delete()`][section_methods_delete]
+* [`deleteAll()`][section_methods_delete-all]
+* [`watch()`][section_methods_watch]
 
 
-Contributors
--------
-* [Nathan Buchar](mailto:hello@nathanbuchar.com) (Owner)
-* [Kai Eichinger](mailto:kai.eichinger@outlook.com)
-* *You?*
+***
 
 
-License
--------
+* ### has()
+
+    **`settings.has(keyPath):boolean`**
+
+    Returns a boolean indicating whether the settings object contains the given key path.
+
+    ***
+
+    **Parameters**
+
+    * **`keyPath`** *String*
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Checks if the settings contains the key path `"foo.bar"`.
+    ```js
+    settings.has('foo.bar');
+    // => true
+    ```
+
+    Checks if the settings contains the key path `"qux"`.
+    ```js
+    settings.has('qux');
+    // => false
+    ```
+
+    [Back to top]
+
+
+* ### get()
+
+    **`settings.get(keyPath[, defaultValue]):any`**
+
+    Returns the value at the given key path, or sets the value at that key path to the default value, if provided, if the key does not exist. See also: [`getAll()`][section_methods_get-all].
+
+    ***
+
+    **Parameters**
+
+    * **`keyPath`** *String*
+    * **`defaultValue`** *Any* - The value to apply if the setting does not already exist.
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Gets the value at `"foo"`.
+    ```js
+    settings.get('foo');
+    // => { "bar": "baz" }
+    ```
+
+    Gets the value at `"foo.bar"`.
+    ```js
+    settings.get('foo.bar');
+    // => "baz"
+    ```
+
+    Gets the value at `"qux"`.
+    ```js
+    settings.get('qux');
+    // => undefined
+    ```
+
+    Gets the value at `"qux"`, with a default fallback.
+    ```js
+    settings.get('qux', 'aqpw');
+    // => "aqpw"
+    ```
+
+    [Back to top]
+
+
+* ### getAll()
+
+    **`settings.getAll():Object`**
+
+    Returns all settings. See also: [`get()`][section_methods_get].
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Gets all settings.
+    ```js
+    settings.getAll();
+    // => { "foo": { "bar": "baz" } }
+    ```
+
+    [Back to top]
+
+
+* ### set()
+
+    **`settings.set(keyPath, value[, options])`**
+
+    Sets the value at the given key path. See also: [`setAll()`][section_methods_set-all].
+
+    ***
+
+    **Parameters**
+
+    * **`keyPath`** *String* - The path to the key whose value we wish to set. This key need not already exist.
+    * **`value`** *Any* - The value to set the key at the chosen key path to. This must be a data type supported by JSON: an object, array, string, number, boolean, or `null`.
+    * **`options`** *Object* (optional)
+      * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Changing the value at the key path `"foo.bar"` from `"baz"` to `"qux"`.
+    ```js
+    settings.set('foo.bar', 'qux');
+
+    settings.get('foo.bar');
+    // => "qux"
+    ```
+
+    Setting the value at the key path `"new.key"`.
+    ```js
+    settings.set('new', 'hotness');
+
+    settings.get('new');
+    // => "hotness"
+    ```
+
+    [Back to top]
+
+
+* ### setAll()
+
+    **`settings.setAll(obj[, options])`**
+
+    Sets all settings. See also: [`set()`][section_methods_set].
+
+    ***
+
+    **Parameters**
+
+    * **`obj`** *Object* - The new settings object.
+    * **`options`** *Object* (optional)
+      * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Sets all settings.
+    ```js
+    settings.setAll({ new: 'hotness' });
+
+    settings.getAll();
+    // => { "new": "hotness" }
+    ```
+
+    [Back to top]
+
+
+* ### delete()
+
+    **`settings.delete(keyPath[, options])`**
+
+    Deletes the key and value at the given key path. See also: [`delete()`][section_methods_delete-all].
+
+    ***
+
+    **Parameters**
+
+    * **`keyPath`** *String*
+    * **`options`** *Object* (optional)
+      * `prettify` *Boolean* (optional) - Prettify the JSON output. Defaults to `false`.
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Deleting `"foo.bar"`.
+    ```js
+    settings.delete('foo.bar');
+
+    settings.get('foo');
+    // => {}
+    ```
+
+    [Back to top]
+
+
+* ### deleteAll()
+
+    **`settings.deleteAll([options])`**
+
+    Deletes all settings. See also: [`delete()`][section_methods_delete].
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Deletes all settings.
+    ```js
+    settings.deleteAll();
+
+    settings.getAll();
+    // => {}
+    ```
+
+    [Back to top]
+
+
+* ### watch()
+
+    **`settings.watch(keyPath, handler):Function`**
+
+    Watches the given key path for changes and calls the given handler if the value changes. To unsubscribe from changes, call `dispose()` on the Observer instance that is returned.
+
+    ***
+
+    **Parameters**
+
+    * **`keyPath`** *String* - The path to the key that we wish to watch for changes.
+    * **`handler`** *Function* - The callback that will be invoked if the value at the chosen key path changes. Passes the following as arguments:
+      * `newValue` *Any*
+      * `oldValue` *Any*
+
+    ***
+
+    **Examples**
+
+    Given:
+    ```json
+    {
+      "foo": {
+        "bar": "baz"
+      }
+    }
+    ```
+
+    Watch `"foo.bar"`.
+    ```js
+    settings.watch('foo', (newValue, oldValue) => {
+      console.log(newValue);
+      // => "qux"
+    });
+
+    settings.set('foo.bar', 'qux');
+    ```
+
+    Dispose the key path watcher after the value has changed once.
+    ```js
+    const observer = settings.watch('foo', newValue => {
+      observer.dispose();
+    });
+
+    settings.set('foo', 'qux');
+    });
+    ```
+
+    [Back to top]
+
+
+
+## Authors
+* [Nathan Buchar] (Owner)
+
+
+## License
 [ISC][license]
 
 
 ***
-<small>Last updated **Aug. 16th, 2016** by [Nathan Buchar].</small>
-
-<small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
+**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
 
 
@@ -147,24 +440,23 @@ License
 [license]: ./LICENSE.md
 
 [Nathan Buchar]: mailto:hello@nathanbuchar.com
+[Back to Top]: #methods
 
 [section_install]: #install
-[section_quick-start]: #quick-start
-[section_default-settings]: #default-settings
+[section_demo]: #demo
 [section_faq]: #faq
-[section_documentation]: #documentation
-[section_contributors]: #contributors
+[section_methods]: #methods
+[section_authors]: #authors
 [section_license]: #license
 
-[docs_events]: ./docs/events.md
-[docs_methods]: ./docs/methods.md
+[section_methods_has]: #has
+[section_methods_get]: #get
+[section_methods_get-all]: #getall
+[section_methods_set]: #set
+[section_methods_set-all]: #setall
+[section_methods_delete]: #delete
+[section_methods_delete-all]: #deleteall
+[section_methods_watch]: #watch
 
-[method_get-settings-file-path]: ./docs/methods.md#getsettingsfilepath
-[method_observe]: ./docs/methods.md#observe
-[method_defaults]: ./docs/methods.md#defaults
-[method_apply-defaults]: ./docs/methods.md#applydefaults
-[method_reset-to-defaults]: ./docs/methods.md#resettodefaults
-
-[external_electron]: https://electron.atom.com
-[external_atom-config]: https://github.com/atom/atom/blob/master/src/config.coffee
+[external_electron]: https://electron.atom.io
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings

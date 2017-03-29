@@ -5,6 +5,29 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+3.0.0 - Mar. 28, 2017
+---------------------
+* All synchronous methods have dropped the `-Sync` suffix and have replaced their async counterparts. All promises have been removed in an effort to simplify.
+* Adds `getAll()` method, in lieu of using `get()` without a key path.
+* Adds `setAll()` method.
+* Adds `deleteAll()` method, in lieu of using `clear()`.
+* Adds local key path helpers instead of relying on `atom/key-path-helpers`.
+* Updates `observe()` to `watch()`.
+* Updates tests.
+* Updates, consolidates, and simplifies README.
+* Removes `clear()` method.
+* Removes `configure()` method.
+* Removes all configuration options from methods in an effort to simplify.
+  * Removes atomic saving.
+  * Removes option to prettify output.
+  * Removes option to specify a settings directory and file name.
+* Removes `"write"` and `"create"` event broadcasting.
+* Removes the `defaults()`, `applyDefaults()`, and `resetToDefaults()` methods and all other references to handling default settings in an effort to simplify.
+* Removes `getSettingsFilePath()` method.
+* Removes `settingsFileExists()` method.
+* Removes `off()` method.
+* Removes `.jshintrc`, `.jscsrc`, and `.editorconfig` files in lieu of `.eslintrc`.
+
 2.2.0 - Aug. 31, 2016
 ---------------------
 * Improved internal debugger.
