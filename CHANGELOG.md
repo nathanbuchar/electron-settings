@@ -5,10 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+v3.0.4 - Mar. 29, 2017
+----------------------
+* Remove `electron-prebuilt` as a dependency, as it has been deprecated in lieu of `electron`. ([`4c1df12`](https://github.com/nathanbuchar/electron-settings/commit/4c1df12a567192b4afe072f1178eea32a653e0c2))
+
 v3.0.3 - Mar. 29, 2017
 ----------------------
 * Update source code and tests to be compliant with all ESlint rules. ([`9cee966`](https://github.com/nathanbuchar/electron-settings/commit/9cee9667cce71a914d8d0b3e52227fc1c27cb4af), [`75aad3d`](https://github.com/nathanbuchar/electron-settings/commit/75aad3d9c61c15db9088542d8a20251d6e2f4e6b))
-* Remove Chai in lieu of Node's native `assert` module ([`75aad3d`](https://github.com/nathanbuchar/electron-settings/commit/75aad3d9c61c15db9088542d8a20251d6e2f4e6b))
+* Remove Chai in lieu of Node's native `assert` module. ([`75aad3d`](https://github.com/nathanbuchar/electron-settings/commit/75aad3d9c61c15db9088542d8a20251d6e2f4e6b))
 
 v3.0.2 - Mar. 28, 2017
 ----------------------
