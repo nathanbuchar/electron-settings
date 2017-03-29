@@ -1,9 +1,11 @@
 {
   "extends": "airbnb-base",
   "rules": {
+    "arrow-parens": ["error", "as-needed"],
     "class-methods-use-this": "off",
     "comma-dangle": ["error", "never"],
     "default-case": "off",
+    "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-param-reassign": "off",
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
     "no-underscore-dangle": "off",

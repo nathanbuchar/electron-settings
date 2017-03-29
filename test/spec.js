@@ -1,15 +1,9 @@
 /* global it, describe, before, after, beforeEach, afterEach */
 
-'use strict';
-
-const chai = require('chai');
-const fs = require('fs-extra');
-const path = require('path');
+const assert = require('assert');
 
 const settings = require('../');
 const helpers = require('../lib/settings-helpers');
-const expect = chai.expect;
-const should = chai.should();
 
 describe('settings-helpers', () => {
 
@@ -19,28 +13,28 @@ describe('settings-helpers', () => {
       const obj = { foo: 'bar' };
       const keyPathExists = helpers.hasKeyPath(obj, 'foo');
 
-      expect(keyPathExists).to.be.true;
+      assert.equal(keyPathExists, true);
     });
 
     it('should return false if the simple key path does not exist', () => {
       const obj = { foo: 'bar' };
       const keyPathExists = helpers.hasKeyPath(obj, 'qux');
 
-      expect(keyPathExists).to.be.false;
+      assert.equal(keyPathExists, false);
     });
 
     it('should return true if the complex key path exists', () => {
       const obj = { foo: { bar: 'baz' } };
       const keyPathExists = helpers.hasKeyPath(obj, 'foo.bar');
 
-      expect(keyPathExists).to.be.true;
+      assert.equal(keyPathExists, true);
     });
 
     it('should return false if the complex key path does not exist', () => {
       const obj = { foo: { bar: 'baz' } };
       const keyPathExists = helpers.hasKeyPath(obj, 'foo.bar.qux');
 
-      expect(keyPathExists).to.be.false;
+      assert.equal(keyPathExists, false);
     });
   });
 
@@ -50,28 +44,28 @@ describe('settings-helpers', () => {
       const obj = { foo: 'bar' };
       const value = helpers.getValueAtKeyPath(obj, 'foo');
 
-      expect(value).to.deep.equal(obj.foo);
+      assert.equal(value, obj.foo);
     });
 
     it('should return undefined if the value at the given simple key path does not exist', () => {
       const obj = { foo: 'bar' };
       const value = helpers.getValueAtKeyPath(obj, 'qux');
 
-      expect(value).to.be.undefined;
+      assert.equal(value, undefined);
     });
 
     it('should return the value at the given complex key path', () => {
       const obj = { foo: { bar: 'baz' } };
       const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
 
-      expect(value).to.deep.equal(obj.foo.bar);
+      assert.equal(value, obj.foo.bar);
     });
 
     it('should return undefined if the value at the given complex key path does not exist', () => {
       const obj = { foo: { bar: 'baz' } };
       const value = helpers.getValueAtKeyPath(obj, 'foo.bar.qux');
 
-      expect(value).to.be.undefined;
+      assert.equal(value, undefined);
     });
   });
 
@@ -84,7 +78,7 @@ describe('settings-helpers', () => {
 
       const value = helpers.getValueAtKeyPath(obj, 'foo');
 
-      expect(value).to.deep.equal('bar');
+      assert.equal(value, 'bar');
     });
 
     it('should overwrite the value at the given simple key path', () => {
@@ -94,7 +88,7 @@ describe('settings-helpers', () => {
 
       const value = helpers.getValueAtKeyPath(obj, 'foo');
 
-      expect(value).to.deep.equal('baz');
+      assert.equal(value, 'baz');
     });
 
     it('should set the value at the given complex key path', () => {
@@ -104,7 +98,7 @@ describe('settings-helpers', () => {
 
       const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
 
-      expect(value).to.deep.equal('baz');
+      assert.equal(value, 'baz');
     });
 
     it('should overwrite the value at the given complex key path', () => {
@@ -114,7 +108,7 @@ describe('settings-helpers', () => {
 
       const value = helpers.getValueAtKeyPath(obj, 'foo.bar');
 
-      expect(value).to.deep.equal('qux');
+      assert.equal(value, 'qux');
     });
   });
 
@@ -127,7 +121,7 @@ describe('settings-helpers', () => {
 
       const hasKeyPath = helpers.hasKeyPath(obj, 'foo');
 
-      expect(hasKeyPath).to.be.false;
+      assert.equal(hasKeyPath, false);
     });
 
     it('should delete the value at the given complex key path', () => {
@@ -137,7 +131,7 @@ describe('settings-helpers', () => {
 
       const hasKeyPath = helpers.hasKeyPath(obj, 'foo.bar');
 
-      expect(hasKeyPath).to.be.false;
+      assert.equal(hasKeyPath, false);
     });
   });
 });
@@ -159,13 +153,13 @@ describe('settings', () => {
       it('should return true if the key path exists', () => {
         const keyExists = settings.has('foo');
 
-        expect(keyExists).to.be.true;
+        assert.equal(keyExists, true);
       });
 
       it('should return false if the key path does not exist', () => {
         const keyExists = settings.has('qux');
 
-        expect(keyExists).to.be.false;
+        assert.equal(keyExists, false);
       });
     });
 
@@ -174,19 +168,19 @@ describe('settings', () => {
       it('should return the value at the given simple key path', () => {
         const value = settings.get('foo');
 
-        expect(value).to.deep.equal({ bar: 'baz' });
+        assert.deepEqual(value, { bar: 'baz' });
       });
 
       it('should return the value at the given complex key path', () => {
         const value = settings.get('foo.bar');
 
-        expect(value).to.deep.equal('baz');
+        assert.equal(value, 'baz');
       });
 
       it('should return undefined if the given key path does not exist', () => {
         const value = settings.get('snap');
 
-        expect(value).to.be.undefined;
+        assert.equal(value, undefined);
       });
     });
 
@@ -195,7 +189,7 @@ describe('settings', () => {
       it('should return the entire settings object', () => {
         const value = settings.getAll();
 
-        expect(value).to.deep.equal({ foo: { bar: 'baz' }});
+        assert.deepEqual(value, { foo: { bar: 'baz' } });
       });
     });
 
@@ -206,7 +200,7 @@ describe('settings', () => {
 
         const value = settings.get('foo');
 
-        expect(value).to.deep.equal({ bar: 'qux' });
+        assert.deepEqual(value, { bar: 'qux' });
       });
 
       it('should set the value at the given complex key path', () => {
@@ -214,7 +208,7 @@ describe('settings', () => {
 
         const value = settings.get('foo.bar');
 
-        expect(value).to.deep.equal('qux');
+        assert.equal(value, 'qux');
       });
 
       it('should accept options', () => {
@@ -222,26 +216,26 @@ describe('settings', () => {
 
         const value = settings.get('foo.bar', { prettify: true });
 
-        expect(value).to.deep.equal('qux');
+        assert.equal(value, 'qux');
       });
     });
 
     describe('setAll()', () => {
 
       it('should set the entire settings object', () => {
-        settings.setAll({ foo: { qux:'bar' } });
+        settings.setAll({ foo: { qux: 'bar' } });
 
         const obj = settings.getAll();
 
-        expect(obj).to.deep.equal({ foo: { qux:'bar' } });
+        assert.deepEqual(obj, { foo: { qux: 'bar' } });
       });
 
       it('should accept options', () => {
-        settings.setAll({ foo: { qux:'bar' } }, { prettify: true });
+        settings.setAll({ foo: { qux: 'bar' } }, { prettify: true });
 
         const obj = settings.getAll();
 
-        expect(obj).to.deep.equal({ foo: { qux:'bar' } });
+        assert.deepEqual(obj, { foo: { qux: 'bar' } });
       });
     });
 
@@ -252,7 +246,7 @@ describe('settings', () => {
 
         const keyExists = settings.has('foo');
 
-        expect(keyExists).to.be.false;
+        assert.equal(keyExists, false);
       });
 
       it('should delete the value at the given complex key path', () => {
@@ -260,7 +254,7 @@ describe('settings', () => {
 
         const keyExists = settings.has('foo.bar');
 
-        expect(keyExists).to.be.false;
+        assert.equal(keyExists, false);
       });
 
       it('should accept options', () => {
@@ -268,7 +262,7 @@ describe('settings', () => {
 
         const keyExists = settings.has('foo.bar');
 
-        expect(keyExists).to.be.false;
+        assert.equal(keyExists, false);
       });
     });
 
@@ -279,7 +273,7 @@ describe('settings', () => {
 
         const obj = settings.getAll();
 
-        expect(obj).to.deep.equal({});
+        assert.deepEqual(obj, {});
       });
 
       it('should accept options', () => {
@@ -287,7 +281,7 @@ describe('settings', () => {
 
         const obj = settings.getAll();
 
-        expect(obj).to.deep.equal({});
+        assert.deepEqual(obj, {});
       });
     });
 
@@ -295,8 +289,8 @@ describe('settings', () => {
 
       it('should watch the given simple key path', done => {
         const observer = settings.watch('foo', (newValue, oldValue) => {
-          expect(oldValue).to.deep.equal({ bar: 'baz' });
-          expect(newValue).to.deep.equal({ bar: 'qux' });
+          assert.deepEqual(oldValue, { bar: 'baz' });
+          assert.deepEqual(newValue, { bar: 'qux' });
 
           observer.dispose();
 
@@ -308,8 +302,8 @@ describe('settings', () => {
 
       it('should watch the given complex key path', done => {
         const observer = settings.watch('foo.bar', (newValue, oldValue) => {
-          expect(oldValue).to.deep.equal('baz');
-          expect(newValue).to.deep.equal('qux');
+          assert.deepEqual(oldValue, 'baz');
+          assert.deepEqual(newValue, 'qux');
 
           observer.dispose();
 
@@ -320,14 +314,14 @@ describe('settings', () => {
       });
 
       it('should dispose the key path watcher', done => {
-        const observer = settings.watch('foo', newValue => {
-          expect(newValue).to.not.exist;
+        const observer = settings.watch('foo', () => {
+          throw Error('Observer was not disposed.');
         });
 
         observer.dispose();
         settings.set('foo', 'baz');
 
-        done();
+        setTimeout(done, 500);
       });
     });
   });
