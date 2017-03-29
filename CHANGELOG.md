@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+v3.0.3 - Mar. 29, 2017
+----------------------
+* Update source code to be compliant with all ESlint rules. ([`9cee966`](https://github.com/nathanbuchar/electron-settings/commit/9cee9667cce71a914d8d0b3e52227fc1c27cb4af))
+
 v3.0.2 - Mar. 28, 2017
 ----------------------
 * Updated README and extracted API docs and FAQs into their own files. This is to encourage users on npm to visit GitHub as well as simplify the README as a whole. ([`7df95ee`](https://github.com/nathanbuchar/electron-settings/commit/7df95ee830ae932cadf72878e7d701e2ceab13ff))
