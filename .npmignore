@@ -1,6 +1,4 @@
 test
 
-.editorconfig
-.jscsrc
-.jshintrc
+.eslintrc
 .travis.yml
