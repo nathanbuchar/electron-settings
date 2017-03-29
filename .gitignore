@@ -2,6 +2,7 @@
 .atomignore
 .env
 
+*.log
 *~
 
 node_modules
