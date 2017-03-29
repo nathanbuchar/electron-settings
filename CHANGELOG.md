@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+v3.0.5 - Mar. 29, 2017
+----------------------
+* Adds parameter type checking to all public methods with useful error messages. ([`bfa9f48`](https://github.com/nathanbuchar/electron-settings/commit/bfa9f48a59400963bab49d9b2febcf07ebafbe1a))
+* Adds `opts` parameter to the `deleteAll()` method; Docs updated accordingly. ([`bfa9f48`](https://github.com/nathanbuchar/electron-settings/commit/bfa9f48a59400963bab49d9b2febcf07ebafbe1a))
+* Updates internal handling and delegation of settings to be more abstract. ([`bfa9f48`](https://github.com/nathanbuchar/electron-settings/commit/bfa9f48a59400963bab49d9b2febcf07ebafbe1a))
+
 v3.0.4 - Mar. 29, 2017
 ----------------------
 * Remove `electron-prebuilt` as a dependency, as it has been deprecated in lieu of `electron`. ([`4c1df12`](https://github.com/nathanbuchar/electron-settings/commit/4c1df12a567192b4afe072f1178eea32a653e0c2))
