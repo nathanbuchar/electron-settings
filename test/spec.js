@@ -13,7 +13,7 @@ const should = chai.should();
 
 describe('settings-helpers', () => {
 
-  describe('hasKeyPath', () => {
+  describe('hasKeyPath()', () => {
 
     it('should return true if the simple key path exists', () => {
       const obj = { foo: 'bar' };
@@ -44,7 +44,7 @@ describe('settings-helpers', () => {
     });
   });
 
-  describe('getValueAtKeyPath', () => {
+  describe('getValueAtKeyPath()', () => {
 
     it('should return the value at the given simple key path', () => {
       const obj = { foo: 'bar' };
@@ -75,7 +75,7 @@ describe('settings-helpers', () => {
     });
   });
 
-  describe('setValueAtKeyPath', () => {
+  describe('setValueAtKeyPath()', () => {
 
     it('should set the value at the given simple key path', () => {
       const obj = {};
@@ -118,7 +118,7 @@ describe('settings-helpers', () => {
     });
   });
 
-  describe('deleteValueAtKeyPath', () => {
+  describe('deleteValueAtKeyPath()', () => {
 
     it('should delete the value at the given simple key path', () => {
       const obj = { foo: 'bar' };
@@ -291,7 +291,7 @@ describe('settings', () => {
       });
     });
 
-    describe('watch', () => {
+    describe('watch()', () => {
 
       it('should watch the given simple key path', done => {
         const observer = settings.watch('foo', (newValue, oldValue) => {
