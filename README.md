@@ -50,13 +50,13 @@ settings.file();
 
 FAQs
 ----
-A list of frequently asked questions can be found [here][docs_faq].
+A list of frequently asked questions can be found on the Wiki [here][wiki_faq].
 
 
 API
 ---
 
-The API docs can be found [here][docs_api].
+The API docs can be found on the wiki [here][wiki_api].
 
 
 License
@@ -83,18 +83,18 @@ License
 [section_authors]: #authors
 [section_license]: #license
 
-[docs_api]: ./docs/api.md
-[docs_faq]: ./docs/faq.md
+[wiki_api]: ./wiki/API-documentation
+[wiki_faq]: ./wiki/FAQs
 
-[api_method_has]: ./docs/api.md#has
-[api_method_get]: ./docs/api.md#get
-[api_method_get-all]: ./docs/api.md#getall
-[api_method_set]: ./docs/api.md#set
-[api_method_set-all]: ./docs/api.md#setall
-[api_method_delete]: ./docs/api.md#delete
-[api_method_delete-all]: ./docs/api.md#deleteall
-[api_method_watch]: ./docs/api.md#watch
-[api_method_file]: ./docs/api.md#file
+[api_method_has]: ./wiki/API-documentation#has
+[api_method_get]: ./wiki/API-documentation#get
+[api_method_get-all]: ./wiki/API-documentation#getall
+[api_method_set]: ./wiki/API-documentation#set
+[api_method_set-all]: ./wiki/API-documentation#setall
+[api_method_delete]: ./wiki/API-documentation#delete
+[api_method_delete-all]: ./wiki/API-documentation#deleteall
+[api_method_watch]: ./wiki/API-documentation#watch
+[api_method_file]: ./wiki/API-documentation#file
 
 [external_electron]: https://electron.atom.io
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings
