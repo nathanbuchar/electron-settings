@@ -14,10 +14,6 @@ FAQs
 
     For example, given the object `{ foo: { bar: 'baz' } }`, the value at the key path `"foo.bar"` is the string `"baz"`.
 
-* **What data types may be stored?**
-
-    You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`.
-
 * **Where is the settings file saved?**
 
     In general, the settings file is stored in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname) in a file called `Settings`. If you wish, you may change the default directory by calling Electron's [`app.setPath()`](https://electron.atom.io/docs/api/app/#appsetpathname-path) method, but this is **not recommended**. Otherwise, the default user data directory for your system can be found below.
@@ -33,6 +29,10 @@ FAQs
     * **Linux**
 
         If you're running Linux, your app's default user data directory is either `$XDG_CONFIG_HOME/<Your App>` or `~/.config/<Your App>`.
+
+* **What data types may be stored?**
+
+    You may set a key path to any value supported by JSON: an object, array, string, number, boolean, or `null`.
 
 * **Can I use electron-settings in both the main and renderer processes?**
 
