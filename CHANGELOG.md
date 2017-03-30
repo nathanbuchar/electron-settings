@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ***
 
+v3.0.6 - Mar. 29, 2017
+----------------------
+* Adds the `file()` method which returns the path to the where the settings file is or will be. ([`6239832`](https://github.com/nathanbuchar/electron-settings/commit/6239832c53f5796df7527e561065bcb8f426d437))
+
 v3.0.5 - Mar. 29, 2017
 ----------------------
 * Adds parameter type checking to all public methods with useful error messages. ([`bfa9f48`](https://github.com/nathanbuchar/electron-settings/commit/bfa9f48a59400963bab49d9b2febcf07ebafbe1a))

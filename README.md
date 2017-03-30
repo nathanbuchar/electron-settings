@@ -3,7 +3,7 @@ electron-settings
 
 A simple persistent user settings manager for [Electron][external_electron].
 
-Originally adapted from Atom's own configuration manager, electron-settings allows you to save your users' settings to the disk so that they can be loaded in the next time your app starts without skipping a beat.
+The settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos) and originally adapted from Atom's own configuration manager, electron-settings allows you to save your users' settings to the disk so that they can be loaded in the next time your app starts without skipping a beat.
 
 Also, you can [subscribe to settings and get notified when their value changes][api_method_watch]. So that's pretty neat.
 
@@ -42,6 +42,9 @@ settings.get('name.first');
 
 settings.has('name.middle');
 // => false
+
+settings.file();
+// => /Users/Nathan/Application\ Support/MyApp/Settings
 ```
 
 
@@ -91,6 +94,7 @@ License
 [api_method_delete]: ./docs/api.md#delete
 [api_method_delete-all]: ./docs/api.md#deleteall
 [api_method_watch]: ./docs/api.md#watch
+[api_method_file]: ./docs/api.md#file
 
 [external_electron]: https://electron.atom.io
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings
