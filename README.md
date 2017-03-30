@@ -42,6 +42,9 @@ settings.get('name.first');
 
 settings.has('name.middle');
 // => false
+
+settings.file();
+// => /Users/Nathan/Application\ Support/MyApp/Settings
 ```
 
 
@@ -91,6 +94,7 @@ License
 [api_method_delete]: ./docs/api.md#delete
 [api_method_delete-all]: ./docs/api.md#deleteall
 [api_method_watch]: ./docs/api.md#watch
+[api_method_file]: ./docs/api.md#file
 
 [external_electron]: https://electron.atom.io
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings

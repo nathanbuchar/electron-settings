@@ -15,6 +15,7 @@ Methods
 * [`delete()`][method_delete]
 * [`deleteAll()`][method_delete-all]
 * [`watch()`][method_watch]
+* [`file()`][method_file]
 
 
 
@@ -314,7 +315,7 @@ Methods
     **Parameters**
 
     * **`keyPath`** *String* - The path to the key that we wish to watch for changes.
-    * **`handler`** *Function* - The callback that will be invoked if the value at the chosen key path changes. Passes the following as arguments:
+    * **`handler`** *Function* - The callback that will be invoked if the value at the chosen key path changes. The context of this callback is that of the observer instance. The handler passes the following as arguments:
       * `newValue` *Any*
       * `oldValue` *Any*
 
@@ -331,7 +332,7 @@ Methods
     }
     ```
 
-    Watch `"foo.bar"`.
+    Watch the key path `"foo.bar"`.
     ```js
     settings.watch('foo.bar', (newValue, oldValue) => {
       console.log(newValue);
@@ -363,6 +364,41 @@ Methods
     settings.delete('foo');
     ```
 
+    [Back to Top]
+
+
+* ## file()
+
+    **`settings.file():string`**
+
+    Returns the absolute path to where the settings file is or will be stored.
+
+    In general, the settings file is stored in your app's [user data directory](http://electron.atom.io/docs/api/app/#appgetpathname) in a file called `Settings`. If you wish, you may change the default directory by calling Electron's [`app.setPath()`](https://electron.atom.io/docs/api/app/#appsetpathname-path) method, but this is **not recommended**. Otherwise, the default user data directory for your system can be found below.
+
+    * **MacOS**
+
+        If you're running macOS, your app's default user data directory is `~/Library/Application\ Support/<Your App>`.
+
+    * **Windows**
+
+        If you're running Windows, your app's default user data directory is `%APPDATA%/<Your App>`.
+
+    * **Linux**
+
+        If you're running Linux, your app's default user data directory is either `$XDG_CONFIG_HOME/<Your App>` or `~/.config/<Your App>`.
+
+    ***
+
+    **Examples**
+
+    Get the path to the settings file.
+    ```js
+    settings.file();
+    // => /Users/Nathan/Application\ Support/MyApp/Settings
+    ```
+
+    [Back to Top]
+
 ***
 <small>Last updated **Mar. 29th, 2017** by [Nathan Buchar].</small>
 
@@ -385,5 +421,6 @@ Methods
 [method_delete]: #delete
 [method_delete-all]: #deleteall
 [method_watch]: #watch
+[method_file]: #file
 
 [external_gitter]: https://gitter.im/nathanbuchar/electron-settings

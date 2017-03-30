@@ -1,6 +1,9 @@
 /* global it, describe, before, after, beforeEach, afterEach */
 
 const assert = require('assert');
+const electron = require('electron');
+const fs = require('fs');
+const path = require('path');
 
 const settings = require('../');
 const helpers = require('../lib/settings-helpers');
@@ -146,6 +149,16 @@ describe('settings', () => {
     });
   });
 
+  afterEach('delete settings file', () => {
+    const settingsFilePath = settings.file();
+
+    try {
+      fs.unlinkSync(settingsFilePath);
+    } catch (err) {
+      // File may not exist.
+    }
+  });
+
   describe('methods', () => {
 
     describe('has()', () => {
@@ -287,45 +300,6 @@ describe('settings', () => {
 
     describe('watch()', () => {
 
-      it('should watch the given simple key path', done => {
-        const observer = settings.watch('foo', (newValue, oldValue) => {
-          assert.deepEqual(oldValue, { bar: 'baz' });
-          assert.deepEqual(newValue, { bar: 'qux' });
-
-          observer.dispose();
-
-          done();
-        });
-
-        settings.set('foo', { bar: 'qux' });
-      });
-
-      it('should watch the given complex key path', done => {
-        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
-          assert.deepEqual(oldValue, 'baz');
-          assert.deepEqual(newValue, 'qux');
-
-          observer.dispose();
-
-          done();
-        });
-
-        settings.set('foo.bar', 'qux');
-      });
-
-      it('should return undefined if the watched key path is deleted', done => {
-        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
-          assert.equal(oldValue, 'baz');
-          assert.equal(newValue, undefined);
-
-          observer.dispose();
-
-          done();
-        });
-
-        settings.delete('foo.bar');
-      });
-
       it('should invoke the watch handler with the proper context', done => {
         settings.watch('foo.bar', function handler() {
           assert.doesNotThrow(() => {
@@ -337,6 +311,45 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
+      it('should watch the given simple key path', done => {
+        settings.watch('foo', function handler(newValue, oldValue) {
+          assert.deepEqual(oldValue, { bar: 'baz' });
+          assert.deepEqual(newValue, { bar: 'qux' });
+
+          this.dispose();
+
+          done();
+        });
+
+        settings.set('foo', { bar: 'qux' });
+      });
+
+      it('should watch the given complex key path', done => {
+        settings.watch('foo.bar', function handler(newValue, oldValue) {
+          assert.deepEqual(oldValue, 'baz');
+          assert.deepEqual(newValue, 'qux');
+
+          this.dispose();
+
+          done();
+        });
+
+        settings.set('foo.bar', 'qux');
+      });
+
+      it('should return undefined if the watched key path is deleted', done => {
+        settings.watch('foo.bar', function handler(newValue, oldValue) {
+          assert.equal(oldValue, 'baz');
+          assert.equal(newValue, undefined);
+
+          this.dispose();
+
+          done();
+        });
+
+        settings.delete('foo.bar');
+      });
+
       it('should dispose the key path watcher', done => {
         const observer = settings.watch('foo', () => {
           throw Error('Observer was not disposed.');
@@ -345,7 +358,18 @@ describe('settings', () => {
         observer.dispose();
         settings.set('foo', 'baz');
 
-        setTimeout(done, 500);
+        setTimeout(done, 100);
+      });
+    });
+
+    describe('file()', () => {
+
+      it('should return the path to the settings file', () => {
+        const app = electron.app || electron.remote.app;
+        const userDataPath = app.getPath('userData');
+        const settingsFilePath = path.join(userDataPath, 'Settings');
+
+        assert.equal(settings.file(), settingsFilePath);
       });
     });
   });
