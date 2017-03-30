@@ -1,21 +1,18 @@
 electron-settings
 =================
 
-A simple persistent user settings manager for [Electron][external_electron].
-
-The settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos) and originally adapted from Atom's own configuration manager, electron-settings allows you to save your users' settings to the disk so that they can be loaded in the next time your app starts without skipping a beat.
-
-Also, you can [subscribe to settings and get notified when their value changes][api_method_watch]. So that's pretty neat.
-
 [![npm version](https://badge.fury.io/js/electron-settings.svg)](http://badge.fury.io/js/electron-settings)
 [![dependencies](https://david-dm.org/nathanbuchar/electron-settings.svg)](https://david-dm.org/nathanbuchar/electron-settings)
 [![Build Status](https://travis-ci.org/nathanbuchar/electron-settings.svg?branch=master)](https://travis-ci.org/nathanbuchar/electron-settings)
 [![Join the chat at https://gitter.im/nathanbuchar/electron-settings](https://badges.gitter.im/nathanbuchar/electron-settings.svg)](https://gitter.im/nathanbuchar/electron-settings?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+A simple persistent user settings framework for [Electron][external_electron].
 
+Originally adapted from Atom's own configuration manager and the settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos), electron-settings allows you to persist user settings and other data simply and easily.
 
-***
+Also, you can [subscribe to properties][api_method_watch] and get notified when their values change. So that's pretty nifty.
 
+<br/>
 
 
 Install
@@ -42,29 +39,23 @@ settings.get('name.first');
 
 settings.has('name.middle');
 // => false
-
-settings.file();
-// => /Users/Nathan/Application\ Support/MyApp/Settings
 ```
 
 
-FAQs
-----
-A list of frequently asked questions can be found on the Wiki [here][wiki_faq].
+Resources
+---------
+
+* [API Documentation][wiki_api]
+* [FAQs][wiki_faq]
+* [Changelog][wiki_changelog]
+* [License (ISC)][license]
 
 
-API
----
 
-The API docs can be found on the wiki [here][wiki_api].
+<br/>
+<br/>
+<hr/>
 
-
-License
--------
-[ISC][license]
-
-
-***
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
 
@@ -74,17 +65,12 @@ License
 
 [license]: ./LICENSE.md
 
-[Nathan Buchar]: mailto:hello@nathanbuchar.com
-
 [section_install]: #install
 [section_demo]: #demo
-[section_faqs]: #faq
-[section_api]: #api
-[section_authors]: #authors
-[section_license]: #license
 
 [wiki_api]: ./wiki/API-documentation
 [wiki_faq]: ./wiki/FAQs
+[wiki_changelog]: ./wiki/Changelog
 
 [api_method_has]: ./wiki/API-documentation#has
 [api_method_get]: ./wiki/API-documentation#get
