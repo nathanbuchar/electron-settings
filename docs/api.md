@@ -333,7 +333,7 @@ Methods
 
     Watch `"foo.bar"`.
     ```js
-    settings.watch('foo', (newValue, oldValue) => {
+    settings.watch('foo.bar', (newValue, oldValue) => {
       console.log(newValue);
       // => "qux"
     });
@@ -341,7 +341,7 @@ Methods
     settings.set('foo.bar', 'qux');
     ```
 
-    Dispose the key path watcher if the key is deleted.
+    Dispose the key path watcher after it is created.
     ```js
     const observer = settings.watch('foo', newValue => {
       if (newValue === undefined) {
@@ -349,8 +349,18 @@ Methods
       }
     });
 
-    settings.delete('foo');
+    observer.dispose();
+    ```
+
+    Dispose the key path watcher once the key is deleted.
+    ```js
+    settings.watch('foo', function handler(newValue) {
+      if (newValue === undefined) {
+        this.dispose();
+      }
     });
+
+    settings.delete('foo');
     ```
 
 ***
