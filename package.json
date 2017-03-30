@@ -1,7 +1,7 @@
 {
   "name": "electron-settings",
   "version": "3.0.7",
-  "description": "A simple persistent user settings manager for Electron.",
+  "description": "A simple persistent user settings framework for Electron.",
   "main": "index.js",
   "scripts": {
     "test": "npm run test:main && npm run test:renderer",
@@ -30,7 +30,8 @@
     "setAll",
     "delete",
     "deleteAll",
-    "watch"
+    "watch",
+    "file"
   ],
   "dependencies": {
     "clone": "^2.1.1",
