@@ -195,6 +195,12 @@ describe('settings', () => {
 
         assert.equal(value, undefined);
       });
+
+      it('should return the default value if the given key path does not exist', () => {
+        const value = settings.get('snap', 'crackle');
+
+        assert.equal(value, 'crackle');
+      });
     });
 
     describe('getAll()', () => {
