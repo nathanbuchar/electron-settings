@@ -67,7 +67,7 @@ Resources
 
 [license]: ./LICENSE.md
 
-[wiki_home]: ./wiki
-[wiki_api]: ./wiki/API-documentation
-[wiki_faq]: ./wiki/FAQs
-[wiki_changelog]: ./wiki/Changelog
+[wiki_home]: https://github.com/nathanbuchar/electron-settings/wiki
+[wiki_api]: https://github.com/nathanbuchar/electron-settings/wiki/API-documentation
+[wiki_faq]: https://github.com/nathanbuchar/electron-settings/wiki/FAQs
+[wiki_changelog]: https://github.com/nathanbuchar/electron-settings/wiki/Changelog
