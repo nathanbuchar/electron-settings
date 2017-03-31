@@ -1,12 +1,12 @@
 {
   "name": "electron-settings",
-  "version": "3.0.7",
-  "description": "A simple persistent user settings manager for Electron.",
+  "version": "3.0.8",
+  "description": "A simple persistent user settings framework for Electron.",
   "main": "index.js",
   "scripts": {
     "test": "npm run test:main && npm run test:renderer",
-    "test:main": "electron-mocha test",
-    "test:renderer": "electron-mocha test --renderer"
+    "test:main": "electron-mocha tests",
+    "test:renderer": "electron-mocha tests --renderer"
   },
   "repository": {
     "type": "git",
@@ -30,15 +30,15 @@
     "setAll",
     "delete",
     "deleteAll",
-    "watch"
+    "watch",
+    "file"
   ],
   "dependencies": {
-    "clone": "^2.1.1",
     "deep-equal": "^1.0.1",
     "fs-extra": "^2.1.2"
   },
   "devDependencies": {
-    "electron": "^1.0.0",
+    "electron": "^1.6.2",
     "electron-mocha": "^3.4.0",
     "eslint": "^3.18.0",
     "eslint-config-airbnb-base": "^11.1.2",
