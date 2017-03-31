@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test:main && npm run test:renderer",
-    "test:main": "electron-mocha test",
-    "test:renderer": "electron-mocha test --renderer"
+    "test:main": "electron-mocha tests",
+    "test:renderer": "electron-mocha tests --renderer"
   },
   "repository": {
     "type": "git",
