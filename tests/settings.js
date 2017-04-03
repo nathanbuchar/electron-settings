@@ -211,6 +211,19 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
+      it('should watch for changes not made by electron-settings', done => {
+        settings.watch('foo.bar', function handler(newValue, oldValue) {
+          assert.deepEqual(oldValue, 'baz');
+          assert.deepEqual(newValue, 'qux');
+
+          this.dispose();
+
+          done();
+        });
+
+        fs.writeFileSync(settings.file(), JSON.stringify({ foo: { bar: 'qux' } }));
+      });
+
       it('should return undefined if the watched key path is deleted', done => {
         settings.watch('foo.bar', function handler(newValue, oldValue) {
           assert.equal(oldValue, 'baz');

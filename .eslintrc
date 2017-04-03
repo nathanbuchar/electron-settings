@@ -8,6 +8,7 @@
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-param-reassign": "off",
     "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-shadow": "off",
     "no-underscore-dangle": "off",
     "padded-blocks": "off",
     "prefer-template": "off"
