@@ -82,6 +82,13 @@ describe('settings', () => {
 
     describe('set()', () => {
 
+      it('should return the settings instance', done => {
+        assert.doesNotThrow(() => {
+          settings.set('foo', 'bar').has('foo');
+          done();
+        });
+      });
+
       it('should set the value at the given simple key path', () => {
         settings.set('foo', { bar: 'qux' });
 
@@ -109,6 +116,13 @@ describe('settings', () => {
 
     describe('setAll()', () => {
 
+      it('should return the settings instance', done => {
+        assert.doesNotThrow(() => {
+          settings.setAll({ foo: 'bar' }).has('foo');
+          done();
+        });
+      });
+
       it('should set the entire settings object', () => {
         settings.setAll({ foo: { qux: 'bar' } });
 
@@ -127,6 +141,13 @@ describe('settings', () => {
     });
 
     describe('delete()', () => {
+
+      it('should return the settings instance', done => {
+        assert.doesNotThrow(() => {
+          settings.delete('foo').has('foo');
+          done();
+        });
+      });
 
       it('should delete the value at the given simple key path', () => {
         settings.delete('foo');
@@ -154,6 +175,13 @@ describe('settings', () => {
     });
 
     describe('deleteAll()', () => {
+
+      it('should return the settings instance', done => {
+        assert.doesNotThrow(() => {
+          settings.deleteAll().has('foo');
+          done();
+        });
+      });
 
       it('should delete the entire settings object', () => {
         settings.deleteAll();
