@@ -11,7 +11,7 @@ A simple persistent user settings framework for [Electron][external_electron].
 
 Originally adapted from Atom's own configuration manager and the settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos), electron-settings allows you to persist user settings and other data simply and easily.
 
-Also, you can [subscribe to properties](./wiki/API-documentation#watch) and get notified when their values change. So that's pretty nifty.
+Also, you can [subscribe to properties](https://github.com/nathanbuchar/electron-settings/wiki/API-documentation#watch) and get notified when their values change. So that's pretty nifty.
 
 <br/>
 
