@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "3.0.11",
+  "version": "3.0.12",
   "description": "A simple persistent user settings framework for Electron.",
   "main": "index.js",
   "scripts": {
