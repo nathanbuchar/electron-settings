@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanbuchar/electron-settings"
+    "url": "https://github.com/nathanbuchar/electron-settings.git"
   },
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
   "license": "ISC",
@@ -35,14 +35,15 @@
   ],
   "dependencies": {
     "clone": "^2.1.1",
-    "jsonfile": "^2.4.0"
+    "jsonfile": "^3.0.0"
   },
   "devDependencies": {
-    "electron": "^1.6.2",
+    "electron": "^1.7.2",
     "electron-mocha": "^3.4.0",
-    "eslint": "^3.18.0",
-    "eslint-config-airbnb-base": "^11.1.2",
-    "eslint-plugin-import": "^2.2.0",
-    "mocha": "^3.2.0"
+    "eslint": "^3.19.0",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.3.0",
+    "mocha": "^3.4.2",
+    "randomstring": "^1.1.5"
   }
 }

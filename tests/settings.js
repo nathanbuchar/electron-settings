@@ -4,6 +4,9 @@ const assert = require('assert');
 const electron = require('electron');
 const fs = require('fs');
 const path = require('path');
+const randomstring = require('randomstring');
+
+const app = electron.app || electron.remote.app;
 
 const settings = require('../');
 
@@ -25,6 +28,9 @@ describe('settings', () => {
     } catch (err) {
       // File may not exist.
     }
+
+    // Reset the settings file path.
+    settings.clearPath();
   });
 
   describe('methods', () => {
@@ -280,11 +286,40 @@ describe('settings', () => {
     describe('file()', () => {
 
       it('should return the path to the settings file', () => {
-        const app = electron.app || electron.remote.app;
         const userDataPath = app.getPath('userData');
         const settingsFilePath = path.join(userDataPath, 'Settings');
 
         assert.equal(settings.file(), settingsFilePath);
+      });
+    });
+
+    describe('setPath()', () => {
+
+      it('should set a custom path for the settings file', () => {
+        const userDataPath = app.getPath('userData');
+        const customSettingsFilePath = path.join(userDataPath, randomstring.generate(16));
+
+        settings.setPath(customSettingsFilePath);
+        settings.set('foo.bar', 'qux');
+
+        assert.deepEqual(settings.get('foo.bar'), 'qux');
+        assert.equal(settings.file(), customSettingsFilePath);
+      });
+    });
+
+    describe('clearPath()', () => {
+
+      it('should clear a custom path for the settings file', () => {
+        const userDataPath = app.getPath('userData');
+        const customSettingsFilePath = path.join(userDataPath, randomstring.generate(16));
+        const defaultSettingsFilePath = path.join(userDataPath, 'Settings');
+
+        settings.setPath(customSettingsFilePath);
+        settings.set('foo.bar', 'qux');
+        settings.clearPath();
+
+        assert.deepEqual(settings.get('foo.bar'), 'baz');
+        assert.equal(settings.file(), defaultSettingsFilePath);
       });
     });
   });
