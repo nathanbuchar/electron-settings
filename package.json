@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nathanbuchar/electron-settings"
+    "url": "https://github.com/nathanbuchar/electron-settings.git"
   },
   "author": "Nathan Buchar <hello@nathanbuchar.com>",
   "license": "ISC",
