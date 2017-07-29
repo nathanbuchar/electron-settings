@@ -15,7 +15,8 @@ describe('settings', () => {
   beforeEach('reset settings', () => {
     settings.setAll({
       foo: {
-        bar: 'baz'
+        bar: 'baz',
+        'bi.zz': 'bizz'
       }
     });
   });
@@ -48,6 +49,16 @@ describe('settings', () => {
 
         assert.equal(keyExists, false);
       });
+
+      it('works with all path formats', () => {
+        [
+          'foo.bar',
+          ['foo', 'bar'],
+          'foo.bi\\.zz'
+        ].forEach(path => {
+          assert.equal(settings.has(path), true);
+        });
+      });
     });
 
     describe('get()', () => {
@@ -55,7 +66,7 @@ describe('settings', () => {
       it('should return the value at the given simple key path', () => {
         const value = settings.get('foo');
 
-        assert.deepEqual(value, { bar: 'baz' });
+        assert.deepEqual(value, { bar: 'baz', 'bi.zz': 'bizz' });
       });
 
       it('should return the value at the given complex key path', () => {
@@ -75,6 +86,16 @@ describe('settings', () => {
 
         assert.equal(value, 'crackle');
       });
+
+      it('works with all path formats', () => {
+        [
+          ['foo.bar', 'baz'],
+          [['foo', 'bar'], 'baz'],
+          ['foo.bi\\.zz', 'bizz']
+        ].forEach(([path, value]) => {
+          assert.equal(settings.get(path), value);
+        });
+      });
     });
 
     describe('getAll()', () => {
@@ -82,7 +103,14 @@ describe('settings', () => {
       it('should return the entire settings object', () => {
         const value = settings.getAll();
 
-        assert.deepEqual(value, { foo: { bar: 'baz' } });
+        assert.deepEqual(
+          value,
+          {
+            foo: {
+              bar: 'baz',
+              'bi.zz': 'bizz'
+            }
+          });
       });
     });
 
@@ -114,9 +142,22 @@ describe('settings', () => {
       it('should accept options', () => {
         settings.set('foo.bar', 'qux');
 
-        const value = settings.get('foo.bar', { prettify: true });
+        const value = settings.get('foo.bar', '__default__');
 
         assert.equal(value, 'qux');
+      });
+
+      it('works with all path formats', () => {
+        [
+          'foo.bar',
+          ['foo', 'bar'],
+          'foo.bi\\.zz'
+        ].forEach(path => {
+          const newValue = `${settings.get(path)}-changed`;
+          settings.set(path, newValue);
+
+          assert.equal(settings.get(path, '__not-this__'), newValue);
+        });
       });
     });
 
@@ -178,6 +219,20 @@ describe('settings', () => {
 
         assert.equal(keyExists, false);
       });
+
+      it('works with all path formats', () => {
+        [
+          'foo.bar',
+          ['foo', 'bar'],
+          'foo.bi\\.zz'
+        ].forEach(path => {
+          settings.set(path, 'the-value');
+          assert.equal(settings.has(path), true);
+
+          settings.delete(path);
+          assert.equal(settings.has(path), false);
+        });
+      });
     });
 
     describe('deleteAll()', () => {
@@ -221,15 +276,15 @@ describe('settings', () => {
 
       it('should watch the given simple key path', done => {
         settings.watch('foo', function handler(newValue, oldValue) {
-          assert.deepEqual(oldValue, { bar: 'baz' });
-          assert.deepEqual(newValue, { bar: 'qux' });
+          assert.deepEqual(oldValue, { bar: 'baz', 'bi.zz': 'bizz' });
+          assert.deepEqual(newValue, { bar: 'qux', 'bi.zz': 'bizz' });
 
           this.dispose();
 
           done();
         });
 
-        settings.set('foo', { bar: 'qux' });
+        settings.set('foo', { bar: 'qux', 'bi.zz': 'bizz' });
       });
 
       it('should watch the given complex key path', done => {
@@ -281,6 +336,33 @@ describe('settings', () => {
 
         setTimeout(done, 100);
       });
+
+      it('works with all path formats', () => {
+        return [
+          'foo.bar',
+          ['foo', 'bar'],
+          'foo.bi\\.zz'
+        ].reduce(
+          (chain, path, i) => chain.then(() => new Promise((resolve, reject) => {
+            const initialValue = settings.get(path);
+            const nextValue = `${initialValue}-${i}`;
+            settings.watch(path, function handler(newValue, oldValue) {
+              try {
+                assert.equal(oldValue, initialValue);
+                assert.equal(newValue, nextValue);
+
+                this.dispose();
+                resolve();
+              } catch (err) {
+                reject(err);
+              }
+            });
+
+            settings.set(path, nextValue);
+          })),
+          Promise.resolve()
+        )
+      });
     });
 
     describe('file()', () => {
@@ -320,6 +402,42 @@ describe('settings', () => {
 
         assert.deepEqual(settings.get('foo.bar'), 'baz');
         assert.equal(settings.file(), defaultSettingsFilePath);
+      });
+    });
+  });
+
+  describe('internal methods', () => {
+    describe('_checkKeyPathType', () => {
+      const errorPattern = /string or an array of strings/;
+
+      it('accepts strings', () => {
+        settings._chechKeyPathType('foo.bar');
+      });
+
+      it('accepts arrays of strings', () => {
+        settings._chechKeyPathType(['foo', 'bar']);
+      });
+
+      it('accepts empty arrays', () => {
+        settings._chechKeyPathType([]);
+      });
+
+      it('fails on arrays with not-only strings', () => {
+        assert.throws(
+          () => settings._chechKeyPathType(['a', 1]),
+          errorPattern
+        );
+      });
+
+      it('fails on other types', () => {
+        assert.throws(
+          () => settings._chechKeyPathType(142),
+          errorPattern
+        );
+        assert.throws(
+          () => settings._chechKeyPathType({}),
+          errorPattern
+        );
       });
     });
   });
