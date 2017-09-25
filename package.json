@@ -35,15 +35,15 @@
   ],
   "dependencies": {
     "clone": "^2.1.1",
-    "jsonfile": "^3.0.0"
+    "jsonfile": "^4.0.0"
   },
   "devDependencies": {
-    "electron": "^1.7.2",
-    "electron-mocha": "^3.4.0",
-    "eslint": "^3.19.0",
-    "eslint-config-airbnb-base": "^11.2.0",
-    "eslint-plugin-import": "^2.3.0",
-    "mocha": "^3.4.2",
+    "electron": "^1.7.8",
+    "electron-mocha": "^4.0.3",
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb-base": "^12.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "mocha": "^3.5.3",
     "randomstring": "^1.1.5"
   }
 }
