@@ -28,19 +28,25 @@ Demo
 ----
 
 ```js
+const { app } = require('electron');
 const settings = require('electron-settings');
 
-settings.set('name', {
-  first: 'Cosmo',
-  last: 'Kramer'
+app.on('ready', () => {
+
+  settings.set('name', {
+    first: 'Cosmo',
+    last: 'Kramer'
+  });
+
+  settings.get('name.first');
+  // => "Cosmo"
+
+  settings.has('name.middle');
+  // => false
 });
-
-settings.get('name.first');
-// => "Cosmo"
-
-settings.has('name.middle');
-// => false
 ```
+
+:warning: **Please note:** Any and all interaction with electron-settings must be executed after the Electron app has fired the `ready` event, otherwise your app may encounter unexpected errors or data loss.
 
 
 Resources
