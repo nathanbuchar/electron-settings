@@ -1,4 +1,4 @@
-/* global it, describe, before, after, beforeEach, afterEach */
+/* global it, describe, beforeEach, afterEach */
 
 const assert = require('assert');
 const electron = require('electron');
@@ -245,19 +245,6 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
-      it('should watch for changes not made by electron-settings', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
-          assert.deepEqual(oldValue, 'baz');
-          assert.deepEqual(newValue, 'qux');
-
-          this.dispose();
-
-          done();
-        });
-
-        fs.writeFileSync(settings.file(), JSON.stringify({ foo: { bar: 'qux' } }));
-      });
-
       it('should return undefined if the watched key path is deleted', done => {
         settings.watch('foo.bar', function handler(newValue, oldValue) {
           assert.equal(oldValue, 'baz');
@@ -307,19 +294,17 @@ describe('settings', () => {
       });
     });
 
-    describe('clearPath()', () => {
 
-      it('should clear a custom path for the settings file', () => {
-        const userDataPath = app.getPath('userData');
-        const customSettingsFilePath = path.join(userDataPath, randomstring.generate(16));
-        const defaultSettingsFilePath = path.join(userDataPath, 'Settings');
+    describe('unwatch()', () => {
+      it('should remote hander after unwatch', () => {
+        const handler = () => {
+          assert.doesNotThrow(() => {
+          });
+        };
 
-        settings.setPath(customSettingsFilePath);
-        settings.set('foo.bar', 'qux');
-        settings.clearPath();
-
-        assert.deepEqual(settings.get('foo.bar'), 'baz');
-        assert.equal(settings.file(), defaultSettingsFilePath);
+        settings.watch('foo', handler);
+        settings.unwatch('foo', handler);
+        settings.set('foo', { bar: 'qux' });
       });
     });
   });

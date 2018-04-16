@@ -1,26 +1,20 @@
 electron-settings
 =================
 
-[![Npm version][badge_npm-version]][external_npm]
-[![Npm downloads][badge_npm-downloads]][external_npm]
-[![David][badge_david]][external_david]
-[![Travis][badge_travis]][external_travis]
-[![Gitter][badge_gitter]][external_gitter]
+This is a fork version of [electron-settings](https://www.npmjs.com/package/electron-settings) with some below changes
+ - Use lodash to simplify the code. Make code easier to understand
+ - Use memory watcher instead of file watcher. Make watcher more efficient, we do not have to read file everytime we want to get a propety
+ - Support unwatch api that allow user to unregiester his watcher
 
-A simple persistent user settings framework for [Electron][external_electron].
+**Please note:** because this library watches on memory instead of file. Please not that the change event **is not fired** when you change value directly on setting file
 
-Originally adapted from Atom's own configuration manager and the settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos), electron-settings allows you to persist user settings and other data simply and easily.
-
-Also, you can [subscribe to properties](https://github.com/nathanbuchar/electron-settings/wiki/API-documentation#watch) and get notified when their values change. So that's pretty nifty.
-
-<br/>
 
 
 Install
 -------
 
 ```
-$ npm install --save electron-settings
+$ npm install --save git+https://github.com/anyTV/electron-settings.git
 ```
 
 
@@ -58,11 +52,6 @@ Resources
 * [Changelog][wiki_changelog]
 * [License (ISC)][license]
 
-
-
-<br/>
-<br/>
-<hr/>
 
 <small>**Having trouble?** [Get help on Gitter][external_gitter].</small>
 
