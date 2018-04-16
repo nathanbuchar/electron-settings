@@ -3,8 +3,8 @@ electron-settings
 
 This is a fork version of [electron-settings](https://www.npmjs.com/package/electron-settings) with some below changes
  - Use lodash to simplify the code. Make code easier to understand
- - Use memory watcher instead of file watcher. Make watcher more efficient, we do not have to read file everytime we want to get a propety
- - Support unwatch api that allow user to unregiester his watcher
+ - Use memory watcher instead of file watcher. Make watcher more efficient, we do not have to read file everytime we want to get a property
+ - Support unwatch api that allow user to unregister his watcher
 
 **Please note:** because this library watches on memory instead of file. Please not that the change event **is not fired** when you change value directly on setting file
 
