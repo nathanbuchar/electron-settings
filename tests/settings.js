@@ -209,9 +209,9 @@ describe('settings', () => {
     describe('watch()', () => {
 
       it('should invoke the watch handler with the proper context', done => {
-        settings.watch('foo.bar', function handler() {
+        const observer = settings.watch('foo.bar', () => {
           assert.doesNotThrow(() => {
-            this.dispose();
+            settings.unwatch(observer);
             done();
           });
         });
@@ -220,11 +220,11 @@ describe('settings', () => {
       });
 
       it('should watch the given simple key path', done => {
-        settings.watch('foo', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo', (newValue, oldValue) => {
           assert.deepEqual(oldValue, { bar: 'baz' });
           assert.deepEqual(newValue, { bar: 'qux' });
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -233,11 +233,11 @@ describe('settings', () => {
       });
 
       it('should watch the given complex key path', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
           assert.deepEqual(oldValue, 'baz');
           assert.deepEqual(newValue, 'qux');
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -246,11 +246,11 @@ describe('settings', () => {
       });
 
       it('should return undefined if the watched key path is deleted', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
           assert.equal(oldValue, 'baz');
           assert.equal(newValue, undefined);
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -263,7 +263,7 @@ describe('settings', () => {
           throw Error('Observer was not disposed.');
         });
 
-        observer.dispose();
+        settings.unwatch(observer);
         settings.set('foo', 'baz');
 
         setTimeout(done, 100);
