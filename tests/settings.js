@@ -7,9 +7,8 @@ const path = require('path');
 const randomstring = require('randomstring');
 
 const app = electron.app || electron.remote.app;
-const Settings = require('..');
+const settings = require('..');
 
-const settings = new Settings();
 settings.initialize();
 
 describe('settings', () => {
