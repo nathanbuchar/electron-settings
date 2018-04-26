@@ -27,6 +27,8 @@ const settings = require('electron-settings');
 
 app.on('ready', () => {
 
+  // call method initialize() to start reading setting file and load into memory object
+  settings.initialize()
   settings.set('name', {
     first: 'Cosmo',
     last: 'Kramer'
