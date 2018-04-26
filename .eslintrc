@@ -11,6 +11,15 @@
     "no-shadow": "off",
     "no-underscore-dangle": "off",
     "padded-blocks": "off",
-    "prefer-template": "off"
+    "prefer-template": "off",
+    "linebreak-style": ["error", "windows"],
+    "no-console": "off",
+    "no-multiple-empty-lines": ["error", { "max": 2, "maxEOF": 1}],
+    "lines-between-class-members": ["error", "always"],
+    "padding-line-between-statements": [
+        "error",
+        { "blankLine": "always", "prev": "*", "next": "function" },
+        { "blankLine": "always", "prev": "block-like", "next": "*" }
+    ]
   }
 }

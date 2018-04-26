@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "3.1.4",
+  "version": "3.1.5",
   "description": "A simple persistent user settings framework for Electron.",
   "main": "index.js",
   "scripts": {
@@ -35,14 +35,16 @@
   ],
   "dependencies": {
     "clone": "^2.1.1",
-    "jsonfile": "^4.0.0"
+    "jsonfile": "^4.0.0",
+    "lodash": "^4.17.5",
+    "winston": "^2.4.1"
   },
   "devDependencies": {
-    "electron": "^1.7.8",
+    "electron": "^1.8.4",
     "electron-mocha": "^4.0.3",
-    "eslint": "^4.7.2",
-    "eslint-config-airbnb-base": "^12.0.0",
-    "eslint-plugin-import": "^2.7.0",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
     "mocha": "^3.5.3",
     "randomstring": "^1.1.5"
   }
