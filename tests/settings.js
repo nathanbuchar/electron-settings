@@ -246,6 +246,19 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
+      it('should watch parent when children changes', done => {
+        const observer = settings.watch('foo', (newValue, oldValue) => {
+          assert.equal(oldValue.bar, 'baz');
+          assert.equal(newValue.bar, 'qux');
+
+          settings.unwatch(observer);
+
+          done();
+        });
+
+        settings.set('foo.bar', 'qux');
+      });
+
       it('should return undefined if the watched key path is deleted', done => {
         const observer = settings.watch('foo.bar', (newValue, oldValue) => {
           assert.equal(oldValue, 'baz');
