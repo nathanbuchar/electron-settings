@@ -1,4 +1,4 @@
-/* global it, describe, before, after, beforeEach, afterEach */
+/* global it, describe, beforeEach, afterEach */
 
 const assert = require('assert');
 const electron = require('electron');
@@ -7,8 +7,9 @@ const path = require('path');
 const randomstring = require('randomstring');
 
 const app = electron.app || electron.remote.app;
+const settings = require('..');
 
-const settings = require('../');
+settings.initialize();
 
 describe('settings', () => {
 
@@ -209,9 +210,9 @@ describe('settings', () => {
     describe('watch()', () => {
 
       it('should invoke the watch handler with the proper context', done => {
-        settings.watch('foo.bar', function handler() {
+        const observer = settings.watch('foo.bar', () => {
           assert.doesNotThrow(() => {
-            this.dispose();
+            settings.unwatch(observer);
             done();
           });
         });
@@ -220,11 +221,11 @@ describe('settings', () => {
       });
 
       it('should watch the given simple key path', done => {
-        settings.watch('foo', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo', (newValue, oldValue) => {
           assert.deepEqual(oldValue, { bar: 'baz' });
           assert.deepEqual(newValue, { bar: 'qux' });
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -233,11 +234,11 @@ describe('settings', () => {
       });
 
       it('should watch the given complex key path', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
           assert.deepEqual(oldValue, 'baz');
           assert.deepEqual(newValue, 'qux');
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -245,25 +246,25 @@ describe('settings', () => {
         settings.set('foo.bar', 'qux');
       });
 
-      it('should watch for changes not made by electron-settings', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
-          assert.deepEqual(oldValue, 'baz');
-          assert.deepEqual(newValue, 'qux');
+      it('should watch parent when children changes', done => {
+        const observer = settings.watch('foo', (newValue, oldValue) => {
+          assert.equal(oldValue.bar, 'baz');
+          assert.equal(newValue.bar, 'qux');
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
 
-        fs.writeFileSync(settings.file(), JSON.stringify({ foo: { bar: 'qux' } }));
+        settings.set('foo.bar', 'qux');
       });
 
       it('should return undefined if the watched key path is deleted', done => {
-        settings.watch('foo.bar', function handler(newValue, oldValue) {
+        const observer = settings.watch('foo.bar', (newValue, oldValue) => {
           assert.equal(oldValue, 'baz');
           assert.equal(newValue, undefined);
 
-          this.dispose();
+          settings.unwatch(observer);
 
           done();
         });
@@ -276,7 +277,7 @@ describe('settings', () => {
           throw Error('Observer was not disposed.');
         });
 
-        observer.dispose();
+        settings.unwatch(observer);
         settings.set('foo', 'baz');
 
         setTimeout(done, 100);
@@ -307,19 +308,17 @@ describe('settings', () => {
       });
     });
 
-    describe('clearPath()', () => {
 
-      it('should clear a custom path for the settings file', () => {
-        const userDataPath = app.getPath('userData');
-        const customSettingsFilePath = path.join(userDataPath, randomstring.generate(16));
-        const defaultSettingsFilePath = path.join(userDataPath, 'Settings');
+    describe('unwatch()', () => {
+      it('should remote hander after unwatch', () => {
+        const handler = () => {
+          assert.doesNotThrow(() => {
+          });
+        };
 
-        settings.setPath(customSettingsFilePath);
-        settings.set('foo.bar', 'qux');
-        settings.clearPath();
-
-        assert.deepEqual(settings.get('foo.bar'), 'baz');
-        assert.equal(settings.file(), defaultSettingsFilePath);
+        settings.watch('foo', handler);
+        settings.unwatch('foo', handler);
+        settings.set('foo', { bar: 'qux' });
       });
     });
   });
