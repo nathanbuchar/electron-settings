@@ -1,4 +1,8 @@
-tests
+src
+docs
 
-.eslintrc
+tsconfig.json
+typedoc.json
+
+.eslintrc.js
 .travis.yml
