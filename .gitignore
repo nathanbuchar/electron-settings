@@ -1,6 +1,3 @@
-.DS_Store
-
-*.log
-*~
-
+dist
 node_modules
+tmp

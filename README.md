@@ -1,62 +1,45 @@
-electron-settings
-=================
+# Electron Settings
+
+A simple and robust settings management library for [Electron](https://electronjs.org).
+
+Born from Atom's original internal configuration manager and the settings manager of choice for Electron's own [API Demos app](https://github.com/electron/electron-api-demos), Electron Settings allows you to persist user settings and other data between app loads simply and easily.
 
 [![Npm version][badge_npm-version]][external_npm]
 [![Npm downloads][badge_npm-downloads]][external_npm]
 [![David][badge_david]][external_david]
 [![Travis][badge_travis]][external_travis]
-[![Gitter][badge_gitter]][external_gitter]
-
-A simple persistent user settings framework for [Electron][external_electron].
-
-Originally adapted from Atom's own configuration manager and the settings manager of choice for [Electron's own demo app](https://github.com/electron/electron-api-demos), electron-settings allows you to persist user settings and other data simply and easily.
-
-Also, you can [subscribe to properties](https://github.com/nathanbuchar/electron-settings/wiki/API-documentation#watch) and get notified when their values change. So that's pretty nifty.
 
 <br/>
 
-
-Install
--------
+### Install
 
 ```
-$ npm install --save electron-settings
+npm install electron-settings
 ```
 
+### Demo
 
-Demo
-----
+```ts
+import settings from 'electron-settings';
 
-```js
-const { app } = require('electron');
-const settings = require('electron-settings');
-
-app.on('ready', () => {
-
-  settings.set('name', {
-    first: 'Cosmo',
-    last: 'Kramer'
-  });
-
-  settings.get('name.first');
-  // => "Cosmo"
-
-  settings.has('name.middle');
-  // => false
+await settings.set('color', {
+  name: 'cerulean',
+  code: {
+    rgb: [0, 179, 230],
+    hex: '#003BE6'
+  }
 });
+
+await settings.get('color.name');
+// => "cerulean"
+
+await settings.get('color.code.rgb[1]');
+// => 179
 ```
 
-:warning: **Please note:** Any and all interaction with electron-settings must be executed after the Electron app has fired the `ready` event, otherwise your app may encounter unexpected errors or data loss.
+### API Docs
 
-
-Resources
----------
-
-* [Wiki][wiki_home]
-* [API Documentation][wiki_api]
-* [FAQs][wiki_faq]
-* [Changelog][wiki_changelog]
-* [License (ISC)][license]
+API docs and can be found at [electron-settings.js.org](https://electron-settings.js.org).
 
 
 
@@ -70,19 +53,12 @@ Resources
 
 
 
-
-[license]: ./LICENSE.md
+[docs]: https://nathanbuchar.github.io/electron-settings/
 
 [badge_npm-version]: https://img.shields.io/npm/v/electron-settings.svg
 [badge_npm-downloads]: https://img.shields.io/npm/dm/electron-settings.svg
 [badge_david]: https://img.shields.io/david/nathanbuchar/electron-settings.svg
 [badge_travis]: https://img.shields.io/travis/nathanbuchar/electron-settings/master.svg
-[badge_gitter]: https://img.shields.io/gitter/room/nathanbuchar/electron-settings.svg
-
-[wiki_home]: https://github.com/nathanbuchar/electron-settings/wiki
-[wiki_api]: https://github.com/nathanbuchar/electron-settings/wiki/API-documentation
-[wiki_faq]: https://github.com/nathanbuchar/electron-settings/wiki/FAQs
-[wiki_changelog]: https://github.com/nathanbuchar/electron-settings/wiki/Changelog
 
 [external_david]: https://david-dm.org/nathanbuchar/electron-settings
 [external_electron]: https://electron.atom.io

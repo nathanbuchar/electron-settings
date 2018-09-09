@@ -1,9 +1,54 @@
 language: node_js
+version: 1.0
+dist: focal
+services:
+  - xvfb
 node_js:
   - "stable"
-before_script:
-  - export DISPLAY=:99.0; sh -e /etc/init.d/xvfb start
+  - 12
+  - 10
+jobs:
+  fast_finish: true
+  include:
+    - node_js: 12
+      env: ELECTRON_VERSION=8
+    - node_js: 12
+      env: ELECTRON_VERSION=7
+    - node_js: 12
+      env: ELECTRON_VERSION=6
+    - node_js: 12
+      env: ELECTRON_VERSION=5
+    - node_js: 10
+      env: ELECTRON_VERSION=4
+    # - node_js: stable
+    #   env: ELECTRON_VERSION=beta
+before_install:
+  - if [[ -n $ELECTRON_VERSION ]]; then
+      npm install electron@$ELECTRON_VERSION;
+    fi
+install:
+  - npm install --no-progress
+  - $(npm bin)/electron --version
 notifications:
   email:
     on_success: never
     on_failure: change
+deploy:
+  - provider: npm
+    edge: true
+    skip_cleanup: true
+    email: $NPM_EMAIL_ADDRESS
+    api_key: $NPM_API_KEY
+    tag: latest
+    on:
+      tags: true
+  - provider: releases
+    skip_cleanup: true
+    api_key: $GITHUB_OAUTH_TOKEN
+    file_glob: true
+    file: dist/*
+    tag_name: $TRAVIS_TAG
+    target_commitish: $TRAVIS_COMMIT
+    prerelease: true
+    on:
+      tags: true
