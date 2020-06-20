@@ -69,6 +69,6 @@
     "typescript": "^3.9.3"
   },
   "peerDependencies": {
-    "electron": "^2.0.0"
+    "electron": ">= 2"
   }
 }
