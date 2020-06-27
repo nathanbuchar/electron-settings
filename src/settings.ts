@@ -62,7 +62,7 @@ import _unset from 'lodash.unset';
  * you would with any other object in JavaScript, and it
  * just feels natural.
  */
-export type KeyPath = string | Array<string | number>;
+type KeyPath = string | Array<string | number>;
 
 /**
  * `SettingsValue` types are the datatypes supported by
@@ -80,13 +80,13 @@ export type KeyPath = string | Array<string | number>;
  *     const lastLogin = await settings.get('user.lastLogin');
  *     const lastLoginDate = new Date(lastLogin);
  */
-export type SettingsValue = null | boolean | string | number | SettingsObject | SettingsValue[];
+type SettingsValue = null | boolean | string | number | SettingsObject | SettingsValue[];
 
 /**
  * A `SettingsObject` is an object whose property values
  * are of the type `SettingsValue`.
  */
-export type SettingsObject = {
+type SettingsObject = {
   [key: string]: SettingsValue;
 };
 
@@ -95,7 +95,7 @@ export type SettingsObject = {
  * Electron Settings that can be set using
  * [[configure|configure()]].
  */
-export type Config = {
+type Config = {
 
   /**
    * Whether or not to save the settings file atomically.
@@ -139,7 +139,6 @@ const defaultConfig: Config = {
   numSpaces: 2,
   prettify: false,
 };
-
 
 /** @internal */
 let config: Config = {
@@ -960,7 +959,7 @@ function unsetSync(keyPath?: KeyPath): void {
   }
 }
 
-export default {
+export = {
   file,
   configure,
   reset,
