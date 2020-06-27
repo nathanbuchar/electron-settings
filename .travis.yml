@@ -45,7 +45,6 @@ jobs:
         file: dist/*
         tag_name: $TRAVIS_TAG
         target_commitish: $TRAVIS_COMMIT
-        prerelease: true
         on:
           tags: true
 notifications:
