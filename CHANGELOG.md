@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.2](https://github.com/nathanbuchar/electron-settings/compare/v4.0.1...v4.0.2) (2020-06-27)
+
+
+### Bug Fixes
+
+* Fix module export for node ([9064b0f](https://github.com/nathanbuchar/electron-settings/commit/9064b0f71f9a508add7b7a76b0c9a830697beb80))
+
 ### [4.0.1](https://github.com/nathanbuchar/electron-settings/compare/v4.0.0...v4.0.1) (2020-06-20)
 
 ## [4.0.0](https://github.com/nathanbuchar/electron-settings/compare/v3.1.4...v4.0.0) (2020-06-07)
