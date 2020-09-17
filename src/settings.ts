@@ -1,3 +1,4 @@
+/* eslint linebreak-style: ["error", "windows"] */
 import electron from 'electron';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
@@ -157,18 +158,13 @@ function getElectron(): typeof Electron {
 }
 
 /**
- * Returns the Electron app. The app may need be accessed
- * via `Remote` depending on whether this code is running
- * in the main or renderer process.
+ * Returns the Electron app.
  *
  * @returns The Electron app.
  * @internal
  */
 function getElectronApp(): Electron.App {
-  const e = getElectron();
-  const app = e.app ?? e.remote.app;
-
-  return app;
+  return getElectron().app;
 }
 
 /**
@@ -210,7 +206,7 @@ function ensureSettingsFile(): Promise<void> {
     fs.stat(filePath, (err) => {
       if (err) {
         if (err.code === 'ENOENT') {
-          saveSettings({}).then(resolve, reject);
+          guideSavingSettings({}).then(resolve, reject);
         } else {
           reject(err);
         }
@@ -235,7 +231,7 @@ function ensureSettingsFileSync(): void {
   } catch (err) {
     if (err) {
       if (err.code === 'ENOENT') {
-        saveSettingsSync({});
+        guideSavingSettingsSync({});
       } else {
         throw err;
       }
@@ -289,6 +285,20 @@ function ensureSettingsDirSync(): void {
 }
 
 /**
+ * Checks what process is it, depending on that either calls [[loadSettings|loadSettings()]]
+ * directly or via sending async message to main process.
+ *
+ * @returns A promise which resolves with the settings object.
+ * @internal
+ */
+function guideLoadingSettings(): Promise<SettingsObject> {
+  const { ipcRenderer } = getElectron();
+  return ipcRenderer
+    ? ipcRenderer.invoke('electron-settings-load-settings')
+    : loadSettings();
+}
+
+/**
  * First ensures that the settings file exists then loads
  * the settings from the disk.
  *
@@ -316,6 +326,20 @@ function loadSettings(): Promise<SettingsObject> {
 }
 
 /**
+ * Checks what process is it, depending on that either calls [[loadSettingsSync|loadSettingsSync()]]
+ * directly or via sending sync message to main process.
+ *
+ * @returns The settings object.
+ * @internal
+ */
+function guideLoadingSettingSync(): SettingsObject {
+  const { ipcRenderer } = getElectron();
+  return ipcRenderer
+    ? ipcRenderer.sendSync('electron-settings-load-settings-sync')
+    : loadSettingsSync();
+}
+
+/**
  * First ensures that the settings file exists then loads
  * the settings from the disk.
  *
@@ -330,6 +354,21 @@ function loadSettingsSync(): SettingsObject {
   const data = fs.readFileSync(filePath, 'utf-8');
 
   return JSON.parse(data);
+}
+
+/**
+ * Checks what process is it, depending on that either calls [[saveSettings|saveSettings()]]
+ * directly or via sending async message to main process.
+ *
+ * @param obj The settings object to save.
+ * @returns A promise which resolves when the settings have been saved.
+ * @internal
+ */
+function guideSavingSettings(obj: SettingsObject): Promise<void> {
+  const { ipcRenderer } = getElectron();
+  return ipcRenderer
+    ? ipcRenderer.invoke('electron-settings-save-settings', obj)
+    : saveSettings(obj);
 }
 
 /**
@@ -364,6 +403,22 @@ function saveSettings(obj: SettingsObject): Promise<void> {
 }
 
 /**
+ * Checks what process is it, depending on that either calls [[saveSettingsSync|saveSettingsSync()]]
+ * directly or via sending async message to main process.
+ *
+ * @param obj The settings object to save.
+ * @internal
+ */
+function guideSavingSettingsSync(obj: SettingsObject): void {
+  const { ipcRenderer } = getElectron();
+  if (ipcRenderer) {
+    ipcRenderer.sendSync('electron-settings-save-settings-sync', obj);
+  } else {
+    saveSettingsSync(obj);
+  }
+}
+
+/**
  * Saves the settings to the disk.
  *
  * @param obj The settings object to save.
@@ -381,6 +436,34 @@ function saveSettingsSync(obj: SettingsObject): void {
   } else {
     fs.writeFileSync(filePath, data);
   }
+}
+
+/**
+ * Initializes the Electron Settings in the main process.
+ * Throws an error if you try to call it in renderer process.
+ *
+ * @example
+ *
+ *     settings.init();
+ */
+function init(): void {
+  const { ipcMain } = getElectron();
+  if (!ipcMain) {
+    throw new Error('You should init settings only in main process');
+  }
+  ipcMain.handle('electron-settings-load-settings', () => {
+    return loadSettings();
+  });
+  ipcMain.on('electron-settings-load-settings-sync', (event) => {
+    // eslint-disable-next-line no-param-reassign
+    event.returnValue = loadSettingsSync();
+  });
+  ipcMain.handle('electron-settings-save-settings', (event, obj) => {
+    return saveSettings(obj);
+  });
+  ipcMain.on('electron-settings-save-settings-sync', (event, obj) => {
+    saveSettingsSync(obj);
+  });
 }
 
 /**
@@ -495,7 +578,7 @@ function reset(): void {
  *     // => true
  */
 async function has(keyPath: KeyPath): Promise<boolean> {
-  const obj = await loadSettings();
+  const obj = await guideLoadingSettings();
 
   return _has(obj, keyPath);
 }
@@ -542,7 +625,7 @@ async function has(keyPath: KeyPath): Promise<boolean> {
  *     // => true
  */
 function hasSync(keyPath: KeyPath): boolean {
-  const obj = loadSettingsSync();
+  const obj = guideLoadingSettingSync();
 
   return _has(obj, keyPath);
 }
@@ -607,7 +690,7 @@ async function get(): Promise<SettingsObject>;
 async function get(keyPath: KeyPath): Promise<SettingsValue>;
 
 async function get(keyPath?: KeyPath): Promise<SettingsObject | SettingsValue> {
-  const obj = await loadSettings();
+  const obj = await guideLoadingSettings();
 
   if (keyPath) {
     return _get(obj, keyPath);
@@ -674,7 +757,7 @@ function getSync(): SettingsObject;
 function getSync(keyPath: KeyPath): SettingsValue;
 
 function getSync(keyPath?: KeyPath): SettingsValue {
-  const obj = loadSettingsSync();
+  const obj = guideLoadingSettingSync();
 
   if (keyPath) {
     return _get(obj, keyPath);
@@ -747,14 +830,14 @@ async function set(...args: [SettingsObject] | [KeyPath, SettingsValue]): Promis
   if (args.length === 1) {
     const [value] = args;
 
-    return saveSettings(value);
+    return guideSavingSettings(value);
   } else {
     const [keyPath, value] = args;
-    const obj = await loadSettings();
+    const obj = await guideLoadingSettings();
 
     _set(obj, keyPath, value);
 
-    return saveSettings(obj);
+    return guideSavingSettings(obj);
   }
 }
 
@@ -818,14 +901,14 @@ function setSync(...args: [SettingsObject] | [KeyPath, SettingsValue]): void {
   if (args.length === 1) {
     const [value] = args;
 
-    saveSettingsSync(value);
+    guideSavingSettingsSync(value);
   } else {
     const [keyPath, value] = args;
-    const obj = loadSettingsSync();
+    const obj = guideLoadingSettingSync();
 
     _set(obj, keyPath, value);
 
-    saveSettingsSync(obj);
+    guideSavingSettingsSync(obj);
   }
 }
 
@@ -885,14 +968,14 @@ async function unset(keyPath: KeyPath): Promise<void>;
 
 async function unset(keyPath?: KeyPath): Promise<void> {
   if (keyPath) {
-    const obj = await loadSettings();
+    const obj = await guideLoadingSettings();
 
     _unset(obj, keyPath);
 
-    return saveSettings(obj);
+    return guideSavingSettings(obj);
   } else {
     // Unset all settings by saving empty object.
-    return saveSettings({});
+    return guideSavingSettings({});
   }
 }
 
@@ -948,18 +1031,19 @@ function unsetSync(keyPath: KeyPath): void;
 
 function unsetSync(keyPath?: KeyPath): void {
   if (keyPath) {
-    const obj = loadSettingsSync();
+    const obj = guideLoadingSettingSync();
 
     _unset(obj, keyPath);
 
-    saveSettingsSync(obj);
+    guideSavingSettingsSync(obj);
   } else {
     // Unset all settings by saving empty object.
-    saveSettingsSync({});
+    guideSavingSettingsSync({});
   }
 }
 
 export = {
+  init,
   file,
   configure,
   reset,
