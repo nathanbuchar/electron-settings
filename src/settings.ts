@@ -206,7 +206,7 @@ function ensureSettingsFile(): Promise<void> {
     fs.stat(filePath, (err) => {
       if (err) {
         if (err.code === 'ENOENT') {
-          guideSavingSettings({}).then(resolve, reject);
+          proxySaveSettings({}).then(resolve, reject);
         } else {
           reject(err);
         }
@@ -231,7 +231,7 @@ function ensureSettingsFileSync(): void {
   } catch (err) {
     if (err) {
       if (err.code === 'ENOENT') {
-        guideSavingSettingsSync({});
+        proxySaveSettingsSync({});
       } else {
         throw err;
       }
@@ -291,7 +291,7 @@ function ensureSettingsDirSync(): void {
  * @returns A promise which resolves with the settings object.
  * @internal
  */
-function guideLoadingSettings(): Promise<SettingsObject> {
+function proxyLoadSettings(): Promise<SettingsObject> {
   const { ipcRenderer } = getElectron();
   return ipcRenderer
     ? ipcRenderer.invoke('electron-settings-load-settings')
@@ -332,7 +332,7 @@ function loadSettings(): Promise<SettingsObject> {
  * @returns The settings object.
  * @internal
  */
-function guideLoadingSettingSync(): SettingsObject {
+function proxyLoadSettingsync(): SettingsObject {
   const { ipcRenderer } = getElectron();
   return ipcRenderer
     ? ipcRenderer.sendSync('electron-settings-load-settings-sync')
@@ -364,7 +364,7 @@ function loadSettingsSync(): SettingsObject {
  * @returns A promise which resolves when the settings have been saved.
  * @internal
  */
-function guideSavingSettings(obj: SettingsObject): Promise<void> {
+function proxySaveSettings(obj: SettingsObject): Promise<void> {
   const { ipcRenderer } = getElectron();
   return ipcRenderer
     ? ipcRenderer.invoke('electron-settings-save-settings', obj)
@@ -409,7 +409,7 @@ function saveSettings(obj: SettingsObject): Promise<void> {
  * @param obj The settings object to save.
  * @internal
  */
-function guideSavingSettingsSync(obj: SettingsObject): void {
+function proxySaveSettingsSync(obj: SettingsObject): void {
   const { ipcRenderer } = getElectron();
   if (ipcRenderer) {
     ipcRenderer.sendSync('electron-settings-save-settings-sync', obj);
@@ -578,7 +578,7 @@ function reset(): void {
  *     // => true
  */
 async function has(keyPath: KeyPath): Promise<boolean> {
-  const obj = await guideLoadingSettings();
+  const obj = await proxyLoadSettings();
 
   return _has(obj, keyPath);
 }
@@ -625,7 +625,7 @@ async function has(keyPath: KeyPath): Promise<boolean> {
  *     // => true
  */
 function hasSync(keyPath: KeyPath): boolean {
-  const obj = guideLoadingSettingSync();
+  const obj = proxyLoadSettingsync();
 
   return _has(obj, keyPath);
 }
@@ -690,7 +690,7 @@ async function get(): Promise<SettingsObject>;
 async function get(keyPath: KeyPath): Promise<SettingsValue>;
 
 async function get(keyPath?: KeyPath): Promise<SettingsObject | SettingsValue> {
-  const obj = await guideLoadingSettings();
+  const obj = await proxyLoadSettings();
 
   if (keyPath) {
     return _get(obj, keyPath);
@@ -757,7 +757,7 @@ function getSync(): SettingsObject;
 function getSync(keyPath: KeyPath): SettingsValue;
 
 function getSync(keyPath?: KeyPath): SettingsValue {
-  const obj = guideLoadingSettingSync();
+  const obj = proxyLoadSettingsync();
 
   if (keyPath) {
     return _get(obj, keyPath);
@@ -830,14 +830,14 @@ async function set(...args: [SettingsObject] | [KeyPath, SettingsValue]): Promis
   if (args.length === 1) {
     const [value] = args;
 
-    return guideSavingSettings(value);
+    return proxySaveSettings(value);
   } else {
     const [keyPath, value] = args;
-    const obj = await guideLoadingSettings();
+    const obj = await proxyLoadSettings();
 
     _set(obj, keyPath, value);
 
-    return guideSavingSettings(obj);
+    return proxySaveSettings(obj);
   }
 }
 
@@ -901,14 +901,14 @@ function setSync(...args: [SettingsObject] | [KeyPath, SettingsValue]): void {
   if (args.length === 1) {
     const [value] = args;
 
-    guideSavingSettingsSync(value);
+    proxySaveSettingsSync(value);
   } else {
     const [keyPath, value] = args;
-    const obj = guideLoadingSettingSync();
+    const obj = proxyLoadSettingsync();
 
     _set(obj, keyPath, value);
 
-    guideSavingSettingsSync(obj);
+    proxySaveSettingsSync(obj);
   }
 }
 
@@ -968,14 +968,14 @@ async function unset(keyPath: KeyPath): Promise<void>;
 
 async function unset(keyPath?: KeyPath): Promise<void> {
   if (keyPath) {
-    const obj = await guideLoadingSettings();
+    const obj = await proxyLoadSettings();
 
     _unset(obj, keyPath);
 
-    return guideSavingSettings(obj);
+    return proxySaveSettings(obj);
   } else {
     // Unset all settings by saving empty object.
-    return guideSavingSettings({});
+    return proxySaveSettings({});
   }
 }
 
@@ -1031,14 +1031,14 @@ function unsetSync(keyPath: KeyPath): void;
 
 function unsetSync(keyPath?: KeyPath): void {
   if (keyPath) {
-    const obj = guideLoadingSettingSync();
+    const obj = proxyLoadSettingsync();
 
     _unset(obj, keyPath);
 
-    guideSavingSettingsSync(obj);
+    proxySaveSettingsSync(obj);
   } else {
     // Unset all settings by saving empty object.
-    guideSavingSettingsSync({});
+    proxySaveSettingsSync({});
   }
 }
 

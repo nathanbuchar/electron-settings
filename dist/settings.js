@@ -124,7 +124,7 @@ function ensureSettingsFile() {
         fs_1.default.stat(filePath, function (err) {
             if (err) {
                 if (err.code === 'ENOENT') {
-                    guideSavingSettings({}).then(resolve, reject);
+                    proxySaveSettings({}).then(resolve, reject);
                 }
                 else {
                     reject(err);
@@ -150,7 +150,7 @@ function ensureSettingsFileSync() {
     catch (err) {
         if (err) {
             if (err.code === 'ENOENT') {
-                guideSavingSettingsSync({});
+                proxySaveSettingsSync({});
             }
             else {
                 throw err;
@@ -210,7 +210,7 @@ function ensureSettingsDirSync() {
  * @returns A promise which resolves with the settings object.
  * @internal
  */
-function guideLoadingSettings() {
+function proxyLoadSettings() {
     var ipcRenderer = getElectron().ipcRenderer;
     return ipcRenderer
         ? ipcRenderer.invoke('electron-settings-load-settings')
@@ -250,7 +250,7 @@ function loadSettings() {
  * @returns The settings object.
  * @internal
  */
-function guideLoadingSettingSync() {
+function proxyLoadSettingsync() {
     var ipcRenderer = getElectron().ipcRenderer;
     return ipcRenderer
         ? ipcRenderer.sendSync('electron-settings-load-settings-sync')
@@ -277,7 +277,7 @@ function loadSettingsSync() {
  * @returns A promise which resolves when the settings have been saved.
  * @internal
  */
-function guideSavingSettings(obj) {
+function proxySaveSettings(obj) {
     var ipcRenderer = getElectron().ipcRenderer;
     return ipcRenderer
         ? ipcRenderer.invoke('electron-settings-save-settings', obj)
@@ -320,7 +320,7 @@ function saveSettings(obj) {
  * @param obj The settings object to save.
  * @internal
  */
-function guideSavingSettingsSync(obj) {
+function proxySaveSettingsSync(obj) {
     var ipcRenderer = getElectron().ipcRenderer;
     if (ipcRenderer) {
         ipcRenderer.sendSync('electron-settings-save-settings-sync', obj);
@@ -487,7 +487,7 @@ function has(keyPath) {
         var obj;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, guideLoadingSettings()];
+                case 0: return [4 /*yield*/, proxyLoadSettings()];
                 case 1:
                     obj = _a.sent();
                     return [2 /*return*/, lodash_has_1.default(obj, keyPath)];
@@ -537,7 +537,7 @@ function has(keyPath) {
  *     // => true
  */
 function hasSync(keyPath) {
-    var obj = guideLoadingSettingSync();
+    var obj = proxyLoadSettingsync();
     return lodash_has_1.default(obj, keyPath);
 }
 function get(keyPath) {
@@ -545,7 +545,7 @@ function get(keyPath) {
         var obj;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, guideLoadingSettings()];
+                case 0: return [4 /*yield*/, proxyLoadSettings()];
                 case 1:
                     obj = _a.sent();
                     if (keyPath) {
@@ -560,7 +560,7 @@ function get(keyPath) {
     });
 }
 function getSync(keyPath) {
-    var obj = guideLoadingSettingSync();
+    var obj = proxyLoadSettingsync();
     if (keyPath) {
         return lodash_get_1.default(obj, keyPath);
     }
@@ -580,14 +580,14 @@ function set() {
                 case 0:
                     if (!(args.length === 1)) return [3 /*break*/, 1];
                     value = args[0];
-                    return [2 /*return*/, guideSavingSettings(value)];
+                    return [2 /*return*/, proxySaveSettings(value)];
                 case 1:
                     keyPath = args[0], value = args[1];
-                    return [4 /*yield*/, guideLoadingSettings()];
+                    return [4 /*yield*/, proxyLoadSettings()];
                 case 2:
                     obj = _a.sent();
                     lodash_set_1.default(obj, keyPath, value);
-                    return [2 /*return*/, guideSavingSettings(obj)];
+                    return [2 /*return*/, proxySaveSettings(obj)];
             }
         });
     });
@@ -599,13 +599,13 @@ function setSync() {
     }
     if (args.length === 1) {
         var value = args[0];
-        guideSavingSettingsSync(value);
+        proxySaveSettingsSync(value);
     }
     else {
         var keyPath = args[0], value = args[1];
-        var obj = guideLoadingSettingSync();
+        var obj = proxyLoadSettingsync();
         lodash_set_1.default(obj, keyPath, value);
-        guideSavingSettingsSync(obj);
+        proxySaveSettingsSync(obj);
     }
 }
 function unset(keyPath) {
@@ -615,27 +615,27 @@ function unset(keyPath) {
             switch (_a.label) {
                 case 0:
                     if (!keyPath) return [3 /*break*/, 2];
-                    return [4 /*yield*/, guideLoadingSettings()];
+                    return [4 /*yield*/, proxyLoadSettings()];
                 case 1:
                     obj = _a.sent();
                     lodash_unset_1.default(obj, keyPath);
-                    return [2 /*return*/, guideSavingSettings(obj)];
+                    return [2 /*return*/, proxySaveSettings(obj)];
                 case 2: 
                 // Unset all settings by saving empty object.
-                return [2 /*return*/, guideSavingSettings({})];
+                return [2 /*return*/, proxySaveSettings({})];
             }
         });
     });
 }
 function unsetSync(keyPath) {
     if (keyPath) {
-        var obj = guideLoadingSettingSync();
+        var obj = proxyLoadSettingsync();
         lodash_unset_1.default(obj, keyPath);
-        guideSavingSettingsSync(obj);
+        proxySaveSettingsSync(obj);
     }
     else {
         // Unset all settings by saving empty object.
-        guideSavingSettingsSync({});
+        proxySaveSettingsSync({});
     }
 }
 module.exports = {
