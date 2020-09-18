@@ -27,7 +27,6 @@
   ],
   "scripts": {
     "build": "tsc",
-    "install": "npm run build",
     "lint": "eslint src --ext .ts",
     "docs": "typedoc && echo \"electron-settings.js.org\" > docs/CNAME",
     "release": "standard-version",
