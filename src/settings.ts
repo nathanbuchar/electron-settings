@@ -332,7 +332,7 @@ function loadSettings(): Promise<SettingsObject> {
  * @returns The settings object.
  * @internal
  */
-function proxyLoadSettingsync(): SettingsObject {
+function proxyLoadSettingSync(): SettingsObject {
   const { ipcRenderer } = getElectron();
   return ipcRenderer
     ? ipcRenderer.sendSync('electron-settings-load-settings-sync')
@@ -625,7 +625,7 @@ async function has(keyPath: KeyPath): Promise<boolean> {
  *     // => true
  */
 function hasSync(keyPath: KeyPath): boolean {
-  const obj = proxyLoadSettingsync();
+  const obj = proxyLoadSettingSync();
 
   return _has(obj, keyPath);
 }
@@ -757,7 +757,7 @@ function getSync(): SettingsObject;
 function getSync(keyPath: KeyPath): SettingsValue;
 
 function getSync(keyPath?: KeyPath): SettingsValue {
-  const obj = proxyLoadSettingsync();
+  const obj = proxyLoadSettingSync();
 
   if (keyPath) {
     return _get(obj, keyPath);
@@ -904,7 +904,7 @@ function setSync(...args: [SettingsObject] | [KeyPath, SettingsValue]): void {
     proxySaveSettingsSync(value);
   } else {
     const [keyPath, value] = args;
-    const obj = proxyLoadSettingsync();
+    const obj = proxyLoadSettingSync();
 
     _set(obj, keyPath, value);
 
@@ -1031,7 +1031,7 @@ function unsetSync(keyPath: KeyPath): void;
 
 function unsetSync(keyPath?: KeyPath): void {
   if (keyPath) {
-    const obj = proxyLoadSettingsync();
+    const obj = proxyLoadSettingSync();
 
     _unset(obj, keyPath);
 
