@@ -1,14 +1,3 @@
-/* eslint linebreak-style: ["error", "windows"] */
-import electron from 'electron';
-import fs from 'fs';
-import mkdirp from 'mkdirp';
-import path from 'path';
-import writeFileAtomic from 'write-file-atomic';
-import _get from 'lodash.get';
-import _has from 'lodash.has';
-import _set from 'lodash.set';
-import _unset from 'lodash.unset';
-
 /**
  * At the basic level, a key path is the string equivalent
  * of dot notation in JavaScript. Take the following object,
@@ -63,8 +52,7 @@ import _unset from 'lodash.unset';
  * you would with any other object in JavaScript, and it
  * just feels natural.
  */
-type KeyPath = string | Array<string | number>;
-
+declare type KeyPath = string | Array<string | number>;
 /**
  * `SettingsValue` types are the datatypes supported by
  * Electron Settings. Since Electron Settings reads and
@@ -81,363 +69,49 @@ type KeyPath = string | Array<string | number>;
  *     const lastLogin = await settings.get('user.lastLogin');
  *     const lastLoginDate = new Date(lastLogin);
  */
-type SettingsValue = null | boolean | string | number | SettingsObject | SettingsValue[];
-
+declare type SettingsValue = null | boolean | string | number | SettingsObject | SettingsValue[];
 /**
  * A `SettingsObject` is an object whose property values
  * are of the type `SettingsValue`.
  */
-type SettingsObject = {
-  [key: string]: SettingsValue;
+declare type SettingsObject = {
+    [key: string]: SettingsValue;
 };
-
 /**
  * `Config` types contain all the configuration options for
  * Electron Settings that can be set using
  * [[configure|configure()]].
  */
-type Config = {
-
-  /**
-   * Whether or not to save the settings file atomically.
-   */
-  atomicSave: boolean;
-
-  /**
-   * The path to the settings directory. Defaults to your
-   * app's user data direcory.
-   */
-  dir?: string;
-
-  /**
-   * A custom Electron instance to use. Great for testing!
-   */
-  electron?: typeof Electron;
-
-  /**
-   * The name of the settings file that will be saved to
-   * the disk.
-   */
-  fileName: string;
-
-  /**
-   * The number of spaces to use when stringifying the data
-   * before saving to disk if `prettify` is set to `true`.
-   */
-  numSpaces: number;
-
-  /**
-   * Whether or not to prettify the data when it's saved to
-   * disk.
-   */
-  prettify: boolean;
+declare type Config = {
+    /**
+     * Whether or not to save the settings file atomically.
+     */
+    atomicSave: boolean;
+    /**
+     * The path to the settings directory. Defaults to your
+     * app's user data direcory.
+     */
+    dir?: string;
+    /**
+     * A custom Electron instance to use. Great for testing!
+     */
+    electron?: typeof Electron;
+    /**
+     * The name of the settings file that will be saved to
+     * the disk.
+     */
+    fileName: string;
+    /**
+     * The number of spaces to use when stringifying the data
+     * before saving to disk if `prettify` is set to `true`.
+     */
+    numSpaces: number;
+    /**
+     * Whether or not to prettify the data when it's saved to
+     * disk.
+     */
+    prettify: boolean;
 };
-
-/** @internal */
-const defaultConfig: Config = {
-  atomicSave: true,
-  fileName: 'settings.json',
-  numSpaces: 2,
-  prettify: false,
-};
-
-/** @internal */
-let config: Config = {
-  ...defaultConfig,
-};
-
-/**
- * Returns the Electron instance. The developer may define
- * a custom Electron instance by using `configure()`.
- *
- * @returns The Electron instance.
- * @internal
- */
-function getElectron(): typeof Electron {
-  return config.electron ?? electron;
-}
-
-/**
- * Returns the Electron app.
- *
- * @returns The Electron app.
- * @internal
- */
-function getElectronApp(): Electron.App {
-  return getElectron().app;
-}
-
-/**
- * Returns the path to the settings directory. The path
- * may be customized by the developer by using
- * `configure()`.
- *
- * @returns The path to the settings directory.
- * @internal
- */
-function getSettingsDirPath(): string {
-  return config.dir ?? getElectronApp().getPath('userData');
-}
-
-/**
- * Returns the path to the settings file. The file name
- * may be customized by the developer using `configure()`.
- *
- * @returns The path to the settings file.
- * @internal
- */
-function getSettingsFilePath(): string {
-  const dir = getSettingsDirPath();
-
-  return path.join(dir, config.fileName);
-}
-
-/**
- * Ensures that the settings file exists. If it does not
- * exist, then it is created.
- *
- * @returns A promise which resolves when the settings file exists.
- * @internal
- */
-function ensureSettingsFile(): Promise<void> {
-  const filePath = getSettingsFilePath();
-
-  return new Promise((resolve, reject) => {
-    fs.stat(filePath, (err) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          proxySaveSettings({}).then(resolve, reject);
-        } else {
-          reject(err);
-        }
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-/**
- * Ensures that the settings file exists. If it does not
- * exist, then it is created.
- *
- * @internal
- */
-function ensureSettingsFileSync(): void {
-  const filePath = getSettingsFilePath();
-
-  try {
-    fs.statSync(filePath);
-  } catch (err) {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        proxySaveSettingsSync({});
-      } else {
-        throw err;
-      }
-    }
-  }
-}
-
-/**
- * Ensures that the settings directory exists. If it does
- * not exist, then it is created.
- *
- * @returns A promise which resolves when the settings dir exists.
- * @internal
- */
-function ensureSettingsDir(): Promise<void> {
-  const dirPath = getSettingsDirPath();
-
-  return new Promise((resolve, reject) => {
-    fs.stat(dirPath, (err) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          mkdirp(dirPath).then(() => resolve(), reject);
-        } else {
-          reject(err);
-        }
-      } else {
-        resolve();
-      }
-    });
-  });
-}
-
-/**
- * Ensures that the settings directory exists. If it does
- * not exist, then it is created.
- *
- * @internal
- */
-function ensureSettingsDirSync(): void {
-  const dirPath = getSettingsDirPath();
-
-  try {
-    fs.statSync(dirPath);
-  } catch (err) {
-    if (err.code === 'ENOENT') {
-      mkdirp.sync(dirPath);
-    } else {
-      throw err;
-    }
-  }
-}
-
-/**
- * Checks what process is it, depending on that either calls [[loadSettings|loadSettings()]]
- * directly or via sending async message to main process.
- *
- * @returns A promise which resolves with the settings object.
- * @internal
- */
-function proxyLoadSettings(): Promise<SettingsObject> {
-  const { ipcRenderer } = getElectron();
-  return ipcRenderer
-    ? ipcRenderer.invoke('electron-settings-load-settings')
-    : loadSettings();
-}
-
-/**
- * First ensures that the settings file exists then loads
- * the settings from the disk.
- *
- * @returns A promise which resolves with the settings object.
- * @internal
- */
-function loadSettings(): Promise<SettingsObject> {
-  return ensureSettingsFile().then(() => {
-    const filePath = getSettingsFilePath();
-
-    return new Promise((resolve, reject) => {
-      fs.readFile(filePath, 'utf-8', (err, data) => {
-        if (err) {
-          reject(err);
-        } else {
-          try {
-            resolve(JSON.parse(data));
-          } catch (err) {
-            reject(err);
-          }
-        }
-      });
-    });
-  });
-}
-
-/**
- * Checks what process is it, depending on that either calls [[loadSettingsSync|loadSettingsSync()]]
- * directly or via sending sync message to main process.
- *
- * @returns The settings object.
- * @internal
- */
-function proxyLoadSettingSync(): SettingsObject {
-  const { ipcRenderer } = getElectron();
-  return ipcRenderer
-    ? ipcRenderer.sendSync('electron-settings-load-settings-sync')
-    : loadSettingsSync();
-}
-
-/**
- * First ensures that the settings file exists then loads
- * the settings from the disk.
- *
- * @returns The settings object.
- * @internal
- */
-function loadSettingsSync(): SettingsObject {
-  const filePath = getSettingsFilePath();
-
-  ensureSettingsFileSync();
-
-  const data = fs.readFileSync(filePath, 'utf-8');
-
-  return JSON.parse(data);
-}
-
-/**
- * Checks what process is it, depending on that either calls [[saveSettings|saveSettings()]]
- * directly or via sending async message to main process.
- *
- * @param obj The settings object to save.
- * @returns A promise which resolves when the settings have been saved.
- * @internal
- */
-function proxySaveSettings(obj: SettingsObject): Promise<void> {
-  const { ipcRenderer } = getElectron();
-  return ipcRenderer
-    ? ipcRenderer.invoke('electron-settings-save-settings', obj)
-    : saveSettings(obj);
-}
-
-/**
- * Saves the settings to the disk.
- *
- * @param obj The settings object to save.
- * @returns A promise which resolves when the settings have been saved.
- * @internal
- */
-function saveSettings(obj: SettingsObject): Promise<void> {
-  return ensureSettingsDir().then(() => {
-    const filePath = getSettingsFilePath();
-    const numSpaces = config.prettify ? config.numSpaces : 0;
-    const data = JSON.stringify(obj, null, numSpaces);
-
-    return new Promise((resolve, reject) => {
-      if (config.atomicSave) {
-        writeFileAtomic(filePath, data, (err) => {
-          return err
-            ? reject(err)
-            : resolve();
-        });
-      } else {
-        fs.writeFile(filePath, data, (err) => {
-          return err
-            ? reject(err)
-            : resolve();
-        });
-      }
-    });
-  });
-}
-
-/**
- * Checks what process is it, depending on that either calls [[saveSettingsSync|saveSettingsSync()]]
- * directly or via sending async message to main process.
- *
- * @param obj The settings object to save.
- * @internal
- */
-function proxySaveSettingsSync(obj: SettingsObject): void {
-  const { ipcRenderer } = getElectron();
-  if (ipcRenderer) {
-    ipcRenderer.sendSync('electron-settings-save-settings-sync', obj);
-  } else {
-    saveSettingsSync(obj);
-  }
-}
-
-/**
- * Saves the settings to the disk.
- *
- * @param obj The settings object to save.
- * @internal
- */
-function saveSettingsSync(obj: SettingsObject): void {
-  const filePath = getSettingsFilePath();
-  const numSpaces = config.prettify ? config.numSpaces : 0;
-  const data = JSON.stringify(obj, null, numSpaces);
-
-  ensureSettingsDirSync();
-
-  if (config.atomicSave) {
-    writeFileAtomic.sync(filePath, data);
-  } else {
-    fs.writeFileSync(filePath, data);
-  }
-}
-
 /**
  * Initializes the Electron Settings in the main process.
  * Throws an error if you try to call it in renderer process.
@@ -446,26 +120,7 @@ function saveSettingsSync(obj: SettingsObject): void {
  *
  *     settings.init();
  */
-function init(): void {
-  const { ipcMain } = getElectron();
-  if (!ipcMain) {
-    throw new Error('You should init settings only in main process');
-  }
-  ipcMain.handle('electron-settings-load-settings', () => {
-    return loadSettings();
-  });
-  ipcMain.on('electron-settings-load-settings-sync', (event) => {
-    // eslint-disable-next-line no-param-reassign
-    event.returnValue = loadSettingsSync();
-  });
-  ipcMain.handle('electron-settings-save-settings', (event, obj) => {
-    return saveSettings(obj);
-  });
-  ipcMain.on('electron-settings-save-settings-sync', (event, obj) => {
-    saveSettingsSync(obj);
-  });
-}
-
+declare function init(): void;
 /**
  * Returns the path to the settings file.
  *
@@ -490,10 +145,7 @@ function init(): void {
  *     settings.file();
  *     // => /home/nathan/.config/MyApp/settings.json
  */
-function file(): string {
-  return getSettingsFilePath();
-}
-
+declare function file(): string;
 /**
  * Sets the configuration for Electron Settings. To reset
  * to defaults, use [[reset|reset()]].
@@ -518,10 +170,7 @@ function file(): string {
  *       prettify: true
  *     });
  */
-function configure(customConfig: Partial<Config>): void {
-  config = { ...config, ...customConfig };
-}
-
+declare function configure(customConfig: Partial<Config>): void;
 /**
  * Resets the Electron Settings configuration to defaults.
  *
@@ -531,10 +180,7 @@ function configure(customConfig: Partial<Config>): void {
  *
  *     settings.reset();
  */
-function reset(): void {
-  config = { ...defaultConfig };
-}
-
+declare function reset(): void;
 /**
  * Checks if the given key path exists. For sync,
  * use [[hasSync|hasSync()]].
@@ -577,12 +223,7 @@ function reset(): void {
  *     const exists = await settings.has(color.code.rgb[1]);
  *     // => true
  */
-async function has(keyPath: KeyPath): Promise<boolean> {
-  const obj = await proxyLoadSettings();
-
-  return _has(obj, keyPath);
-}
-
+declare function has(keyPath: KeyPath): Promise<boolean>;
 /**
  * Checks if the given key path exists. For async,
  * use [[hasSync|hasSync()]].
@@ -624,12 +265,7 @@ async function has(keyPath: KeyPath): Promise<boolean> {
  *     const exists = settings.hasSync(color.code.rgb[1]);
  *     // => true
  */
-function hasSync(keyPath: KeyPath): boolean {
-  const obj = proxyLoadSettingSync();
-
-  return _has(obj, keyPath);
-}
-
+declare function hasSync(keyPath: KeyPath): boolean;
 /**
  * Gets all settings. For sync, use
  * [[getSync|getSync()]].
@@ -642,8 +278,7 @@ function hasSync(keyPath: KeyPath): boolean {
  *
  *     const obj = await get();
  */
-async function get(): Promise<SettingsObject>;
-
+declare function get(): Promise<SettingsObject>;
 /**
  * Gets the value at the given key path. For sync,
  * use [[getSync|getSync()]].
@@ -687,18 +322,7 @@ async function get(): Promise<SettingsObject>;
  *     const value = await settings.get('color.code.rgb[1]');
  *     // => 179
  */
-async function get(keyPath: KeyPath): Promise<SettingsValue>;
-
-async function get(keyPath?: KeyPath): Promise<SettingsObject | SettingsValue> {
-  const obj = await proxyLoadSettings();
-
-  if (keyPath) {
-    return _get(obj, keyPath);
-  } else {
-    return obj;
-  }
-}
-
+declare function get(keyPath: KeyPath): Promise<SettingsValue>;
 /**
  * Gets all settings. For async, use [[get|get()]].
  *
@@ -710,8 +334,7 @@ async function get(keyPath?: KeyPath): Promise<SettingsObject | SettingsValue> {
  *
  *     const obj = getSync();
  */
-function getSync(): SettingsObject;
-
+declare function getSync(): SettingsObject;
 /**
  * Gets the value at the given key path. For async,
  * use [[get|get()]].
@@ -754,18 +377,7 @@ function getSync(): SettingsObject;
  *     const value = settings.getSync('color.code.rgb[1]');
  *     // => 179
  */
-function getSync(keyPath: KeyPath): SettingsValue;
-
-function getSync(keyPath?: KeyPath): SettingsValue {
-  const obj = proxyLoadSettingSync();
-
-  if (keyPath) {
-    return _get(obj, keyPath);
-  } else {
-    return obj;
-  }
-}
-
+declare function getSync(keyPath: KeyPath): SettingsValue;
 /**
  * Sets all settings. For sync, use [[setSync|setSync()]].
  *
@@ -779,8 +391,7 @@ function getSync(keyPath?: KeyPath): SettingsValue {
  *
  *     await settings.set({ aqpw: 'nice' });
  */
-async function set(obj: SettingsObject): Promise<void>;
-
+declare function set(obj: SettingsObject): Promise<void>;
 /**
  * Sets the value at the given key path. For sync,
  * use [[setSync|setSync()]].
@@ -824,23 +435,7 @@ async function set(obj: SettingsObject): Promise<void>;
  *       hex: '#101F86'
  *     });
  */
-async function set(keyPath: KeyPath, obj: SettingsValue): Promise<void>;
-
-async function set(...args: [SettingsObject] | [KeyPath, SettingsValue]): Promise<void> {
-  if (args.length === 1) {
-    const [value] = args;
-
-    return proxySaveSettings(value);
-  } else {
-    const [keyPath, value] = args;
-    const obj = await proxyLoadSettings();
-
-    _set(obj, keyPath, value);
-
-    return proxySaveSettings(obj);
-  }
-}
-
+declare function set(keyPath: KeyPath, obj: SettingsValue): Promise<void>;
 /**
  * Sets all settings. For async, use [[set|set()]].
  *
@@ -852,8 +447,7 @@ async function set(...args: [SettingsObject] | [KeyPath, SettingsValue]): Promis
  *
  *     settings.setSync({ aqpw: 'nice' });
  */
-function setSync(obj: SettingsObject): void;
-
+declare function setSync(obj: SettingsObject): void;
 /**
  * Sets the value at the given key path. For async,
  * use [[set|set()]].
@@ -895,23 +489,7 @@ function setSync(obj: SettingsObject): void;
  *       hex: '#101F86'
  *     });
  */
-function setSync(keyPath: KeyPath, value: SettingsValue): void;
-
-function setSync(...args: [SettingsObject] | [KeyPath, SettingsValue]): void {
-  if (args.length === 1) {
-    const [value] = args;
-
-    proxySaveSettingsSync(value);
-  } else {
-    const [keyPath, value] = args;
-    const obj = proxyLoadSettingSync();
-
-    _set(obj, keyPath, value);
-
-    proxySaveSettingsSync(obj);
-  }
-}
-
+declare function setSync(keyPath: KeyPath, value: SettingsValue): void;
 /**
  * Unsets all settings. For sync, use [[unsetSync|unsetSync()]].
  *
@@ -924,8 +502,7 @@ function setSync(...args: [SettingsObject] | [KeyPath, SettingsValue]): void {
  *
  *     await settings.unset();
  */
-async function unset(): Promise<void>;
-
+declare function unset(): Promise<void>;
 /**
  * Unsets the property at the given key path. For sync,
  * use [[unsetSync|unsetSync()]].
@@ -964,21 +541,7 @@ async function unset(): Promise<void>;
  *     await settings.get('color.code.rgb');
  *     // => [0, null, 230]
  */
-async function unset(keyPath: KeyPath): Promise<void>;
-
-async function unset(keyPath?: KeyPath): Promise<void> {
-  if (keyPath) {
-    const obj = await proxyLoadSettings();
-
-    _unset(obj, keyPath);
-
-    return proxySaveSettings(obj);
-  } else {
-    // Unset all settings by saving empty object.
-    return proxySaveSettings({});
-  }
-}
-
+declare function unset(keyPath: KeyPath): Promise<void>;
 /**
  * Unsets all settings. For async, use [[unset|unset()]].
  *
@@ -989,8 +552,7 @@ async function unset(keyPath?: KeyPath): Promise<void> {
  *
  *     settings.unsetSync();
  */
-function unsetSync(): void;
-
+declare function unsetSync(): void;
 /**
  * Unsets the property at the given key path. For async,
  * use [[unset|unset()]].
@@ -1027,32 +589,19 @@ function unsetSync(): void;
  *     settings.getSync('color.code.rgb');
  *     // => [0, null, 230]
  */
-function unsetSync(keyPath: KeyPath): void;
-
-function unsetSync(keyPath?: KeyPath): void {
-  if (keyPath) {
-    const obj = proxyLoadSettingSync();
-
-    _unset(obj, keyPath);
-
-    proxySaveSettingsSync(obj);
-  } else {
-    // Unset all settings by saving empty object.
-    proxySaveSettingsSync({});
-  }
-}
-
-export = {
-  init,
-  file,
-  configure,
-  reset,
-  has,
-  hasSync,
-  get,
-  getSync,
-  set,
-  setSync,
-  unset,
-  unsetSync,
+declare function unsetSync(keyPath: KeyPath): void;
+declare const _default: {
+    init: typeof init;
+    file: typeof file;
+    configure: typeof configure;
+    reset: typeof reset;
+    has: typeof has;
+    hasSync: typeof hasSync;
+    get: typeof get;
+    getSync: typeof getSync;
+    set: typeof set;
+    setSync: typeof setSync;
+    unset: typeof unset;
+    unsetSync: typeof unsetSync;
 };
+export = _default;
