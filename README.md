@@ -37,6 +37,16 @@ await settings.get('color.code.rgb[1]');
 // => 179
 ```
 
+⚠ For Electron v10+, if you want to use electron-settings within a browser window, be sure to set the `enableRemoteModule` web preference to `true`. Otherwise you might get the error `Cannot read property 'app' of undefined`. See [#133](https://github.com/nathanbuchar/electron-settings/issues/133) for more info.
+
+```js
+new BrowserWindow({
+  webPreferences: {
+    enableRemoteModule: true // <-- Add me
+  }
+});
+```
+
 ### API Docs
 
 API docs and can be found at [electron-settings.js.org](https://electron-settings.js.org).
