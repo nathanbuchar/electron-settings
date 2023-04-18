@@ -2,7 +2,10 @@ import electron from 'electron';
 import fs from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
-import writeFileAtomic from 'write-file-atomic';
+import {
+  writeFile as writeFileAtomic,
+  writeFileSync as writeFileAtomicSync,
+} from 'atomically';
 import _get from 'lodash.get';
 import _has from 'lodash.has';
 import _set from 'lodash.set';
@@ -377,7 +380,7 @@ function saveSettingsSync(obj: SettingsObject): void {
   ensureSettingsDirSync();
 
   if (config.atomicSave) {
-    writeFileAtomic.sync(filePath, data);
+    writeFileAtomicSync(filePath, data);
   } else {
     fs.writeFileSync(filePath, data);
   }
