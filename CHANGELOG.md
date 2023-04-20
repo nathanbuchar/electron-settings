@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/nathanbuchar/electron-settings/compare/v4.0.2...v5.0.0) (2023-04-20)
+
+
+### Features
+
+* drop electron.remote support ([#175](https://github.com/nathanbuchar/electron-settings/issues/175)) ([e956963](https://github.com/nathanbuchar/electron-settings/commit/e956963a0de5a3147886d3ba4aaa59ed5d30364c))
+* Electron Settings v5 ([#177](https://github.com/nathanbuchar/electron-settings/issues/177)) ([59b50fd](https://github.com/nathanbuchar/electron-settings/commit/59b50fdb3a681e9ee1500f587d560e488064b0dd))
+
 ### [4.0.2](https://github.com/nathanbuchar/electron-settings/compare/v4.0.1...v4.0.2) (2020-06-27)
 
 
