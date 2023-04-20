@@ -1,11 +1,11 @@
 {
   "name": "Electron Settings",
+  "entryPoints": ["src/settings.ts"],
   "includeVersion": true,
   "includes": "src",
-  "exclude": "**/*.test.ts",
+  "exclude": ["**/*.test.ts"],
   "out": "docs",
-  "mode": "file",
-  "theme": "minimal",
+  "theme": "default",
   "readme": "none",
-  "stripInternal": true
+  "excludeInternal": true
 }
