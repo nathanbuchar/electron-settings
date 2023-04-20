@@ -42,7 +42,7 @@ await settings.get('color.code.rgb[1]');
 ```js
 // main process
 ipcMain.handle('getSettingValue', (event, key) => {
-	return settings.get(key);
+  return settings.get(key);
 });
 
 // renderer-process
