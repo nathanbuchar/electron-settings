@@ -37,14 +37,16 @@ await settings.get('color.code.rgb[1]');
 // => 179
 ```
 
-⚠ For Electron v10+, if you want to use electron-settings within a browser window, be sure to set the `enableRemoteModule` web preference to `true`. Otherwise you might get the error `Cannot read property 'app' of undefined`. See [#133](https://github.com/nathanbuchar/electron-settings/issues/133) for more info.
+`electron-settings` only works in the main process. If you want to use `electron-settings` in the renderer process, you need to use [IPC](https://www.electronjs.org/docs/api/ipc-main#ipcmainhandlechannel-listener).
 
 ```js
-new BrowserWindow({
-  webPreferences: {
-    enableRemoteModule: true // <-- Add me
-  }
+// main process
+ipcMain.handle('getSettingValue', (event, key) => {
+	return settings.get(key);
 });
+
+// renderer-process
+const foo = await ipcRenderer.invoke('getSettingValue', 'foo');
 ```
 
 ### API Docs
