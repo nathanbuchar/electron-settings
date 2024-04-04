@@ -37,17 +37,11 @@
   },
   "dependencies": {
     "atomically": "^2.0.1",
-    "lodash.get": "^4.4.2",
-    "lodash.has": "^4.5.2",
-    "lodash.set": "^4.3.2",
-    "lodash.unset": "^4.5.2",
+    "lodash": "^4.17.21",
     "mkdirp": "^1.0.4"
   },
   "devDependencies": {
-    "@types/lodash.get": "^4.4.7",
-    "@types/lodash.has": "^4.5.7",
-    "@types/lodash.set": "^4.3.7",
-    "@types/lodash.unset": "^4.5.7",
+    "@types/lodash": "^4.17.0",
     "@types/mkdirp": "^1.0.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.18.42",
