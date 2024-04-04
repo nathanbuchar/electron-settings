@@ -3,10 +3,9 @@ import fs from 'fs';
 import mkdirp from 'mkdirp';
 import path from 'path';
 import writeFileAtomic from 'write-file-atomic';
-import _get from 'lodash.get';
-import _has from 'lodash.has';
-import _set from 'lodash.set';
-import _unset from 'lodash.unset';
+import {
+  get as _get, has as _has, set as _set, unset as _unset,
+} from 'lodash';
 
 /**
  * At the basic level, a key path is the string equivalent

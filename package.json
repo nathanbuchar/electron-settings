@@ -36,18 +36,12 @@
     "test:renderer": "electron-mocha --renderer --reporter spec --require ts-node/register 'src/**/*.test.ts'"
   },
   "dependencies": {
-    "lodash.get": "^4.4.2",
-    "lodash.has": "^4.5.2",
-    "lodash.set": "^4.3.2",
-    "lodash.unset": "^4.5.2",
+    "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
     "write-file-atomic": "^3.0.3"
   },
   "devDependencies": {
-    "@types/lodash.get": "^4.4.6",
-    "@types/lodash.has": "^4.5.6",
-    "@types/lodash.set": "^4.3.6",
-    "@types/lodash.unset": "^4.5.6",
+    "@types/lodash": "^4.17.0",
     "@types/mkdirp": "^1.0.0",
     "@types/mocha": "^7.0.2",
     "@types/node": "^14.0.5",
