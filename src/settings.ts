@@ -232,8 +232,9 @@ function ensureSettingsFileSync(): void {
   try {
     fs.statSync(filePath);
   } catch (err) {
-    if (err) {
-      if (err.code === 'ENOENT') {
+    const e = err as NodeJS.ErrnoException;
+    if (e) {
+      if (e.code === 'ENOENT') {
         saveSettingsSync({});
       } else {
         throw err;
@@ -279,8 +280,11 @@ function ensureSettingsDirSync(): void {
   try {
     fs.statSync(dirPath);
   } catch (err) {
-    if (err.code === 'ENOENT') {
-      mkdirp.sync(dirPath);
+    const e = err as NodeJS.ErrnoException;
+    if (e) {
+      if (e.code === 'ENOENT') {
+        mkdirp.sync(dirPath);
+      }
     } else {
       throw err;
     }
