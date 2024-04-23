@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.0.4](https://github.com/nathanbuchar/electron-settings/compare/v4.0.2...v4.0.4) (2024-04-23)
+
+
+### Bug Fixes
+
+* security issue with lodash ([6d15e65](https://github.com/nathanbuchar/electron-settings/commit/6d15e6502084264dc8c2d76b4c3905020216679a))
+
 ### [4.0.3](https://github.com/nathanbuchar/electron-settings/compare/v4.0.2...v4.0.3) (2024-04-11)
 
 

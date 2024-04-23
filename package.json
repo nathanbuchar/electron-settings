@@ -1,6 +1,6 @@
 {
   "name": "electron-settings",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "A simple and robust settings management library for Electron.",
   "license": "MIT",
   "main": "dist/settings.js",
